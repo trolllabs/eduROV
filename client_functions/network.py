@@ -27,7 +27,7 @@ class SplitFrames(object):
                 self.stream.seek(0)
         self.stream.write(buf)
 
-def client(host, port, resolution, fullscreen):
+def client(host, port, resolution):
     client_socket = socket.socket()
     client_socket.connect((host, port))
     print('Client has been assigned socket name', client_socket.getsockname())

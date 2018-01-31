@@ -18,4 +18,12 @@ if __name__ == '__main__':
                         help='fullscreen or not')
     args = parser.parse_args()
     function = choices[args.role]
-    function(args.ip, args.p, args.r, args.f)
+    if function is rov:
+        rov(host=args.ip,
+            port=args.p,
+            resolution=args.r)
+    elif function is controller:
+        controller(interface=args.ip,
+                   port=args.p,
+                   resolution=args.r,
+                   fullscreen=args.f)
