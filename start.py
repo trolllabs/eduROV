@@ -12,8 +12,8 @@ if __name__ == '__main__':
                                    'client sends to', type=str)
     parser.add_argument('-p', metavar='PORT', type=int, default=1060,
                         help='IP port (default 1060)')
-    parser.add_argument('-r', metavar='RESOLUTION', type=str, default='VGA',
-                        help='resolution (default VGA)')
+    parser.add_argument('-r', metavar='RESOLUTION', type=str, default='640x480',
+                        help='resolution (default 640x480)')
     args = parser.parse_args()
     function = choices[args.role]
     function(args.ip, args.p, args.r)
