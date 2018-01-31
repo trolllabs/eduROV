@@ -16,6 +16,8 @@ def server(interface, port, resolution):
     server_socket.bind((interface, port))
     server_socket.listen(0)
     print('Listening at', server_socket.getsockname())
+    print('Client should connect to {}'
+          .format(socket.gethostbyname(socket.gethostname())))
 
     # Accept a single connection and make a file-like object out of it
     connection = server_socket.accept()[0].makefile('rb')
