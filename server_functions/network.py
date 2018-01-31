@@ -8,8 +8,8 @@ from PIL import Image
 
 def server(interface, port, resolution):
     pygame.init()
-    screen_size = resolution.split('x')
-    screen = pygame.display.set_mode([int(val) for val in screen_size])
+    screen_size = tuple([int(val) for val in resolution.split('x')])
+    screen = pygame.display.set_mode(screen_size)
 
     server_socket = socket.socket()
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
