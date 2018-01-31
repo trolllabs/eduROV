@@ -14,6 +14,8 @@ if __name__ == '__main__':
                         help='IP port (default 1060)')
     parser.add_argument('-r', metavar='RESOLUTION', type=str, default='640x480',
                         help='resolution (default 640x480)')
+    parser.add_argument('-f', metavar='FULLSCREEN', type=bool, default=False,
+                        help='fullscreen or not')
     args = parser.parse_args()
     function = choices[args.role]
-    function(args.ip, args.p, args.r)
+    function(args.ip, args.p, args.r, args.f)

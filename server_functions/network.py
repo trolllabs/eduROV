@@ -6,10 +6,12 @@ import pygame
 from PIL import Image
 
 
-def server(interface, port, resolution):
+def server(interface, port, resolution, fullscreen):
     pygame.init()
     screen_size = tuple([int(val) for val in resolution.split('x')])
     screen = pygame.display.set_mode(screen_size)
+    if fullscreen:
+        pygame.display.toggle_fullscreen()
 
     server_socket = socket.socket()
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
