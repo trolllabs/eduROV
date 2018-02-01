@@ -25,24 +25,21 @@ def server(interface, port, resolution, fullscreen):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: sys.exit()
-
             # Read the length of the image as a 32-bit unsigned int. If the
             # length is zero, quit the loop
             image_len = \
                 struct.unpack('<L', connection.read(struct.calcsize('<L')))[0]
             if not image_len:
                 break
-            # Construct a stream to hold the image data and read the image
-            # data from the connection
+            # Read image data and convert: BytesIO > PIL.Image > pygame.image
             image_stream = io.BytesIO()
             image_stream.write(connection.read(image_len))
-            # Rewind the stream, open it as an image with PIL and do some
-            # processing on it
-
-            data = Image.open(image_stream).tobytes()
-            snapshot = pygame.image.fromstring(data, screen_size, 'RGB')
-            screen.blit(snapshot, (0,0))
+            PILframe = Image.open(image_stream).tobytes()
+            frame = pygame.image.fromstring(PILframe, screen_size, 'RGB')
+            # Update screen
+            screen.blit(frame, (0,0))
             pygame.display.flip()
+            # Rewind byte stream
             image_stream.seek(0)
     finally:
         connection.close()

@@ -1,6 +1,6 @@
 import subprocess
-
 STANDARD_PORTS = ['eth0', 'lo', 'wlan0']
+
 
 def get_port_dict():
     port_dict = {}
@@ -11,7 +11,8 @@ def get_port_dict():
         for line in lines:
             parts = line.decode().replace('  ', ' ').strip().split(' ')
             if parts[0] == 'inet':
-                port_dict.update({port: {'inet': parts[1], 'netmask': parts[3]}})
+                port_dict.update({port: {'inet': parts[1], 
+                                         'netmask': parts[3]}})
                 break
             else:
                 port_dict.update({port: None})

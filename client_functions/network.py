@@ -7,6 +7,7 @@ import time
 if platform.system() == 'Linux':
     import picamera
 
+
 class SplitFrames(object):
     def __init__(self, connection):
         self.connection = connection
@@ -15,8 +16,7 @@ class SplitFrames(object):
 
     def write(self, buf):
         if buf.startswith(b'\xff\xd8'):
-            # Start of new frame; send the old one's length
-            # then the data
+            # Start of new frame; send the old one's length then the data
             size = self.stream.tell()
             if size > 0:
                 self.connection.write(struct.pack('<L', size))
@@ -27,6 +27,7 @@ class SplitFrames(object):
                 self.stream.seek(0)
         self.stream.write(buf)
 
+
 def client(host, port, resolution):
     client_socket = socket.socket()
     client_socket.connect((host, port))
@@ -36,13 +37,12 @@ def client(host, port, resolution):
         output = SplitFrames(connection)
         with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
             time.sleep(2)
+            camera.capture('./captures/{}.jpg'.format(resolution))
             start = time.time()
             camera.start_recording(output, format='mjpeg')
-            camera.wait_recording(10)
+            camera.wait_recording(60)
             camera.stop_recording()
-            # Write the terminating 0-length to the connection to let the
-            # server know we're done
-            connection.write(struct.pack('<L', 0))
+            connection.write(struct.pack('<L', 0))  # Tell server we are done
     finally:
         connection.close()
         client_socket.close()
