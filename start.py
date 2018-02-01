@@ -13,7 +13,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', metavar='PORT', type=int, default=1060,
                         help='IP port (default 1060)')
     parser.add_argument('-r', metavar='RESOLUTION', type=str, default='640x480',
-                        help='resolution (default 640x480)')
+                        help='resolution, use format WIDTHxHEIGHT (default 640x480)')
     parser.add_argument('-f', metavar='FULLSCREEN', type=bool, default=False,
                         help='fullscreen or not')
     args = parser.parse_args()
