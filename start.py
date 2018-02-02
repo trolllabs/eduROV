@@ -26,8 +26,8 @@ if __name__ == '__main__':
         '-r',
         metavar='RESOLUTION',
         type=str,
-        default='640x480',
-        help='resolution, use format WIDTHxHEIGHT (default 640x480)')
+        default='1024x600',
+        help='resolution, use format WIDTHxHEIGHT (default 1024x600)')
     parser.add_argument(
         '-f',
         metavar='FULLSCREEN',
