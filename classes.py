@@ -49,7 +49,7 @@ class ROVManager(BaseManager):
         for d in self.shared_dicts:
             self.__setattr__(d, {})
             self.register(d, callable=lambda: self.__getattribute__(d))
-        self.system.update({'shutdown': False})
+        self.system.update({'shutdown': False, 'camera_online':False})
 
     def register_vars_client(self):
         for d in self.shared_dicts:
