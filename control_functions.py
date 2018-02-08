@@ -81,6 +81,7 @@ def get_camera(server_ip, port_var, port_cam, resolution, fullscreen):
             pool.terminate()
         server_socket.close()
 
+
 def view_sensors(port_var):
     mgr = ROVManager(role='client', address='127.0.0.1', port=port_var)
     while not mgr.system().get('shutdown'):
