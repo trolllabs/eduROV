@@ -8,8 +8,9 @@ import time
 import pygame
 from PIL import Image
 from classes import ROVManager
+from helpers import output
 
-BLACK = 0,0,0
+BLACK = 0, 0, 0
 
 
 def get_camera_connection(server_socket):
@@ -33,7 +34,6 @@ def get_camera(server_ip, port_var, port_cam, resolution, fullscreen):
 
     pool = ThreadPool(processes=1)
     async_result = pool.apply_async(get_camera_connection, (server_socket,))
-
     try:
         while not mgr.system().get('shutdown'):
             for event in pygame.event.get():
@@ -41,27 +41,35 @@ def get_camera(server_ip, port_var, port_cam, resolution, fullscreen):
                     mgr.system().update({'shutdown': True})
                     sys.exit()
             try:
-                status = async_result.successful()
+                async_result.successful()
                 connection = async_result.get()
-                mgr.system().update({'camera_online':True})
+                mgr.system().update({'camera_online': True})
             except AssertionError:
                 continue
 
-            if mgr.system().get('camera_online'):
-                # Read the length of the image as a 32-bit unsigned int. If the
-                # length is zero, quit the loop
-                image_len = \
-                    struct.unpack('<L', connection.read(struct.calcsize('<L')))[0]
-                if not image_len:
+            if mgr.system().get('camera_online') is True:
+                try:
+                    # Read the length of the image as a 32-bit unsigned int.
+                    # If the length is zero, quit the loop
+                    image_len = struct.unpack(
+                        '<L', connection.read(struct.calcsize('<L')))[0]
+                    if not image_len:
+                        break
+                    # Read image data and convert:
+                    # BytesIO > PIL.Image > pygame.image
+                    image_stream = io.BytesIO()
+                    image_stream.write(connection.read(image_len))
+                    PILframe = Image.open(image_stream).tobytes()
+                    frame = pygame.image.fromstring(PILframe,
+                                                    screen_size,
+                                                    'RGB')
+                    screen.blit(frame, (0, 0))
+                    # Rewind byte stream
+                    image_stream.seek(0)
+                except struct.error:
+                    print('Problem reading data from camera')
+                    mgr.system().update({'shutdown': True})
                     break
-                # Read image data and convert: BytesIO > PIL.Image > pygame.image
-                image_stream = io.BytesIO()
-                image_stream.write(connection.read(image_len))
-                PILframe = Image.open(image_stream).tobytes()
-                frame = pygame.image.fromstring(PILframe, screen_size, 'RGB')
-                # Rewind byte stream
-                image_stream.seek(0)
-                screen.blit(frame, (0,0))
             else:
                 screen.fill(BLACK)
             pygame.display.flip()
@@ -69,7 +77,15 @@ def get_camera(server_ip, port_var, port_cam, resolution, fullscreen):
     finally:
         if mgr.system().get('camera_online'):
             connection.close()
+        else:
+            pool.terminate()
         server_socket.close()
+
+def view_sensors(port_var):
+    mgr = ROVManager(role='client', address='127.0.0.1', port=port_var)
+    while not mgr.system().get('shutdown'):
+        output(mgr.sensor())
+        time.sleep(0.1)
 
 
 def start_server(server_ip, port_var):
@@ -78,23 +94,35 @@ def start_server(server_ip, port_var):
     ROVManager(role='server', address=server_ip, port=port_var)
 
 
-def control_main(server_ip, port_cam, port_var, camera_resolution, fullscreen):
-    server = mp.Process(target=start_server,
-                        args=(server_ip, port_var))
-    camera_feed = mp.Process(target=get_camera,
-                             args=(server_ip, port_var, port_cam,
-                                   camera_resolution, fullscreen))
+def update_settings(mgr, camera_resolution, fullscreen, framerate):
+    mgr.settings().update({'camera_resolution': camera_resolution,
+                           'fullscreen': fullscreen,
+                           'framerate': framerate})
+
+
+def control_main(server_ip, port_cam, port_var, camera_resolution, fullscreen,
+                 framerate):
+    server = mp.Process(
+        target=start_server,
+        args=(server_ip, port_var))
+    camera_receiver = mp.Process(
+        target=get_camera,
+        args=(server_ip, port_var, port_cam, camera_resolution, fullscreen))
+    sensor_output = mp.Process(
+        target=view_sensors,
+        args=(port_var,))
     server.start()
-    time.sleep(2)
-    camera_feed.start()
+    # camera_receiver.start()
+    sensor_output.start()
 
     mgr = ROVManager(role='client', address='127.0.0.1', port=port_var)
+    update_settings(mgr, camera_resolution, fullscreen, framerate)
 
     try:
         while not mgr.system().get('shutdown'):
             time.sleep(0.1)
     except KeyboardInterrupt:
-        mgr.system().update({'shutdown':True})
+        mgr.system().update({'shutdown': True})
         print('User aborted operation')
     finally:
         print('Shutting down server')

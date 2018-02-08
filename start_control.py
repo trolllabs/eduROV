@@ -31,6 +31,12 @@ if __name__ == '__main__':
         default='1024x600',
         help='camera resolution, use WIDTHxHEIGHT (default 1024x600)')
     parser.add_argument(
+        '-fps',
+        metavar='FRAMERATE',
+        type=int,
+        default=30,
+        help='camera framerate (default 30)')
+    parser.add_argument(
         '-f',
         metavar='FULLSCREEN',
         type=bool,
@@ -43,4 +49,5 @@ if __name__ == '__main__':
         port_cam=args.pc,
         port_var=args.pv,
         camera_resolution=args.r,
-        fullscreen=args.f)
+        fullscreen=args.f,
+        framerate=args.fps)

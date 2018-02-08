@@ -29,13 +29,8 @@ class ROVManager(BaseManager):
             raise ValueError("""role has to be 'server' or 'client'""")
         if role == 'client' and address == '0.0.0.0':
             raise ValueError('A client can not connect to all ports')
-
         super(ROVManager, self).__init__(address=(address, port),
                                          authkey=authkey)
-
-        self.shared_dicts = ['sensor', 'control', 'settings', 'system']
-        # IMPORTANT! 'system' must be the last list item
-
         if role is 'server':
             self.register_vars_server()
             server = self.get_server()
@@ -43,14 +38,20 @@ class ROVManager(BaseManager):
         elif role is 'client':
             self.register_vars_client()
             self.connect()
-            print('Client connected successfully')
 
     def register_vars_server(self):
-        for d in self.shared_dicts:
-            self.__setattr__(d, {})
-            self.register(d, callable=lambda: self.__getattribute__(d))
-        self.system.update({'shutdown': False, 'camera_online':False})
+        self.sensor = {}
+        self.control = {}
+        self.settings = {}
+        self.system = {'shutdown': False, 'camera_online': False}
+
+        self.register('sensor', callable=lambda: self.sensor)
+        self.register('control', callable=lambda: self.control)
+        self.register('settings', callable=lambda: self.settings)
+        self.register('system', callable=lambda: self.system)
 
     def register_vars_client(self):
-        for d in self.shared_dicts:
-            self.register(d)
+        self.register('sensor')
+        self.register('control')
+        self.register('settings')
+        self.register('system')
