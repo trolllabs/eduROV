@@ -1,1 +1,1 @@
-from .network import server as controller
+from .functions import control_main
