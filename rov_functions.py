@@ -1,25 +1,11 @@
-import socket, io, struct, time
-import picamera
-
-
-class SplitFrames(object):
-    def __init__(self, connection):
-        self.connection = connection
-        self.stream = io.BytesIO()
-        self.count = 0
-
-    def write(self, buf):
-        if buf.startswith(b'\xff\xd8'):
-            # Start of new frame; send the old one's length then the data
-            size = self.stream.tell()
-            if size > 0:
-                self.connection.write(struct.pack('<L', size))
-                self.connection.flush()
-                self.stream.seek(0)
-                self.connection.write(self.stream.read(size))
-                self.count += 1
-                self.stream.seek(0)
-        self.stream.write(buf)
+#!/usr/bin/env python3
+import socket
+import platform
+import struct
+import time
+if platform.system() == 'Linux':
+    import picamera
+from classes import SplitFrames, ROVManager
 
 
 def read_camera(host, port, resolution):
@@ -31,7 +17,6 @@ def read_camera(host, port, resolution):
         output = SplitFrames(connection)
         with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
             time.sleep(2)
-            camera.capture('./captures/{}.jpg'.format(resolution))
             start = time.time()
             camera.start_recording(output, format='mjpeg')
             camera.wait_recording(60)
@@ -48,5 +33,6 @@ def read_camera(host, port, resolution):
 def start_camera(server_ip, port_cam, port_var):
     pass
 
+
 def rov_main(server_ip, port_cam, port_var):
-    print('created server')
+    print('rov main')

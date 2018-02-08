@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-from control import control_main
+from control_functions import control_main
 
 
 if __name__ == '__main__':

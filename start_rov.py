@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-from rov import rov_main
+from rov_functions import rov_main
 
 
 if __name__ == '__main__':
