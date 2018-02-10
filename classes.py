@@ -1,6 +1,7 @@
 import struct
 import io
 from multiprocessing.managers import BaseManager
+import time
 
 
 class SplitFrames(object):
@@ -39,6 +40,12 @@ class ROVManager(BaseManager):
             self.register_vars_client()
             self.connect()
 
+        self.last_check = time.time()
+        self.sensor_last = {}
+        self.control_last = {}
+        self.settings_last = {}
+        self.system_last = {}
+
     def register_vars_server(self):
         self.sensor = {}
         self.control = {}
@@ -55,3 +62,15 @@ class ROVManager(BaseManager):
         self.register('control')
         self.register('settings')
         self.register('system')
+
+    def get(self, dictionary, key=None, whole_dict=False):
+        if time.time() - self.last_check > 1/10:
+            self.sensor_last = getattr(self,'sensor')()
+            self.control_last = getattr(self,'control')()
+            self.settings_last = getattr(self,'settings')()
+            self.system_last = getattr(self,'system')()
+            self.last_check = time.time()
+        if whole_dict:
+            return (getattr(self, '{}_last'.format(dictionary)))
+        else:
+            return(getattr(self,'{}_last'.format(dictionary)).get(key))

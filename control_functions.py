@@ -35,7 +35,7 @@ def get_camera(server_ip, port_var, port_cam, resolution, fullscreen):
     pool = ThreadPool(processes=1)
     async_result = pool.apply_async(get_camera_connection, (server_socket,))
     try:
-        while not mgr.system().get('shutdown'):
+        while not mgr.get('system', 'shutdown'):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     mgr.system().update({'shutdown': True})
@@ -47,7 +47,8 @@ def get_camera(server_ip, port_var, port_cam, resolution, fullscreen):
             except AssertionError:
                 continue
 
-            if mgr.system().get('camera_online') is True:
+
+            if mgr.get('system', 'camera_online') is True:
                 try:
                     # Read the length of the image as a 32-bit unsigned int.
                     # If the length is zero, quit the loop
@@ -75,7 +76,7 @@ def get_camera(server_ip, port_var, port_cam, resolution, fullscreen):
             pygame.display.flip()
             pygame.display.update()
     finally:
-        if mgr.system().get('camera_online'):
+        if mgr.get('system', 'camera_online'):
             connection.close()
         else:
             pool.terminate()
@@ -84,8 +85,8 @@ def get_camera(server_ip, port_var, port_cam, resolution, fullscreen):
 
 def view_sensors(port_var):
     mgr = ROVManager(role='client', address='127.0.0.1', port=port_var)
-    while not mgr.system().get('shutdown'):
-        output(mgr.sensor())
+    while not mgr.get('system', 'shutdown'):
+        output(mgr.get('sensor', whole_dict=True))
         time.sleep(0.1)
 
 
@@ -113,14 +114,14 @@ def control_main(server_ip, port_cam, port_var, camera_resolution, fullscreen,
         target=view_sensors,
         args=(port_var,))
     server.start()
-    # camera_receiver.start()
+    camera_receiver.start()
     sensor_output.start()
 
     mgr = ROVManager(role='client', address='127.0.0.1', port=port_var)
     update_settings(mgr, camera_resolution, fullscreen, framerate)
 
     try:
-        while not mgr.system().get('shutdown'):
+        while not mgr.get('system', 'shutdown'):
             time.sleep(0.1)
     except KeyboardInterrupt:
         mgr.system().update({'shutdown': True})

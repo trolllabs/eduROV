@@ -37,7 +37,7 @@ def read_sensors(server_ip, port_var):
     mgr = ROVManager(role='client', address=server_ip, port=port_var)
     sensor = mgr.sensor()
 
-    while not mgr.system().get('shutdown'):
+    while not mgr.get('system', 'shutdown'):
         sensor.update({'time': dt.datetime.now().isoformat(),
                        'voltage': random.randrange(5.0,11.0)})
         time.sleep(0.05)
@@ -45,8 +45,8 @@ def read_sensors(server_ip, port_var):
 
 def start_camera(server_ip, port_cam, port_var):
     mgr = ROVManager(role='client', address=server_ip, port=port_var)
-    cam_resolution = mgr.settings().get('camera_resolution')
-    cam_framerate = mgr.settings().get('framerate')
+    cam_resolution = mgr.get('settings', 'camera_resolution')
+    cam_framerate = mgr.get('settings', 'framerate')
     camera_sender = mp.Process(
         target=read_camera,
         args=(server_ip, port_cam, cam_resolution, cam_framerate))
@@ -79,7 +79,7 @@ def rov_main(server_ip, port_cam, port_var):
     sensor.start()
 
     try:
-        while not mgr.system().get('shutdown'):
+        while not mgr.get('system', 'shutdown'):
             time.sleep(0.1)
     except KeyboardInterrupt:
         mgr.system().update({'shutdown': True})
