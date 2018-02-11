@@ -37,7 +37,6 @@ def client(host, port, resolution):
         output = SplitFrames(connection)
         with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
             time.sleep(2)
-            camera.capture('./captures/{}.jpg'.format(resolution))
             start = time.time()
             camera.start_recording(output, format='mjpeg')
             camera.wait_recording(60)
