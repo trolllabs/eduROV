@@ -44,6 +44,10 @@ def server(interface, port, resolution, fullscreen):
             pygame.display.flip()
             # Rewind byte stream
             image_stream.seek(0)
+
+    except KeyboardInterrupt:
+        print('Shutting down server')
+
     finally:
         connection.close()
         server_socket.close()

@@ -38,11 +38,17 @@ def client(host, port, resolution):
         with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
             time.sleep(2)
             start = time.time()
-            camera.start_recording(output, format='mjpeg')
-            camera.wait_recording(60)
-            camera.stop_recording()
-            connection.write(struct.pack('<L', 0))  # Tell server we are done
+            try:
+                camera.start_recording(output, format='mjpeg')
+                while True:
+                    pass
+            except KeyboardInterrupt:
+                print('Shutting down client')
+            finally:
+                camera.stop_recording()
+
     finally:
+        connection.write(struct.pack('<L', 0))  # Tell server we are done
         connection.close()
         client_socket.close()
         finish = time.time()
