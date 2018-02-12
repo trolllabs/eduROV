@@ -6,6 +6,18 @@ import struct
 import time
 if platform.system() == 'Linux':
     import picamera
+    class Camera(picamera.PiCamera):
+        def __init__(self, resolution, framerate=30):
+            super(Camera, self).__init__(resolution=resolution,
+                                         framerate=framerate)
+            time.sleep(2)
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            super(Camera, self).__exit__()
+            self.stop_recording()
 
 
 class SplitFrames(object):
@@ -43,19 +55,6 @@ class Client(object):
         self.conn.write(struct.pack('<L', 0))
         self.conn.close()
         self.sock.close()
-
-class Camera(picamera.PiCamera):
-    def __init__(self, resolution, framerate=30):
-        super(Camera, self).__init__(resolution=resolution,
-                                     framerate=framerate)
-        time.sleep(2)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        super(Camera, self).__exit__()
-        self.stop_recording()
 
 
 def rov_main(host, port, resolution):
