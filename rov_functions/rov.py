@@ -13,6 +13,9 @@ if platform.system() == 'Linux':
                                          framerate=framerate)
             time.sleep(2)
 
+        def stop(self):
+            self.__exit__()
+
         def __enter__(self):
             return self
 
@@ -48,6 +51,9 @@ class Client(object):
         print('Client has been assigned socket name', self.sock.getsockname())
         self.conn = self.sock.makefile('wb')
 
+    def stop(self):
+        self.__exit__()
+
     def __enter__(self):
         return self
 
@@ -67,4 +73,5 @@ def rov_main(host, port, resolution):
                 while True:
                     pass
             except KeyboardInterrupt:
-                sys.exit()
+                camera.stop()
+                client.stop()
