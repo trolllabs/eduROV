@@ -15,6 +15,17 @@ def exit():
                 return True
     return False
 
+def check_fullscreen(screen_size, fullscreen):
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                if not fullscreen:
+                    pygame.display.set_mode(screen_size, pygame.FULLSCREEN)
+                    return True
+                else:
+                    pygame.display.set_mode(screen_size)
+                    return False
+    return fullscreen
 
 def server(interface, port, resolution, fullscreen):
     pygame.init()
@@ -36,7 +47,9 @@ def server(interface, port, resolution, fullscreen):
     connection = server_socket.accept()[0].makefile('rb')
     try:
         while True:
-            if exit(): break
+            if exit():
+                break
+            fullscreen = check_fullscreen(screen_size, fullscreen)
 
             # Read the length of the image as a 32-bit unsigned int. If the
             # length is zero, quit the loop
