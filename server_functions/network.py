@@ -33,10 +33,10 @@ def get_screen(screen_size, fullscreen):
 
 class Server(object):
     def __init__(self, ip, port):
-        self.sock = socket.socket()
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((ip, port))
-        self.sock.listen(0)
+        self.sock.listen(1)
         print('Listening at', self.sock.getsockname())
         print('Client should connect to {}'
               .format(socket.gethostbyname(socket.gethostname())))

@@ -16,7 +16,6 @@ class SplitFrames(object):
 
     def write(self, buf):
         if buf.startswith(b'\xff\xd8'):
-            # Start of new frame; send the old one's length then the data
             size = self.stream.tell()
             if size > 0:
                 self.connection.write(struct.pack('<L', size))
@@ -28,30 +27,32 @@ class SplitFrames(object):
         self.stream.write(buf)
 
 
+class Client(object):
+    def __init__(self, ip, port):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.sock.connect((ip, port))
+        print('Client has been assigned socket name', self.sock.getsockname())
+        self.conn = self.sock.makefile('wb')
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print('Shutting down client')
+        self.conn.write(struct.pack('<L', 0))
+        self.conn.close()
+        self.sock.close()
+
+
 def client(host, port, resolution):
-    client_socket = socket.socket()
-    client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    client_socket.connect((host, port))
-    print('Client has been assigned socket name', client_socket.getsockname())
-    connection = client_socket.makefile('wb')
-    try:
-        output = SplitFrames(connection)
+    with Client(host, port) as cli:
+        output = SplitFrames(cli.conn)
         with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
             time.sleep(2)
-            start = time.time()
             try:
                 camera.start_recording(output, format='mjpeg')
                 while True:
                     pass
-            except KeyboardInterrupt:
-                print('Shutting down client')
             finally:
                 camera.stop_recording()
-
-    finally:
-        connection.write(struct.pack('<L', 0))  # Tell server we are done
-        connection.close()
-        client_socket.close()
-        finish = time.time()
-    print('Sent %d images in %d seconds at %.2ffps' % (
-        output.count, finish - start, output.count / (finish - start)))
