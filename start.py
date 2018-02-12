@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import argparse
-from client_functions import rov
-from server_functions import controller
+from rov_functions import rov
+from controller_functions import controller
 
 
 if __name__ == '__main__':

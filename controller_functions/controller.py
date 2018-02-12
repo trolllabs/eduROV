@@ -23,19 +23,9 @@ class Server(object):
 
         self.async_connection = self.pool.apply_async(self.client_connection)
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        print('Shutting down server')
-        if self.client_connected:
-            self.conn.close()
-        self.sock.close()
-        sys.exit()
-
     def client_connection(self):
         self.conn = self.sock.accept()[0].makefile('rb')
         self.client_connected = True
-
-    def __enter__(self):
-        return self
 
     def img_stream(self):
         self.image_stream.seek(0)
@@ -46,26 +36,33 @@ class Server(object):
         self.image_stream.write(self.conn.read(image_len))
         return self.image_stream
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print('Shutting down server')
+        if self.client_connected:
+            self.conn.close()
+        self.sock.close()
+
 
 class Screen(object):
     def __init__(self, screen_size, fullscreen=False):
         self.screen_size = screen_size
         pygame.init()
-        pygame.display.set_caption('eduROV')
+        pygame.display.set_caption('eduROV (Waiting for connection)')
+        self.title_updated = False
         if fullscreen:
             fullscreen = pygame.FULLSCREEN
         self.screen = pygame.display.set_mode(screen_size, fullscreen)
         self.fullscreen = fullscreen
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        pass
-
     def update(self, frame=None):
         self.read_keys()
         if frame:
+            if not self.title_updated:
+                pygame.display.set_caption('eduROV')
+                self.title_updated = True
             self.screen.blit(frame, (0,0))
         else:
             self.screen.fill(BLACK)
@@ -74,15 +71,12 @@ class Screen(object):
     def read_keys(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.quit()
+                self.__exit__()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.quit()
+                    self.__exit__()
                 if event.key == pygame.K_RETURN:
                     self.toggle_fullscreen()
-
-    def quit(self):
-        sys.exit()
 
     def toggle_fullscreen(self):
         if self.fullscreen:
@@ -91,16 +85,23 @@ class Screen(object):
             self.fullscreen = pygame.FULLSCREEN
         pygame.display.set_mode(self.screen_size, self.fullscreen)
 
+    def __enter__(self):
+        return self
 
-def server(ip, port, resolution, fullscreen):
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.exit()
+
+
+def controller_main(ip, port, resolution, fullscreen):
     screen_size = tuple([int(val) for val in resolution.split('x')])
-    screen = Screen(screen_size=screen_size, fullscreen=fullscreen)
 
-    with Server(ip, port) as server:
-        while True:
-            if server.client_connected:
-                pil_frame = Image.open(server.img_stream()).tobytes()
-                frame = pygame.image.fromstring(pil_frame, screen_size, 'RGB')
-                screen.update(frame)
-            else:
-                screen.update()
+    with Screen(screen_size=screen_size, fullscreen=fullscreen) as screen:
+        with Server(ip, port) as server:
+            while True:
+                if server.client_connected:
+                    pil_frame = Image.open(server.img_stream()).tobytes()
+                    frame = pygame.image.fromstring(pil_frame, screen_size,
+                                                    'RGB')
+                    screen.update(frame)
+                else:
+                    screen.update()
