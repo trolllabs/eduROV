@@ -30,6 +30,7 @@ class SplitFrames(object):
 
 def client(host, port, resolution):
     client_socket = socket.socket()
+    client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     client_socket.connect((host, port))
     print('Client has been assigned socket name', client_socket.getsockname())
     connection = client_socket.makefile('wb')
