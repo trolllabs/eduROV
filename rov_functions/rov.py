@@ -16,7 +16,7 @@ if platform.system() == 'Linux':
             return self
 
         def __exit__(self, exc_type, exc_val, exc_tb):
-            super(Camera, self).__exit__()
+            super(Camera, self).__exit__(exc_type, exc_val, exc_tb)
             self.stop_recording()
 
 
