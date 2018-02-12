@@ -6,6 +6,16 @@ import pygame
 from PIL import Image
 
 
+def exit():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                return True
+    return False
+
+
 def server(interface, port, resolution, fullscreen):
     pygame.init()
     screen_size = tuple([int(val) for val in resolution.split('x')])
@@ -26,8 +36,8 @@ def server(interface, port, resolution, fullscreen):
     connection = server_socket.accept()[0].makefile('rb')
     try:
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT: sys.exit()
+            if exit(): sys.exit()
+
             # Read the length of the image as a 32-bit unsigned int. If the
             # length is zero, quit the loop
             image_len = \
