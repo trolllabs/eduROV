@@ -70,9 +70,9 @@ def rov_main(host, port, resolution):
         with Camera(resolution) as camera:
             camera.start_recording(output, format='mjpeg')
             camera.wait_recording(0)
-            try:
-                while True:
-                    pass
-            except KeyboardInterrupt:
-                camera.stop()
-                client.stop()
+            # try:
+            while True:
+                pass
+            # except KeyboardInterrupt:
+            #     camera.stop()
+            #     client.stop()
