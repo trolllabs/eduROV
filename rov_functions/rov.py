@@ -15,13 +15,13 @@ if platform.system() == 'Linux':
 
         def stop(self):
             self.__exit__(True, True, True)
-
-        def __enter__(self):
-            return self
-
-        def __exit__(self, exc_type, exc_val, exc_tb):
-            super(Camera, self).__exit__(exc_type, exc_val, exc_tb)
-            self.stop_recording()
+        #
+        # def __enter__(self):
+        #     return self
+        #
+        # def __exit__(self, exc_type, exc_val, exc_tb):
+        #     super(Camera, self).__exit__(exc_type, exc_val, exc_tb)
+        #     self.stop_recording()
 
 
 class SplitFrames(object):
@@ -72,7 +72,6 @@ def rov_main(host, port, resolution):
             camera.wait_recording(0)
             try:
                 while True:
-                    print('yep')
                     pass
             except KeyboardInterrupt:
                 camera.stop()
