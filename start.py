@@ -42,7 +42,7 @@ if __name__ == '__main__':
             port=args.p,
             resolution=args.r)
     elif function_ is controller:
-        controller(interface=args.ip,
+        controller(ip=args.ip,
                    port=args.p,
                    resolution=args.r,
                    fullscreen=args.f)
