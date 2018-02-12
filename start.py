@@ -14,7 +14,7 @@ if __name__ == '__main__':
         help='which role to play')
     parser.add_argument(
         'ip',
-        help='IP address the server listens at and client sends to',
+        help='IP address the server listens at and rov_main sends to',
         type=str)
     parser.add_argument(
         '-p',

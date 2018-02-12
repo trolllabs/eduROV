@@ -39,15 +39,20 @@ class Client(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        print('Shutting down client')
+        print('Shutting down rov_main')
         self.conn.write(struct.pack('<L', 0))
         self.conn.close()
         self.sock.close()
 
+class Camera(picamera.PiCamera):
+    def __init__(self):
+        print('camera created')
 
-def client(host, port, resolution):
-    with Client(host, port) as cli:
-        output = SplitFrames(cli.conn)
+
+def rov_main(host, port, resolution):
+    cam = Camera()
+    with Client(host, port) as client:
+        output = SplitFrames(client.conn)
         with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
             time.sleep(2)
             try:
