@@ -45,19 +45,23 @@ class Client(object):
         self.sock.close()
 
 class Camera(picamera.PiCamera):
-    def __init__(self):
-        print('camera created')
+    def __init__(self, resolution, framerate=30):
+        super(Camera, self).__init__(resolution=resolution,
+                                     framerate=framerate)
+        time.sleep(2)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        super(Camera, self).__exit__()
+        self.stop_recording()
 
 
 def rov_main(host, port, resolution):
-    cam = Camera()
     with Client(host, port) as client:
         output = SplitFrames(client.conn)
-        with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
-            time.sleep(2)
-            try:
-                camera.start_recording(output, format='mjpeg')
-                while True:
-                    pass
-            finally:
-                camera.stop_recording()
+        with Camera(resolution) as camera:
+            camera.start_recording(output, format='mjpeg')
+            while True:
+                pass
