@@ -72,7 +72,10 @@ def rov_main(host, port, resolution):
             camera.wait_recording(0)
             # try:
             while True:
-                pass
+                try:
+                    pass
+                except KeyboardInterrupt:
+                    break
             # except KeyboardInterrupt:
             #     camera.stop()
             #     client.stop()
