@@ -19,11 +19,14 @@ def check_fullscreen(screen_size, fullscreen):
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
+                print('here')
                 if not fullscreen:
                     pygame.display.set_mode(screen_size, pygame.FULLSCREEN)
+                    print('now full')
                     return True
                 else:
                     pygame.display.set_mode(screen_size)
+                    print('not')
                     return False
     return fullscreen
 
