@@ -2,25 +2,25 @@ import struct
 import io
 import sys
 import socket
+from multiprocessing.pool import ThreadPool
 import pygame
 from PIL import Image
 BLACK = 0, 0, 0
-from multiprocessing.pool import ThreadPool
 
 
 class Server(object):
     def __init__(self, ip, port):
-        self.client_connected = False
-        self.pool = ThreadPool(processes=1)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((ip, port))
         self.sock.listen(1)
         print('Listening at', self.sock.getsockname())
-        print('Client should connect to {}'
+        print('ROV should connect to {}'
               .format(socket.gethostbyname(socket.gethostname())))
         self.image_stream = io.BytesIO()
 
+        self.client_connected = False
+        self.pool = ThreadPool(processes=1)
         self.async_connection = self.pool.apply_async(self.client_connection)
 
     def client_connection(self):
@@ -36,6 +36,9 @@ class Server(object):
         self.image_stream.write(self.conn.read(image_len))
         return self.image_stream
 
+    def get_pil_frame(self):
+        return Image.open(self.img_stream()).tobytes()
+
     def __enter__(self):
         return self
 
@@ -44,6 +47,7 @@ class Server(object):
         if self.client_connected:
             self.conn.close()
         self.sock.close()
+        self.pool.close()
 
 
 class Screen(object):
@@ -57,13 +61,15 @@ class Screen(object):
         self.screen = pygame.display.set_mode(screen_size, fullscreen)
         self.fullscreen = fullscreen
 
-    def update(self, frame=None):
+    def update(self, pil_frame=None):
         self.read_keys()
-        if frame:
+        if pil_frame:
             if not self.title_updated:
                 pygame.display.set_caption('eduROV')
                 self.title_updated = True
-            self.screen.blit(frame, (0,0))
+
+            frame = pygame.image.fromstring(pil_frame, self.screen_size, 'RGB')
+            self.screen.blit(frame, (0, 0))
         else:
             self.screen.fill(BLACK)
         pygame.display.flip()
@@ -99,9 +105,6 @@ def controller_main(ip, port, resolution, fullscreen):
         with Server(ip, port) as server:
             while True:
                 if server.client_connected:
-                    pil_frame = Image.open(server.img_stream()).tobytes()
-                    frame = pygame.image.fromstring(pil_frame, screen_size,
-                                                    'RGB')
-                    screen.update(frame)
+                    screen.update(server.get_pil_frame())
                 else:
                     screen.update()
