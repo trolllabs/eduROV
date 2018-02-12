@@ -36,7 +36,7 @@ def server(interface, port, resolution, fullscreen):
     connection = server_socket.accept()[0].makefile('rb')
     try:
         while True:
-            if exit(): sys.exit()
+            if exit(): break
 
             # Read the length of the image as a 32-bit unsigned int. If the
             # length is zero, quit the loop
@@ -56,8 +56,10 @@ def server(interface, port, resolution, fullscreen):
             image_stream.seek(0)
 
     except KeyboardInterrupt:
-        print('Shutting down server')
+        print('User aborted')
 
     finally:
+        print('Shutting down server')
         connection.close()
         server_socket.close()
+        sys.exit()
