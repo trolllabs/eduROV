@@ -69,8 +69,10 @@ def rov_main(host, port, resolution):
         output = SplitFrames(client.conn)
         with Camera(resolution) as camera:
             camera.start_recording(output, format='mjpeg')
+            camera.wait_recording(0)
             try:
                 while True:
+                    print('yep')
                     pass
             except KeyboardInterrupt:
                 camera.stop()
