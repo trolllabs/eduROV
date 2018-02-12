@@ -11,17 +11,7 @@ if platform.system() == 'Linux':
         def __init__(self, resolution, framerate=30):
             super(Camera, self).__init__(resolution=resolution,
                                          framerate=framerate)
-            time.sleep(2)
-
-        def stop(self):
-            self.__exit__(True, True, True)
-        #
-        # def __enter__(self):
-        #     return self
-        #
-        # def __exit__(self, exc_type, exc_val, exc_tb):
-        #     super(Camera, self).__exit__(exc_type, exc_val, exc_tb)
-        #     self.stop_recording()
+            # time.sleep(2)
 
 
 class SplitFrames(object):
@@ -51,9 +41,6 @@ class Client(object):
         print('Client has been assigned socket name', self.sock.getsockname())
         self.conn = self.sock.makefile('wb')
 
-    def stop(self):
-        self.__exit__(True, True, True)
-
     def __enter__(self):
         return self
 
@@ -69,13 +56,8 @@ def rov_main(host, port, resolution):
         output = SplitFrames(client.conn)
         with Camera(resolution) as camera:
             camera.start_recording(output, format='mjpeg')
-            camera.wait_recording(0)
-            # try:
             while True:
                 try:
                     pass
                 except KeyboardInterrupt:
                     break
-            # except KeyboardInterrupt:
-            #     camera.stop()
-            #     client.stop()
