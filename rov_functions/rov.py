@@ -14,7 +14,7 @@ if platform.system() == 'Linux':
             time.sleep(2)
 
         def stop(self):
-            self.__exit__()
+            self.__exit__(True, True, True)
 
         def __enter__(self):
             return self
@@ -52,7 +52,7 @@ class Client(object):
         self.conn = self.sock.makefile('wb')
 
     def stop(self):
-        self.__exit__()
+        self.__exit__(True, True, True)
 
     def __enter__(self):
         return self
