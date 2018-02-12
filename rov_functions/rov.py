@@ -2,6 +2,7 @@
 import socket
 import platform
 import io
+import sys
 import struct
 import time
 if platform.system() == 'Linux':
@@ -51,7 +52,7 @@ class Client(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        print('Shutting down rov_main')
+        print('Shutting down client')
         self.conn.write(struct.pack('<L', 0))
         self.conn.close()
         self.sock.close()
@@ -62,5 +63,8 @@ def rov_main(host, port, resolution):
         output = SplitFrames(client.conn)
         with Camera(resolution) as camera:
             camera.start_recording(output, format='mjpeg')
-            while True:
-                pass
+            try:
+                while True:
+                    pass
+            except KeyboardInterrupt:
+                sys.exit()
