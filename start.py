@@ -14,7 +14,7 @@ if __name__ == '__main__':
         help='which role to play')
     parser.add_argument(
         'ip',
-        help='IP address the server listens at and rov_main sends to',
+        help='IP address the server listens at and ROV sends to',
         type=str)
     parser.add_argument(
         '-p',
@@ -33,7 +33,7 @@ if __name__ == '__main__':
         metavar='FULLSCREEN',
         type=bool,
         default=False,
-        help='set True for fullscreen (not functional atm)')
+        help='set True for fullscreen')
 
     args = parser.parse_args()
     function_ = choices[args.role]
