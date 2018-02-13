@@ -3,7 +3,7 @@ import socket
 import platform
 import io
 import struct
-if platform.system() == 'Linux':
+if 'raspberrypi' in platform._syscmd_uname('-a'):
     import picamera
 
 
@@ -49,10 +49,5 @@ def rov_main(host, port, resolution):
         output = SplitFrames(client.conn)
         with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
             camera.start_recording(output, format='mjpeg')
-            # try:
             while True:
                 camera.wait_recording(1)
-            # except Exception as e:
-            #     print('abort')
-            # finally:
-            #     camera.stop_recording()
