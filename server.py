@@ -107,8 +107,8 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     daemon_threads = True
 
 if __name__ == '__main__':
-    print(get_ip_address('lo'))
-    print(get_ip_address('eth0'))
+    print(get_ip_address(b'lo'))
+    print(get_ip_address(b'eth0'))
 
     with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
         output = StreamingOutput()
