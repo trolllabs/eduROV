@@ -99,9 +99,17 @@ class Screen(object):
         sys.exit()
 
 
-def controller_main(ip, port, resolution, fullscreen):
+def resolution_to_tuple(resolution):
+    if 'x' not in resolution:
+        raise ValueError('Resolution must be in format WIDTHxHEIGHT')
     screen_size = tuple([int(val) for val in resolution.split('x')])
+    if len(screen_size) is not 2:
+        raise ValueError('Error in parsing resolution, len is not 2')
+    return screen_size
 
+
+def controller_main(ip, port, resolution, fullscreen):
+    screen_size = resolution_to_tuple(resolution)
     with Screen(screen_size=screen_size, fullscreen=fullscreen) as screen:
         with Server(ip, port) as server:
             while True:
