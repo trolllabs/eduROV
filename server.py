@@ -123,7 +123,7 @@ def print_server_ip():
             online_ips.append(ip)
         sock.close()
     print('Visit the webpage at {}'
-          .format('or'.join(['{}:8000'.format(ip) for ip in online_ips])))
+          .format(' or '.join(['{}:8000'.format(ip) for ip in online_ips])))
 
 if __name__ == '__main__':
     print_server_ip()
