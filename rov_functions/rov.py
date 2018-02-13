@@ -52,7 +52,7 @@ def rov_main(host, port, resolution):
             try:
                 while True:
                     camera.wait_recording(1)
-            except ConnectionResetError or BrokenPipeError:
-                pass
+            except Exception as e:
+                print('abort')
             finally:
                 camera.stop_recording()
