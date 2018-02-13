@@ -48,6 +48,6 @@ def rov_main(host, port, resolution):
     with Client(host, port) as client:
         output = SplitFrames(client.conn)
         with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
-            camera.start_recording(output, format='h264')
+            camera.start_recording(output, format='mjpeg')
             while True:
                 camera.wait_recording(1)
