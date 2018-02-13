@@ -37,17 +37,6 @@ PAGE="""\
 </html>
 """.format(CSS)
 
-def get_ip_address(ifname):
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    ip = socket.inet_ntoa(fcntl.ioctl(
-        s.fileno(),
-        0x8915,  # SIOCGIFADDR
-        struct.pack('256s', ifname[:15])
-    )[20:24])
-    print(ip)
-    s.close()
-
 
 class StreamingOutput(object):
     def __init__(self):
@@ -109,15 +98,41 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    ip = socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+    print(ip)
+    s.close()
+
+def print_server_ip():
+    online_ips = []
+    for interface in [b'wlan0', b'eth0']:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        ip = socket.inet_ntoa(fcntl.ioctl(
+            sock.fileno(),
+            0x8915,
+            struct.pack('256s', interface[:15])
+        )[20:24])
+        if ip:
+            online_ips.append(ip)
+        sock.close()
+    print('Visit the webpage at {}'
+          .format('or'.join(['{}:8000'.format(ip) for ip in online_ips])))
+
 if __name__ == '__main__':
-    # get_ip_address(b'wlan0')
-    # get_ip_address(b'eth0')
+    print_server_ip()
 
     with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
         output = StreamingOutput()
         camera.start_recording(output, format='mjpeg')
         try:
-            address = ('', 80)
+            address = ('', 8000)
             server = StreamingServer(address, StreamingHandler)
             server.serve_forever()
         finally:
