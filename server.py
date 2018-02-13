@@ -40,11 +40,13 @@ PAGE="""\
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    return socket.inet_ntoa(fcntl.ioctl(
+    ip = socket.inet_ntoa(fcntl.ioctl(
         s.fileno(),
         0x8915,  # SIOCGIFADDR
         struct.pack('256s', ifname[:15])
     )[20:24])
+    print(ip)
+    s.close()
 
 
 class StreamingOutput(object):
@@ -108,8 +110,8 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     daemon_threads = True
 
 if __name__ == '__main__':
-    print(get_ip_address(b'wlan0'))
-    print(get_ip_address(b'eth0'))
+    get_ip_address(b'wlan0')
+    get_ip_address(b'eth0')
 
     with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
         output = StreamingOutput()
