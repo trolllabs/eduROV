@@ -6,3 +6,19 @@ We are committed to be fully open-source, both software and hardware-wise, every
 
 Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
 
+
+## Installation
+
+### Controller machine
+
+- eduROV requires python 3, if you don't have python installed, you can download it here: https://www.python.org/downloads/
+- to download the required files chose ONE of the methods below:
+  1. **Using git**
+     Open a terminal window on chosen location, then run:
+     ```
+     git clone https://github.com/trolllabs/eduROV.git
+     ```
+  2. *Without git**
+    Download the files from this link: https://github.com/trolllabs/eduROV/archive/master.zip
+    Extract the files
+- if you havent already, open terminal window in the newly created folder
