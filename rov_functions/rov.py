@@ -2,16 +2,9 @@
 import socket
 import platform
 import io
-import sys
 import struct
-import time
 if platform.system() == 'Linux':
     import picamera
-    class Camera(picamera.PiCamera):
-        def __init__(self, resolution, framerate=30):
-            super(Camera, self).__init__(resolution=resolution,
-                                         framerate=framerate)
-            # time.sleep(2)
 
 
 class SplitFrames(object):
@@ -54,7 +47,7 @@ class Client(object):
 def rov_main(host, port, resolution):
     with Client(host, port) as client:
         output = SplitFrames(client.conn)
-        with Camera(resolution) as camera:
+        with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
             camera.start_recording(output, format='mjpeg')
             while True:
                 try:

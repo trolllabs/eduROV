@@ -78,10 +78,10 @@ class Screen(object):
     def read_keys(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.__exit__()
+                self.__exit__(True, True, True)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.__exit__()
+                    self.__exit__(True, True, True)
                 if event.key == pygame.K_RETURN:
                     self.toggle_fullscreen()
 
