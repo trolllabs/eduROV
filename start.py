@@ -7,14 +7,15 @@ from controller_functions import controller
 if __name__ == '__main__':
     choices = {'controller': controller, 'rov': rov}
     parser = argparse.ArgumentParser(
-        description='Stream video from picamera to machine on same network')
+        description='Stream video from picamera to machine on same network',
+        formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument(
         'role',
         choices=choices,
         help='which role to play')
     parser.add_argument(
         'ip',
-        help='IP address the server listens at and ROV sends to',
+        help="""IP address the server listens at and ROV sends to\nuse "" for server to listen at all ports""",
         type=str)
     parser.add_argument(
         '-p',
