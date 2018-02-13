@@ -56,9 +56,9 @@ ROV should connect to 169.254.148.52
 ```
 Then, on the raspberry pi, run:
 ```
-python start.py rov 169.254.148.52
+python3 start.py rov 169.254.148.52
 ```
-Replace the ip address with the ones printed on your computer.
+Replace the ip address with the one printed on your computer.
 
 ## Help
 
