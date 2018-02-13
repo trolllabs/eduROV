@@ -16,13 +16,25 @@ body {
 }
 
 img {
-    width: 70%;
-    height: auto;
     display: block;
-    margin-left: auto;
-    margin-right: auto;    
+    margin: 0 auto;
 }
+
 </style>
+<script>
+function resizeToMax(id){
+    myImage = new Image() 
+    var img = document.getElementById(id);
+    myImage.src = img.src;
+    var imgRatio = myImage.width / myImage.height;
+    var bodyRatio = document.body.clientWidth / document.body.clientHeight;    
+    if(bodyRatio < imgRatio){
+        img.style.width = "100%";
+    } else {
+        img.style.height = "100%";
+    }
+}
+</script>
 """
 
 PAGE="""\
@@ -32,7 +44,7 @@ PAGE="""\
 {0}
 </head>
 <body>
-<img src="stream.mjpg" width="640" height="480" />
+<img id="image" src="stream.mjpg" onload="resizeToMax(this.id)">
 </body>
 </html>
 """.format(CSS)
