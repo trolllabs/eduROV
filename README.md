@@ -22,6 +22,7 @@ Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
   2. **Without git**
   
      Download the files from this link: https://github.com/trolllabs/eduROV/archive/master.zip
+     
      Extract the files
 - open a terminal window in the newly created folder and install the requirements:
     ```
