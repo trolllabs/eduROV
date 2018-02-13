@@ -5,17 +5,33 @@ import socketserver
 from threading import Condition
 from http import server
 
+CSS = """
+<style>
+body {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;    
+}
+</style>
+"""
+
 PAGE="""\
 <html>
 <head>
-<title>picamera MJPEG streaming demo</title>
+<title>eduROV</title>
+{0}
 </head>
 <body>
-<h1>PiCamera MJPEG Streaming Demo</h1>
 <img src="stream.mjpg" width="640" height="480" />
 </body>
 </html>
-"""
+""".format(CSS)
 
 class StreamingOutput(object):
     def __init__(self):
