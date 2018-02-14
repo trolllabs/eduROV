@@ -10,9 +10,9 @@ import struct
 import os
 
 cwd = os.path.dirname(os.path.abspath(__file__))
-index_file = os.path.join(cwd,'index.html')
-css_file = os.path.join(cwd, '\web_content\style.css')
-script_file = os.path.join(cwd, '\web_content\script.js')
+index_file = os.path.join(cwd, 'index.html')
+css_file = os.path.join(cwd, './web_content/style.css')
+script_file = os.path.join(cwd, './web_content/script.js')
 
 with open(index_file, 'r') as f:
     html = f.read()
