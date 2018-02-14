@@ -113,7 +113,7 @@ def get_ip_address(ifname):
 
 def print_server_ip():
     online_ips = []
-    for interface in [b'wlan0', b'eth0']:
+    for interface in [b'eth0', b'wlan0']:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
