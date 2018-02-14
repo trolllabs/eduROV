@@ -174,6 +174,8 @@ if __name__ == '__main__':
             address = ('', 8000)
             server = StreamingServer(address, StreamingHandler)
             server.serve_forever()
+        except KeyboardInterrupt:
+            print('Shutting down server')
         finally:
             camera.stop_recording()
             finish = time.time()
