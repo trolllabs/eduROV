@@ -188,7 +188,7 @@ if __name__ == '__main__':
     if args.debug:
         print('Using {} @ {} fps'.format(res, args.fps))
 
-    with picamera.PiCamera(resolution=res, framerate=args.fps) as camera:
+    with picamera.PiCamera(resolution=res, framerate=args.fps, sensor_mode=4) as camera:
         output = StreamingOutput()
         camera.start_recording(output, format='mjpeg')
         start = time.time()
