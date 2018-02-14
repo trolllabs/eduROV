@@ -37,7 +37,7 @@ This will print the ip address where the website can be accessed. Then, open thi
 
 ## Help
 
-For additional paramters and information, run:
+For additional parameters and information, run:
 ```
 python start_server.py -h
 ```
