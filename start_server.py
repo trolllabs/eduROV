@@ -149,8 +149,8 @@ if __name__ == '__main__':
         metavar='RESOLUTION',
         type=str,
         default='1024x768',
-        help='''resolution, use format WIDTHxHEIGHT or an integer 1-10 
-        (default 1024x600)''')
+        help='''resolution, use format WIDTHxHEIGHT or an integer 1-{} 
+        (default 1024x600)'''.format(len(STANDARD_RESOLUTIONS)))
     parser.add_argument(
         '-fps',
         metavar='FRAMERATE',
