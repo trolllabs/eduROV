@@ -9,6 +9,7 @@ import fcntl
 import struct
 import os
 import argparse
+import time
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 index_file = os.path.join(cwd, 'index.html')
@@ -149,7 +150,7 @@ if __name__ == '__main__':
         metavar='RESOLUTION',
         type=str,
         default='1024x768',
-        help='''resolution, use format WIDTHxHEIGHT or an integer 1-{} 
+        help='''resolution, use format WIDTHxHEIGHT or an integer 0-{} 
         (default 1024x600)'''.format(len(STANDARD_RESOLUTIONS)))
     parser.add_argument(
         '-fps',
@@ -161,13 +162,18 @@ if __name__ == '__main__':
     res = valid_resolution(args.r)
 
     print_server_ip()
+    print('Using {} @ {} fps'.format(res, args.r))
 
     with picamera.PiCamera(resolution=res, framerate=args.fps) as camera:
         output = StreamingOutput()
         camera.start_recording(output, format='mjpeg')
+        start = time.time()
         try:
             address = ('', 8000)
             server = StreamingServer(address, StreamingHandler)
             server.serve_forever()
         finally:
             camera.stop_recording()
+            finish = time.time()
+            print('Sent %d images in %d seconds at %.2ffps' % (
+                output.count, finish - start, output.count / (finish - start)))
