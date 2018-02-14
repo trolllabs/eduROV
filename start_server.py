@@ -202,6 +202,6 @@ if __name__ == '__main__':
             camera.stop_recording()
             finish = time.time()
             if args.debug:
-                print('Sent {} images in {} seconds at {:.2f} fps'
+                print('Sent {} images in {:.1f} seconds at {:.2f} fps'
                       .format(output.count,
                               finish-start, output.count/(finish-start)))
