@@ -25,6 +25,7 @@ with open(script_file, 'r') as f:
 
 PAGE = html.format('<style>{}</style>'.format(css),
                    '<script>{}</script>'.format(script))
+print(PAGE)
 
 # CSS = """
 # <style>
