@@ -7,47 +7,64 @@ from http import server
 import socket
 import fcntl
 import struct
+import os
 
-CSS = """
-<style>
-body {
-    margin: 0;
-    padding: 0;
-}
+index_file = os.path.join(__file__,'index.html')
+css_file = os.path.join(__file__, '/web_content/style.css')
+script_file = os.path.join(__file__, '/web_content/script.js')
 
-img {
-    display: block;
-    margin: 0 auto;
-}
+with open(index_file, 'r') as f:
+    html = f.read()
 
-</style>
-<script>
-function resizeToMax(id){
-    myImage = new Image() 
-    var img = document.getElementById(id);
-    myImage.src = img.src;
-    var imgRatio = myImage.width / myImage.height;
-    var bodyRatio = document.body.clientWidth / document.body.clientHeight;    
-    if(bodyRatio < imgRatio){
-        img.style.width = "100%";
-    } else {
-        img.style.height = "100%";
-    }
-}
-</script>
-"""
+with open(css_file, 'r') as f:
+    css = f.read()
 
-PAGE="""\
-<html>
-<head>
-<title>eduROV</title>
-{0}
-</head>
-<body>
-<img id="image" src="stream.mjpg" onload="resizeToMax(this.id)">
-</body>
-</html>
-""".format(CSS)
+with open(script_file, 'r') as f:
+    script = f.read()
+
+PAGE = html.format('<style>{}</style>'.format(css),
+                   '<script>{}</script>'.format(script))
+
+# CSS = """
+# <style>
+# body {
+#     margin: 0;
+#     padding: 0;
+# }
+#
+# img {
+#     display: block;
+#     margin: 0 auto;
+# }
+#
+# </style>
+# <script>
+# function resizeToMax(id){
+#     myImage = new Image()
+#     var img = document.getElementById(id);
+#     myImage.src = img.src;
+#     var imgRatio = myImage.width / myImage.height;
+#     var bodyRatio = document.body.clientWidth / document.body.clientHeight;
+#     if(bodyRatio < imgRatio){
+#         img.style.width = "100%";
+#     } else {
+#         img.style.height = "100%";
+#     }
+# }
+# </script>
+# """
+#
+# PAGE="""\
+# <html>
+# <head>
+# <title>eduROV</title>
+# {0}
+# </head>
+# <body>
+# <img id="image" src="stream.mjpg" onload="resizeToMax(this.id)">
+# </body>
+# </html>
+# """.format(CSS)
 
 
 class StreamingOutput(object):
@@ -74,9 +91,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Location', '/index.html')
             self.end_headers()
         elif self.path == '/index.html':
-            with open('index.html', 'rb') as f:
-                content = f.read()
-            # content = PAGE.encode('utf-8')
+            content = PAGE.encode('utf-8')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
             self.send_header('Content-Length', len(content))
@@ -144,7 +159,7 @@ def print_server_ip():
 if __name__ == '__main__':
     print_server_ip()
 
-    with picamera.PiCamera(resolution='1920x1080', framerate=24) as camera:
+    with picamera.PiCamera(resolution='1024x768', framerate=24) as camera:
         output = StreamingOutput()
         camera.start_recording(output, format='mjpeg')
         try:
