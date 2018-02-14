@@ -1,15 +1,18 @@
 import io
-import picamera
 import logging
 import socketserver
 from threading import Condition
 from http import server
 import socket
-import fcntl
 import struct
 import os
 import argparse
 import time
+import sys
+import platform
+if 'raspberrypi' in platform._syscmd_uname('-a'):
+    import picamera
+    import fcntl
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 index_file = os.path.join(cwd, 'index.html')
@@ -26,7 +29,7 @@ PAGE = html.format('<style>{}</style>'.format(css),
                    '<script>{}</script>'.format(script))
 
 STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
-                        '960x640', '1024x576', '1024x768', '1152x864',
+                        '960x640', '1024x576', '1024x600', '1024x768', '1152x864',
                         '1280x720', '1296x972', '1640x1232', '1920x1080']
 
 
@@ -144,6 +147,13 @@ def valid_resolution(resolution):
         raise ValueError('Resolution must be WIDTHxHEIGHT or an integer')
 
 
+def args_resolution_help():
+    print('{:<8} {:<10}'.format('Number', 'Resolution'))
+    for idx, res in enumerate(STANDARD_RESOLUTIONS):
+        print('{:<8} {:<10}'.format(idx, res))
+    sys.exit()
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Start a streaming video server on raspberry pi')
@@ -153,18 +163,31 @@ if __name__ == '__main__':
         type=str,
         default='1024x768',
         help='''resolution, use format WIDTHxHEIGHT or an integer 0-{} 
-        (default 1024x600)'''.format(len(STANDARD_RESOLUTIONS)))
+        (default 1024x600)'''.format(len(STANDARD_RESOLUTIONS)-1))
     parser.add_argument(
         '-fps',
         metavar='FRAMERATE',
         type=int,
         default=30,
         help='framerate for the camera (default 30)')
+    parser.add_argument(
+        '-d', '--debug',
+        action='store_true',
+        help='set to print debug information')
+    parser.add_argument(
+        '--resolutions',
+        action="store_true",
+        help='print the resolutions to use with the -r flag')
+
     args = parser.parse_args()
+    if args.resolutions:
+        args_resolution_help()
+
     res = valid_resolution(args.r)
 
     print_server_ip()
-    print('Using {} @ {} fps'.format(res, args.fps))
+    if args.d:
+        print('Using {} @ {} fps'.format(res, args.fps))
 
     with picamera.PiCamera(resolution=res, framerate=args.fps) as camera:
         output = StreamingOutput()
@@ -179,5 +202,7 @@ if __name__ == '__main__':
         finally:
             camera.stop_recording()
             finish = time.time()
-            print('Sent %d images in %d seconds at %.2ffps' % (
-                output.count, finish - start, output.count / (finish - start)))
+            if args.d:
+                print('Sent {} images in {} seconds at {:.2} fps'
+                      .format(output.count,
+                              finish-start, output.count/(finish-start)))
