@@ -9,9 +9,10 @@ import fcntl
 import struct
 import os
 
-index_file = os.path.join(os.path.abspath(__file__),'index.html')
-css_file = os.path.join(os.path.abspath(__file__), '/web_content/style.css')
-script_file = os.path.join(os.path.abspath(__file__), '/web_content/script.js')
+cwd = os.path.dirname(os.path.abspath(__file__))
+index_file = os.path.join(cwd,'index.html')
+css_file = os.path.join(cwd, '/web_content/style.css')
+script_file = os.path.join(cwd, '/web_content/script.js')
 
 with open(index_file, 'r') as f:
     html = f.read()
