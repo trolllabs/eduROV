@@ -35,6 +35,7 @@ class StreamingOutput(object):
         self.frame = None
         self.buffer = io.BytesIO()
         self.condition = Condition()
+        self.count = 0
 
     def write(self, buf):
         if buf.startswith(b'\xff\xd8'):
@@ -45,6 +46,7 @@ class StreamingOutput(object):
                 self.frame = self.buffer.getvalue()
                 self.condition.notify_all()
             self.buffer.seek(0)
+            self.count += 1
         return self.buffer.write(buf)
 
 
@@ -162,7 +164,7 @@ if __name__ == '__main__':
     res = valid_resolution(args.r)
 
     print_server_ip()
-    print('Using {} @ {} fps'.format(res, args.r))
+    print('Using {} @ {} fps'.format(res, args.fps))
 
     with picamera.PiCamera(resolution=res, framerate=args.fps) as camera:
         output = StreamingOutput()
