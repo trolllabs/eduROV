@@ -45,6 +45,30 @@ class StreamingOutput(object):
 
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
+
+    def serve_static(self, path):
+        if 'style.css' in path:
+            with open(css_file,'rb') as f:
+                content = f.read()
+                content_type = 'text/css'
+        elif 'script.js' in path:
+            with open(script_file,'rb') as f:
+                content = f.read()
+                content_type = 'text/javascript'
+        else:
+            self.send_404()
+            return
+
+        self.send_response(200)
+        self.send_header('Content-Type', content_type)
+        self.send_header('Content-Length', len(content))
+        self.end_headers()
+        self.wfile.write(content)
+
+    def send_404(self):
+        self.send_error(404)
+        self.end_headers()
+
     def do_GET(self):
         if self.path == '/':
             self.send_response(301)
@@ -58,22 +82,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Content-Length', len(content))
             self.end_headers()
             self.wfile.write(content)
-        elif self.path == '/static/style.css':
-            with open(css_file,'rb') as f:
-                content = f.read()
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/css')
-            self.send_header('Content-Length', len(content))
-            self.end_headers()
-            self.wfile.write(content)
-        elif self.path == '/static/script.js':
-            with open(script_file,'rb') as f:
-                content = f.read()
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/javascript')
-            self.send_header('Content-Length', len(content))
-            self.end_headers()
-            self.wfile.write(content)
+        elif self.path.startswith('/static/'):
+            self.serve_static(self.path)
         elif self.path == '/stream.mjpg':
             self.send_response(200)
             self.send_header('Age', 0)
@@ -98,8 +108,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                     'Removed streaming client %s: %s',
                     self.client_address, str(e))
         else:
-            self.send_error(404)
-            self.end_headers()
+            self.send_404()
 
 
 class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
