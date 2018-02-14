@@ -8,6 +8,7 @@ import socket
 import fcntl
 import struct
 import os
+import argparse
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 index_file = os.path.join(cwd, 'index.html')
@@ -16,57 +17,16 @@ script_file = os.path.join(cwd, './web_content/script.js')
 
 with open(index_file, 'r') as f:
     html = f.read()
-
 with open(css_file, 'r') as f:
     css = f.read()
-
 with open(script_file, 'r') as f:
     script = f.read()
-
 PAGE = html.format('<style>{}</style>'.format(css),
                    '<script>{}</script>'.format(script))
-print(PAGE)
 
-# CSS = """
-# <style>
-# body {
-#     margin: 0;
-#     padding: 0;
-# }
-#
-# img {
-#     display: block;
-#     margin: 0 auto;
-# }
-#
-# </style>
-# <script>
-# function resizeToMax(id){
-#     myImage = new Image()
-#     var img = document.getElementById(id);
-#     myImage.src = img.src;
-#     var imgRatio = myImage.width / myImage.height;
-#     var bodyRatio = document.body.clientWidth / document.body.clientHeight;
-#     if(bodyRatio < imgRatio){
-#         img.style.width = "100%";
-#     } else {
-#         img.style.height = "100%";
-#     }
-# }
-# </script>
-# """
-#
-# PAGE="""\
-# <html>
-# <head>
-# <title>eduROV</title>
-# {0}
-# </head>
-# <body>
-# <img id="image" src="stream.mjpg" onload="resizeToMax(this.id)">
-# </body>
-# </html>
-# """.format(CSS)
+STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
+                        '960x640', '1024x576', '1024x768', '1152x864',
+                        '1280x720', '1296x972', '1640x1232', '1920x1080']
 
 
 class StreamingOutput(object):
@@ -86,6 +46,7 @@ class StreamingOutput(object):
             self.buffer.seek(0)
         return self.buffer.write(buf)
 
+
 class StreamingHandler(server.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/':
@@ -104,7 +65,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Age', 0)
             self.send_header('Cache-Control', 'no-cache, private')
             self.send_header('Pragma', 'no-cache')
-            self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=FRAME')
+            self.send_header('Content-Type',
+                             'multipart/x-mixed-replace; boundary=FRAME')
             self.end_headers()
             try:
                 while True:
@@ -125,9 +87,11 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_error(404)
             self.end_headers()
 
+
 class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
+
 
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -139,6 +103,7 @@ def get_ip_address(ifname):
     )[20:24])
     print(ip)
     s.close()
+
 
 def print_server_ip():
     online_ips = []
@@ -158,10 +123,46 @@ def print_server_ip():
     print('Visit the webpage at {}'
           .format(' or '.join(['{}:8000'.format(ip) for ip in online_ips])))
 
+
+def valid_resolution(resolution):
+    if 'x' in resolution:
+        if len(resolution.split('x')) is 2:
+            return resolution
+        else:
+            raise ValueError('Resolution must be WIDTHxHEIGHT or an integer')
+    try:
+        idx = int(resolution)
+        if idx in range(0,len(STANDARD_RESOLUTIONS)):
+            return STANDARD_RESOLUTIONS[idx]
+        else:
+            raise ValueError('Resolution index must be inr range 0-{}, not {}'
+                             .format(len(STANDARD_RESOLUTIONS), idx))
+    except ValueError:
+        raise ValueError('Resolution must be WIDTHxHEIGHT or an integer')
+
+
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Start a streaming video server on raspberry pi')
+    parser.add_argument(
+        '-r',
+        metavar='RESOLUTION',
+        type=str,
+        default='1024x768',
+        help='''resolution, use format WIDTHxHEIGHT or an integer 1-10 
+        (default 1024x600)''')
+    parser.add_argument(
+        '-fps',
+        metavar='FRAMERATE',
+        type=int,
+        default=30,
+        help='framerate for the camera (default 30)')
+    args = parser.parse_args()
+    res = valid_resolution(args.r)
+
     print_server_ip()
 
-    with picamera.PiCamera(resolution='1024x768', framerate=24) as camera:
+    with picamera.PiCamera(resolution=res, framerate=args.fps) as camera:
         output = StreamingOutput()
         camera.start_recording(output, format='mjpeg')
         try:
