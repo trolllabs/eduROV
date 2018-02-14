@@ -2,6 +2,7 @@
 import argparse
 from rov_functions import rov
 from controller_functions import controller
+from support import valid_resolution, args_resolution_help, STANDARD_RESOLUTIONS
 
 
 if __name__ == '__main__':
@@ -27,23 +28,30 @@ if __name__ == '__main__':
         '-r',
         metavar='RESOLUTION',
         type=str,
-        default='1024x600',
-        help='resolution, use format WIDTHxHEIGHT (default 1024x600)')
+        default='1024x768',
+        help='''resolution, use format WIDTHxHEIGHT or an integer 0-{}\n(default 1024x600)'''.format(len(STANDARD_RESOLUTIONS)-1))
     parser.add_argument(
         '-f',
-        metavar='FULLSCREEN',
-        type=bool,
-        default=False,
-        help='set True for fullscreen')
+        action="store_true",
+        help='when used, video will show in fullscreen')
+    parser.add_argument(
+        '--resolutions',
+        action="store_true",
+        help='print the resolutions to use with the -r flag')
 
     args = parser.parse_args()
+    if args.resolutions:
+        args_resolution_help()
+
+    res = valid_resolution(args.r)
+
     function_ = choices[args.role]
     if function_ is rov:
         rov(host=args.ip,
             port=args.p,
-            resolution=args.r)
+            resolution=res)
     elif function_ is controller:
         controller(ip=args.ip,
                    port=args.p,
-                   resolution=args.r,
+                   resolution=res,
                    fullscreen=args.f)
