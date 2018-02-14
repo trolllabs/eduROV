@@ -8,6 +8,8 @@ Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
 
 ## Installation
 
+All the following commands should be performed on the raspberry pi.
+
 - python 3 should be installed already, check by running `python3 --version`
 - download the files and move into the newly created folder:
   ```
@@ -18,7 +20,6 @@ Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
   ```
   git checkout http
   ```
-  ```
 - install the requirements:
   ```
   pip install -r requirements.txt
@@ -28,7 +29,6 @@ Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
 
 The eduROV package works by starting a http server on the raspberry pi. This server can be accessed on any machine connected to the same network as the pi, either through a router or or a peer-to-peer network.
 
-```
 On the raspberry pi, run:
 ```
 python3 start_server.py
