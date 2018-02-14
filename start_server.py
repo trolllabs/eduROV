@@ -16,17 +16,8 @@ if 'raspberrypi' in platform._syscmd_uname('-a'):
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 index_file = os.path.join(cwd, 'index.html')
-css_file = os.path.join(cwd, './web_content/style.css')
-script_file = os.path.join(cwd, './web_content/script.js')
-
-with open(index_file, 'r') as f:
-    html = f.read()
-with open(css_file, 'r') as f:
-    css = f.read()
-with open(script_file, 'r') as f:
-    script = f.read()
-PAGE = html.format('<style>{}</style>'.format(css),
-                   '<script>{}</script>'.format(script))
+css_file = os.path.join(cwd, './static/style.css')
+script_file = os.path.join(cwd, './static/script.js')
 
 STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
                         '960x640', '1024x576', '1024x600', '1024x768', '1152x864',
@@ -60,17 +51,16 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Location', '/index.html')
             self.end_headers()
         elif self.path == '/index.html':
-            # content = PAGE.encode('utf-8')
-            with open('index2.html','r') as f:
-                content = f.read().encode('utf-8')
+            with open(index_file,'rb') as f:
+                content = f.read()
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
             self.send_header('Content-Length', len(content))
             self.end_headers()
             self.wfile.write(content)
         elif self.path == '/static/style.css':
-            with open(css_file,'r') as f:
-                content = f.read().encode('utf-8')
+            with open(css_file,'rb') as f:
+                content = f.read()
             self.send_response(200)
             self.send_header('Content-Type', 'text/css')
             self.send_header('Content-Length', len(content))
