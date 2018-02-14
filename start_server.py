@@ -184,9 +184,8 @@ if __name__ == '__main__':
         args_resolution_help()
 
     res = valid_resolution(args.r)
-
     print_server_ip()
-    if args.d:
+    if args.debug:
         print('Using {} @ {} fps'.format(res, args.fps))
 
     with picamera.PiCamera(resolution=res, framerate=args.fps) as camera:
@@ -202,7 +201,7 @@ if __name__ == '__main__':
         finally:
             camera.stop_recording()
             finish = time.time()
-            if args.d:
+            if args.debug:
                 print('Sent {} images in {} seconds at {:.2} fps'
                       .format(output.count,
                               finish-start, output.count/(finish-start)))
