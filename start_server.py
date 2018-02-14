@@ -8,20 +8,16 @@ import struct
 import os
 import argparse
 import time
-import sys
 import platform
 if 'raspberrypi' in platform._syscmd_uname('-a'):
     import picamera
     import fcntl
+from support import valid_resolution, args_resolution_help, STANDARD_RESOLUTIONS
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 index_file = os.path.join(cwd, 'index.html')
 css_file = os.path.join(cwd, './static/style.css')
 script_file = os.path.join(cwd, './static/script.js')
-
-STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
-                        '960x640', '1024x576', '1024x600', '1024x768', '1152x864',
-                        '1280x720', '1296x972', '1640x1232', '1920x1080']
 
 
 class StreamingOutput(object):
@@ -145,30 +141,6 @@ def print_server_ip():
         sock.close()
     print('Visit the webpage at {}'
           .format(' or '.join(['{}:8000'.format(ip) for ip in online_ips])))
-
-
-def valid_resolution(resolution):
-    if 'x' in resolution:
-        if len(resolution.split('x')) is 2:
-            return resolution
-        else:
-            raise ValueError('Resolution must be WIDTHxHEIGHT or an integer')
-    try:
-        idx = int(resolution)
-        if idx in range(0,len(STANDARD_RESOLUTIONS)):
-            return STANDARD_RESOLUTIONS[idx]
-        else:
-            raise ValueError('Resolution index must be inr range 0-{}, not {}'
-                             .format(len(STANDARD_RESOLUTIONS), idx))
-    except ValueError:
-        raise ValueError('Resolution must be WIDTHxHEIGHT or an integer')
-
-
-def args_resolution_help():
-    print('{:<8} {:<10}'.format('Number', 'Resolution'))
-    for idx, res in enumerate(STANDARD_RESOLUTIONS):
-        print('{:<8} {:<10}'.format(idx, res))
-    sys.exit()
 
 
 if __name__ == '__main__':
