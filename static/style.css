@@ -12,9 +12,7 @@ img {
   display: grid;
   grid-template-columns: 200px auto 200px;
   height: 100%;
-  background-color: #2196F3;
 }
 .grid-container > div {
-  background-color: rgba(255, 255, 255, 0.8);
   padding: 10px;
 }
