@@ -11,7 +11,9 @@ img {
 .grid-container {
   display: grid;
   grid-template-columns: 100px auto 100px;
+  grid-gap: 10px;
+  background-color: #2196F3;
 }
-
 .grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
 }
