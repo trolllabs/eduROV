@@ -85,10 +85,9 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             content_len = int(self.headers['Content-Length'])
             post_body = self.rfile.read(content_len).decode('utf-8')
             # print('Keycodes: {}'.format(post_body))
-            keys = json.loads(post_body)
-            for key in keys:
-                # print('{} : {}'.format(key, keys[key]))
-                print(KEYCODES[int(key)])
+            json_obj = json.loads(post_body)
+            print_text = ', '.join([KEYCODES[int(key)] for key in json_obj])
+            print(print_text)
 
         else:
             self.send_404()
