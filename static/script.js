@@ -28,6 +28,10 @@ function startup() {
 
 function send_keys(json_string){
     console.log(json_string)
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "keys.json", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(json_string);
 }
 
 function rotate_image(){
