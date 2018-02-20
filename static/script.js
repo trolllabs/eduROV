@@ -43,7 +43,7 @@ function get_sensor(){
 }
 //var func = get_sensor();
 //var intervalID = setInterval("func", 2000);
-var intervalID_ = setInterval(function alarm_me(), 2000);
+var intervalID_ = setInterval(alarm_me, 2000);
 
 function resizeToMax(id){
     myImage = new Image()
