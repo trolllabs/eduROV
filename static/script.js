@@ -27,7 +27,7 @@ function send_keys(json_string){
 }
 
 function rotate_image(degrees){
-    image_rotation += degrees;
+    image_rotation = image_rotation + degrees;
     document.getElementById("image").style.transform = "rotate(${image_rotation}deg)";
 }
 
