@@ -5,7 +5,7 @@ STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
                         '1152x864', '1280x720', '1296x972', '1640x1232',
                         '1920x1080']
 
-KEYCODES = {}
+KEYCODES = {37: 'left', 38: 'up', 39: 'right', 40: 'down'}
 
 
 def valid_resolution(resolution):
