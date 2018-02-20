@@ -80,7 +80,9 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         self.wfile.write(content)
 
     def do_POST(self):
-        print('Got: {}'.format(self.path))
+        content_len = int(self.headers.getheader('Content-Length', 0))
+        post_body = self.rfile.read(content_len)
+        print(post_body)
 
     def do_GET(self):
         if self.path == '/':

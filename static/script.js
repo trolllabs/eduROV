@@ -30,7 +30,8 @@ function send_keys(json_string){
     console.log(json_string)
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "keys.json", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("Content-Length", json_string.length);
     xhttp.send(json_string);
 }
 
