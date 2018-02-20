@@ -10,14 +10,14 @@ function sleep(ms) {
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode != last_key){
-        pressed_keys[evt.keyCode] = 1;
+        pressed_keys[Number(evt.keyCode)] = 1;
         send_keys(JSON.stringify(pressed_keys))
         last_key = evt.keyCode;
     }
 }
 
 document.onkeyup = function(evt) {
-    delete pressed_keys[evt.keyCode];
+    delete pressed_keys[Number(evt.keyCode)];
     send_keys(JSON.stringify(pressed_keys))
     last_key = 0;
 }

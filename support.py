@@ -5,6 +5,8 @@ STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
                         '1152x864', '1280x720', '1296x972', '1640x1232',
                         '1920x1080']
 
+KEYCODES = {}
+
 
 def valid_resolution(resolution):
     if 'x' in resolution:
