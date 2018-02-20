@@ -25,6 +25,10 @@ function send_keys(json_string){
     console.log(json_string)
 }
 
+function alarm_me(){
+    alert("Interval reached");
+}
+
 function get_sensor(){
     alert("test");
     console.log('here');
@@ -37,9 +41,9 @@ function get_sensor(){
     xhttp.open("GET", "sensordata.json", true);
     xhttp.send();
 }
-var func = get_sensor();
-var intervalID = setInterval("func", 2000);
-var intervalID_ = setInterval(function(){alert("Interval reached");}, 2000);
+//var func = get_sensor();
+//var intervalID = setInterval("func", 2000);
+var intervalID_ = setInterval(alarm_me(), 2000);
 
 function resizeToMax(id){
     myImage = new Image()
