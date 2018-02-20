@@ -88,7 +88,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             json_obj = json.loads(post_body)
             print_text = ', '.join([KEYCODES[int(key)] for key in json_obj
                                     if int(key) in KEYCODES])
-            print('<{}>'.format(print_text))
+            if print_text:
+                print(print_text)
 
         else:
             self.send_404()
