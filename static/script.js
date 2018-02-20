@@ -21,9 +21,10 @@ function send_keys(json_string){
 }
 
 function get_sensor(){
+    var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "sensordata.json", true);
     xhttp.send();
-    document.getElementById("sensordata").innerHTML = 55
+//    document.getElementById("sensordata").innerHTML = 55
 }
 
 function resizeToMax(id){
