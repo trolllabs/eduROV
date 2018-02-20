@@ -31,9 +31,12 @@ function get_sensor(){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-//                document.getElementById("sensordata").innerHTML = this.responseText;
+                var left_text = "";
                 var sensor = JSON.parse(this.responseText);
-                document.getElementById("sensordata").innerHTML = sensor['temperature']
+                for (var key in sensor) {
+                    left_text += (key + ": " sensor[key] + "<br />");
+                }
+                document.getElementById("sensordata").innerHTML = left_text;
             }
         };
     xhttp.open("GET", "sensordata.json", true);
