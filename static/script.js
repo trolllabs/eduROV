@@ -1,6 +1,6 @@
 var last_key;
 var pressed_keys = {};
-var image_rotation = 0;
+var image_rotated = false;
 var getsensorID = setInterval(get_sensor, 3000);
 
 function sleep(ms) {
@@ -26,9 +26,14 @@ function send_keys(json_string){
     console.log(json_string)
 }
 
-function rotate_image(degrees){
-    image_rotation = image_rotation + degrees;
-    document.getElementById("image").style.transform = "rotate(${image_rotation}deg)";
+function rotate_image(){
+    if (image_rotated){
+        image_rotated = false;
+        document.getElementById("image").style.transform = "rotate(0deg)";
+    } else{
+        image_rotated = true;
+        document.getElementById("image").style.transform = "rotate(180deg)";
+    }
 }
 
 
