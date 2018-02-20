@@ -23,7 +23,6 @@ document.onkeyup = function(evt) {
 }
 
 function startup() {
-    alert("Use F11 to enter fullscreen.");
 }
 
 function send_keys(json_string){

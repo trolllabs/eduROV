@@ -14,7 +14,8 @@ import json
 if 'raspberrypi' in platform._syscmd_uname('-a'):
     import picamera
     import fcntl
-from support import valid_resolution, args_resolution_help, STANDARD_RESOLUTIONS
+from support import valid_resolution, args_resolution_help, \
+    STANDARD_RESOLUTIONS, KEYCODES
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 index_file = os.path.join(cwd, 'index.html')
@@ -86,7 +87,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             # print('Keycodes: {}'.format(post_body))
             keys = json.loads(post_body)
             for key in keys:
-                print('{} : {}'.format(key, keys[key]))
+                # print('{} : {}'.format(key, keys[key]))
+                print(KEYCODES[int(key)])
 
         else:
             self.send_404()
