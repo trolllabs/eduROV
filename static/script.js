@@ -39,6 +39,7 @@ function get_sensor(){
 }
 var func = get_sensor();
 var intervalID = setInterval("func", 2000);
+var intervalID_ = setInterval(function(){alert("Interval reached");}, 2000);
 
 function resizeToMax(id){
     myImage = new Image()
