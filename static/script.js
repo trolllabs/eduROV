@@ -6,7 +6,6 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode != last_key){
@@ -24,6 +23,10 @@ document.onkeyup = function(evt) {
 
 function send_keys(json_string){
     console.log(json_string)
+}
+
+function rotate_image(degrees){
+    document.getElementById(image).style.transform = rotate(180deg);
 }
 
 
