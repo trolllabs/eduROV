@@ -15,4 +15,5 @@ body {
 }
 .grid-container > div {
   padding: 10px;
+  background-color: gray;
 }
