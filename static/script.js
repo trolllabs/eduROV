@@ -22,7 +22,7 @@ document.onkeyup = function(evt) {
     last_key = 0;
 }
 
-document.onload = function(evt) {
+function startup() {
     alert("Use F11 to enter fullscreen.");
 }
 
