@@ -9,6 +9,7 @@ import os
 import argparse
 import time
 import platform
+import random
 if 'raspberrypi' in platform._syscmd_uname('-a'):
     import picamera
     import fcntl
@@ -66,12 +67,15 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         self.end_headers()
 
     def serve_sensor(self):
-        content = b'{"cpu-load":47.5, "temperature":23.74}'
+        cpu_load = random.randrange(100)
+        temperature = random.randrange(10,30)
+        content = '{"cpu-load":{}, "temperature":{}}'\
+            .format(cpu_load, temperature)
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')
         self.send_header('Content-Length', len(content))
         self.end_headers()
-        self.wfile.write(content)
+        self.wfile.write(content.encode('utf-8'))
 
     def do_GET(self):
         if self.path == '/':
