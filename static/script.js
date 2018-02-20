@@ -1,6 +1,6 @@
 var last_key;
 var pressed_keys = {};
-var getsensorID = setInterval(get_sensor, 1000);
+var getsensorID = setInterval(get_sensor, 100);
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
