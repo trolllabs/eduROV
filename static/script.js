@@ -26,6 +26,7 @@ function send_keys(json_string){
 }
 
 function get_sensor(){
+    alert("test");
     console.log('here');
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
