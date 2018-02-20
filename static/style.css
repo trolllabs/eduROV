@@ -10,8 +10,8 @@ img {
 
 .grid-container {
   display: grid;
+  grid-template-columns: 100px auto 100px;
 }
+
 .grid-container > div {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 5px 0;
 }
