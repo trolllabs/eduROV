@@ -1,6 +1,6 @@
 var last_key;
 var pressed_keys = {};
-var getsensorID = setInterval(get_sensor, 100);
+var getsensorID = setInterval(get_sensor, 3000);
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -26,7 +26,7 @@ function send_keys(json_string){
 }
 
 function rotate_image(degrees){
-    document.getElementById(image).style.transform = rotate(180deg);
+    document.getElementById("image").style.transform = "rotate(180deg)";
 }
 
 
