@@ -5,16 +5,26 @@ document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode != last_key){
         pressed_keys[evt.keyCode] = 1;
-        console.log(pressed_keys)
-        lastkey = evt.keyCode;
+        send_keys(JSON.stringify(pressed_keys))
+        last_key = evt.keyCode;
     }
-};
+}
 
 document.onkeyup = function(evt) {
     delete pressed_keys[evt.keyCode];
-    console.log(pressed_keys)
+    send_keys(JSON.stringify(pressed_keys))
     last_key = 0;
-};
+}
+
+function send_keys(json_string){
+    console.log(json_string)
+}
+
+function get_sensor(){
+    xhttp.open("GET", "sensordata.json", true);
+    xhttp.send();
+    document.getElementById("sensordata").innerHTML = 55
+}
 
 function resizeToMax(id){
     myImage = new Image()
