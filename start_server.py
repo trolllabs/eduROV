@@ -80,9 +80,12 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         self.wfile.write(content)
 
     def do_POST(self):
-        content_len = int(self.headers['Content-Length'])
-        post_body = self.rfile.read(content_len)
-        print(post_body.decode('utf-8'))
+        if self.path.startswith('/keys.json'):
+            content_len = int(self.headers['Content-Length'])
+            post_body = self.rfile.read(content_len)
+            print('Keycodes: {}'.format(post_body.decode('utf-8')))
+        else:
+            self.send_404()
 
     def do_GET(self):
         if self.path == '/':
