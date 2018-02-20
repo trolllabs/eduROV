@@ -22,9 +22,13 @@ function send_keys(json_string){
 
 function get_sensor(){
     var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+            }
+        };
     xhttp.open("GET", "sensordata.json", true);
     xhttp.send();
-//    document.getElementById("sensordata").innerHTML = 55
 }
 
 function resizeToMax(id){
