@@ -87,7 +87,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             # print('Keycodes: {}'.format(post_body))
             json_obj = json.loads(post_body)
             print_text = ', '.join([KEYCODES[int(key)] for key in json_obj
-                                    if key in KEYCODES])
+                                    if int(key) in KEYCODES])
             print(print_text)
 
         else:
