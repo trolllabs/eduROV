@@ -10,7 +10,7 @@ img {
 
 .grid-container {
   display: grid;
-  grid-template-columns: 100px auto 100px;
+  grid-template-columns: 200px auto 200px;
   height: 100%;
   grid-gap: 10px;
   background-color: #2196F3;
