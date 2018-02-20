@@ -65,6 +65,14 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         self.send_error(404)
         self.end_headers()
 
+    def serve_sensor(self):
+        content = b'{"cpu-load":47.5, "temperature":23.74}'
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.send_header('Content-Length', len(content))
+        self.end_headers()
+        self.wfile.write(content)
+
     def do_GET(self):
         if self.path == '/':
             self.send_response(301)
@@ -80,6 +88,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.wfile.write(content)
         elif self.path.startswith('/static/'):
             self.serve_static(self.path)
+        elif self.path.startswith('/sensordata.json'):
+            self.serve_sensor()
         elif self.path == '/stream.mjpg':
             self.send_response(200)
             self.send_header('Age', 0)
