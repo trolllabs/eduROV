@@ -69,7 +69,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 
     def serve_sensor(self):
         cpu_load = random.randrange(100)
-        temperature = random.randrange(10,30)
+        temperature = random.randrange(10, 30)
         r = {"cpu_load": cpu_load, "temperature": temperature}
         r = json.dumps(r)
         content = r.encode('utf-8')
