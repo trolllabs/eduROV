@@ -79,6 +79,9 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(content)
 
+    def do_POST(self):
+        print('Got: {}'.format(self.path))
+
     def do_GET(self):
         if self.path == '/':
             self.send_response(301)
