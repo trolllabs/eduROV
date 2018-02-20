@@ -11,7 +11,7 @@ img {
 .grid-container {
   display: grid;
   grid-template-columns: 100px auto 100px;
-  grid-template-rows: 100%;
+  height: 100%;
   grid-gap: 10px;
   background-color: #2196F3;
 }
