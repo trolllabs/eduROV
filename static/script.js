@@ -5,7 +5,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-var intervalID = setInterval(function(){alert("Interval reached");}, 5000);
+var intervalID = setInterval(get_sensor(), 5000);
 
 document.onkeydown = function(evt) {
     evt = evt || window.event;
