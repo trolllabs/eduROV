@@ -1,5 +1,6 @@
 var last_key;
 var pressed_keys = {};
+var getsensorID = setInterval(get_sensor, 1000);
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -30,8 +31,6 @@ function alarm_me(){
 }
 
 function get_sensor(){
-    alert("test");
-    console.log('here');
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -41,7 +40,6 @@ function get_sensor(){
     xhttp.open("GET", "sensordata.json", true);
     xhttp.send();
 }
-var intervalID_ = setInterval(get_sensor, 2000);
 
 function resizeToMax(id){
     myImage = new Image()
