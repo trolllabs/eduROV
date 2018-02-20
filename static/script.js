@@ -36,8 +36,8 @@ function get_sensor(){
     xhttp.open("GET", "sensordata.json", true);
     xhttp.send();
 }
-
-var intervalID = setInterval(get_sensor(), 2000);
+var func = get_sensor();
+var intervalID = setInterval("func", 2000);
 
 function resizeToMax(id){
     myImage = new Image()
