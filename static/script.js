@@ -5,6 +5,8 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+var intervalID = setInterval(function(){alert("Interval reached");}, 5000);
+
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode != last_key){
@@ -12,14 +14,6 @@ document.onkeydown = function(evt) {
         send_keys(JSON.stringify(pressed_keys))
         last_key = evt.keyCode;
     }
-}
-
-document.onload = function(evt) {
-    while (i < 10) {
-        get_sensor()
-        await sleep(2000);
-        i++;
-}
 }
 
 document.onkeyup = function(evt) {
