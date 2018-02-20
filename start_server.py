@@ -80,7 +80,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         self.wfile.write(content)
 
     def do_POST(self):
-        content_len = int(self.headers.getheader('Content-Length', 0))
+        print(self.headers)
+        content_len = int(self.headers['Content-Length'])
         post_body = self.rfile.read(content_len)
         print(post_body)
 
