@@ -11,11 +11,12 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: 200px auto 200px;
-  grid-gap: 5px;
   height: 100%;
 }
 .grid-container > div {
-  border: 1px solid rgba(0, 0, 0, 0.8);
   padding: 10px;
-  background-color: gray;
+}
+
+.gray_bg{
+  background-color: rgba(0, 0, 0, 0.1);
 }
