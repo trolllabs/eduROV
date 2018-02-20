@@ -26,15 +26,14 @@ function send_keys(json_string){
     console.log(json_string)
 }
 
-function alarm_me(){
-    alert("Interval reached");
-}
 
 function get_sensor(){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("sensordata").innerHTML = this.responseText;
+//                document.getElementById("sensordata").innerHTML = this.responseText;
+                var sensor = JSON.parse(this.responseText);
+                document.getElementById("sensordata").innerHTML = sensor['temperature']
             }
         };
     xhttp.open("GET", "sensordata.json", true);
