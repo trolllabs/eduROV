@@ -23,10 +23,12 @@ document.onkeyup = function(evt) {
 }
 
 function send_keys(json_string){
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "keys.json", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(json_string);
+    if(json_string){
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "keys.json", true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(json_string);
+    }
 }
 
 function rotate_image(){
