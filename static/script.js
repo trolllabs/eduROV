@@ -58,7 +58,7 @@ function get_sensor(){
 }
 
 function resizeToMax(id){
-    myImage = new Image()
+    myImage = new Image();
     var img = document.getElementById(id);
     myImage.src = img.src;
     var imgRatio = myImage.width / myImage.height;
@@ -72,7 +72,7 @@ function resizeToMax(id){
 }
 
 function setsize(){
-    myImage = new Image()
+    myImage = new Image();
     var img = document.getElementById("image");
     var pad = 10;
     myImage.src = img.src;
