@@ -72,11 +72,6 @@ function resizeToMax(id){
 }
 
 function set_size(){
-    myImage = new Image();
-    var img = document.getElementById("image");
-    myImage.src = img.src;
-    var pad = 10;
-
     document.getElementByClassName("grid-container")[0].style
     .background-color = "red";
 }
