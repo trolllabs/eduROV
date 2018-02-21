@@ -26,7 +26,6 @@ function startup() {
 }
 
 function send_keys(json_string){
-    console.log(json_string)
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "keys.json", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
@@ -91,7 +90,7 @@ function setsize(){
     var imgDispW = (bodH - 2*pad)*imgR;
     var imgDispH = imgDispW / imgR;
     var panelW = (bodW-2*pad-imgDispW)/2;
-
+    console.log(panelW)
     document.getElementById("side-panel").style.width = "${panelW}px";
 }
 
