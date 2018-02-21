@@ -76,7 +76,7 @@ function resizeToMax(id){
 
 function setsize(){
     myImage = new Image()
-    var img = document.getElementById(id);
+    var img = document.getElementById("image");
     var pad = 10;
     myImage.src = img.src;
 
@@ -91,7 +91,8 @@ function setsize(){
     var imgDispH = imgDispW / imgR;
     var panelW = (bodW-2*pad-imgDispW)/2;
     console.log(panelW)
-    document.getElementById("side-panel").style.width = "${panelW}px";
+    document.getElementById("left-panel").style.width = "${panelW}px";
+    document.getElementById("right-panel").style.width = "${panelW}px";
 }
 
 var addEvent = function(object, type, callback) {
