@@ -77,17 +77,6 @@ function set_size(){
     myImage.src = img.src;
     var pad = 10;
 
-    var imgW = myImage.width;
-    var imgH = myImage.height;
-    var bodW = document.body.clientWidth;
-    var bodH = document.body.clientHeight;
-    var imgR = imgW / imgH;
-    var bodR = bodW / bodH;
-
-    var imgDispW = (bodH - 2*pad)*imgR;
-    var imgDispH = imgDispW / imgR;
-    var panelW = parseInt((bodW-2*pad-imgDispW)/2);
-    console.log(panelW);
     document.getElementByClassName("grid-container")[0].style
-    .grid-template-columns = "300px auto 300px";
+    .background-color = "red";
 }
