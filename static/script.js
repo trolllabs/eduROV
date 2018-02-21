@@ -75,6 +75,26 @@ function resizeToMax(id){
     }
 }
 
+function setsize(){
+    myImage = new Image()
+    var img = document.getElementById(id);
+    var pad = 10;
+    myImage.src = img.src;
+
+    var imgW = myImage.width;
+    var imgH = myImage.height;
+    var bodW = document.body.clientWidth;
+    var bodH = document.body.clientHeight;
+    var imgR = imgW / imgH;
+    var bodR = bodW / bodH;
+
+    var imgDispW = (bodH - 2*pad)*imgR;
+    var imgDispH = imgDispW / imgR;
+    var panelW = (bodW-2*pad-imgDispW)/2;
+
+    document.getElementById("side-panel").style.width = "${panelW}px";
+}
+
 var addEvent = function(object, type, callback) {
     if (object == null || typeof(object) == 'undefined') return;
     if (object.addEventListener) {
@@ -86,6 +106,4 @@ var addEvent = function(object, type, callback) {
     }
 }
 
-addEvent(window, "resize", function(event) {
-  alert('resized');
-})
+addEvent(window, "resize", setsize);
