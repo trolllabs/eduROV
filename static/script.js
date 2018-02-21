@@ -75,3 +75,7 @@ function resizeToMax(id){
         img.style.height = "100%";
     }
 }
+
+window.onresize = function(event) {
+    console("I am resising")
+}
