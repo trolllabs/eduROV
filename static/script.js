@@ -88,5 +88,6 @@ function setsize(){
     var imgDispH = imgDispW / imgR;
     var panelW = parseInt((bodW-2*pad-imgDispW)/2);
     console.log(panelW);
-    document.getElementById("grid-container").style.grid-template-columns = "${panelW}px auto ${panelW}px";
+    document.getElementById("grid-container").style.grid-template-columns =
+    "300px auto 300px";
 }
