@@ -89,7 +89,7 @@ function setsize(){
 
     var imgDispW = (bodH - 2*pad)*imgR;
     var imgDispH = imgDispW / imgR;
-    var panelW = (bodW-2*pad-imgDispW)/2;
+    var panelW = parseInt((bodW-2*pad-imgDispW)/2);
     console.log(panelW)
     document.getElementById("left-panel").style.width = "${panelW}px";
     document.getElementById("right-panel").style.width = "${panelW}px";
