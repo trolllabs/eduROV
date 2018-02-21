@@ -30,7 +30,6 @@ function send_keys(json_string){
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "keys.json", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader("Content-Length", json_string.length);
     xhttp.send(json_string);
 }
 
@@ -77,5 +76,5 @@ function resizeToMax(id){
 }
 
 window.onresize = function(event) {
-    console("I am resising")
+    console.log("I am resising");
 }
