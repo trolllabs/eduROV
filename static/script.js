@@ -72,5 +72,20 @@ function resizeToMax(id){
 }
 
 function set_size(){
-    document.getElementByClassName("grid-container")[0].style.height = "80%";
+    var myImage = new Image();
+    var img = document.getElementById("image");
+    myImage.src = img.src;
+    var pad = 10;
+
+    var imgW = myImage.width;
+    var imgH = myImage.height;
+    var bodW = document.body.clientWidth;
+    var bodH = document.body.clientHeight;
+    var imgR = imgW / imgH;
+    var bodR = bodW / bodH;
+
+    var imgDispW = (bodH - 2*pad)*imgR;
+    var imgDispH = imgDispW / imgR;
+    var panelW = parseInt((bodW-2*pad-imgDispW)/2);
+    document.getElementsByClassName("grid-container")[0].style.height = "80%";
 }
