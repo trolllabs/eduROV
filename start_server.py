@@ -90,6 +90,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             if print_text:
                 print(print_text)
             self.send_response(200)
+            self.end_headers()
 
         else:
             self.send_404()
