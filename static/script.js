@@ -1,7 +1,7 @@
 var last_key;
 var pressed_keys = {};
 var image_rotated = false;
-var getsensorID = setInterval(get_sensor, 3000);
+var getsensorID = setInterval(get_sensor, 1000);
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -55,20 +55,6 @@ function get_sensor(){
         };
     xhttp.open("GET", "sensordata.json", true);
     xhttp.send();
-}
-
-function resizeToMax(id){
-    myImage = new Image();
-    var img = document.getElementById(id);
-    myImage.src = img.src;
-    var imgRatio = myImage.width / myImage.height;
-    var bodyRatio = (document.body.clientWidth - 400) / document.body
-    .clientHeight;
-    if(bodyRatio < imgRatio){
-        img.style.width = "100%";
-    } else {
-        img.style.height = "100%";
-    }
 }
 
 function set_size(){
