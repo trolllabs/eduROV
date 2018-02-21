@@ -84,8 +84,8 @@ var addEvent = function(object, type, callback) {
     } else {
         object["on"+type] = callback;
     }
-};
+}
 
 addEvent(window, "resize", function(event) {
-  console.log('resized');
-});
+  alert('resized');
+})
