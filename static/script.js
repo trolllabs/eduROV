@@ -22,9 +22,6 @@ document.onkeyup = function(evt) {
     last_key = 0;
 }
 
-function startup() {
-}
-
 function send_keys(json_string){
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "keys.json", true);
