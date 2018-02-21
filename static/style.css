@@ -5,8 +5,8 @@ body {
 
 #image {
     display: block;
-    margin: 0 auto;
-    width: 98%
+    margin: auto auto;
+    width: 100%
 }
 
 .grid-container {
@@ -15,7 +15,7 @@ body {
   height: 100%;
 }
 .grid-container > div {
-  padding: 10px;
+  padding: 10px 10px 0px 10px;
 }
 
 .side-panel{
