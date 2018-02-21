@@ -70,3 +70,23 @@ function resizeToMax(id){
         img.style.height = "100%";
     }
 }
+
+function setsize(){
+    myImage = new Image();
+    var img = document.getElementById("image");
+    myImage.src = img.src;
+    var pad = 10;
+
+    var imgW = myImage.width;
+    var imgH = myImage.height;
+    var bodW = document.body.clientWidth;
+    var bodH = document.body.clientHeight;
+    var imgR = imgW / imgH;
+    var bodR = bodW / bodH;
+
+    var imgDispW = (bodH - 2*pad)*imgR;
+    var imgDispH = imgDispW / imgR;
+    var panelW = parseInt((bodW-2*pad-imgDispW)/2);
+    console.log(panelW);
+    document.getElementById("grid-container").style.grid-template-columns = "${panelW}px auto ${panelW}px";
+}
