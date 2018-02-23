@@ -47,11 +47,11 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 
     def serve_static(self, path):
         if 'style.css' in path:
-            with open(css_file,'rb') as f:
+            with open(css_file, 'rb') as f:
                 content = f.read()
                 content_type = 'text/css'
         elif 'script.js' in path:
-            with open(script_file,'rb') as f:
+            with open(script_file, 'rb') as f:
                 content = f.read()
                 content_type = 'text/javascript'
         else:

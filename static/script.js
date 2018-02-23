@@ -41,7 +41,6 @@ function rotate_image(){
     }
 }
 
-
 function get_sensor(){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
