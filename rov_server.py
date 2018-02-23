@@ -1,23 +1,41 @@
 import Pyro4
 import subprocess
+import time
+
+@Pyro4.expose
+class ROVSyncer(object):
+    def __init__(self):
+        print('Created syncer')
+        self._sensor = {'temp': 45.7, 'time': time.time()}
+
+    @property
+    def sensor(self):
+        return self._sensor
+
+    @sensor.setter
+    def sensor(self, values):
+        self._sensor.update(values)
+        self._sensor['time'] = time.time()
+
+    def echo(self, msg):
+        return 'Server responds: {}'.format(msg)
 
 
 @Pyro4.expose
-class ROVServer:
+class ROVServer(ROVSyncer):
     def __init__(self):
-        self.ns_process = subprocess.Popen('python -m Pyro4.naming',
-                                            shell=False)
+        self.ns_process = subprocess.Popen(
+            'python -m Pyro4.naming',
+            shell=False)
         self.daemon = Pyro4.Daemon()
-        ns = Pyro4.locateNS()
-        uri = self.daemon.register(self, objectId='ROVServer')
-        ns.register("ROVServer", uri)
-
-    def echo(self, msg):
-        return 'Server repsonds: {}'.format(msg)
+        uri = self.daemon.register(self)
+        with Pyro4.locateNS() as nameserver:
+            nameserver.register("ROVServer", uri)
+        super(ROVServer, self).__init__()
 
     @Pyro4.oneway
     def shutdown(self):
-        print('shutting down...')
+        print('Shutting down the ROVServer')
         self.__exit__(True, True, True)
 
     def __enter__(self):
