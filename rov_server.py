@@ -2,11 +2,14 @@ import Pyro4
 import subprocess
 import time
 
+
 @Pyro4.expose
 class ROVSyncer(object):
     def __init__(self):
+        self._sensor = {'temp': 0.0,
+                        'pressure': 0.0,
+                        'time': time.time()}
         print('Created syncer')
-        self._sensor = {'temp': 45.7, 'time': time.time()}
 
     @property
     def sensor(self):
@@ -17,20 +20,15 @@ class ROVSyncer(object):
         self._sensor.update(values)
         self._sensor['time'] = time.time()
 
-    def echo(self, msg):
-        return 'Server responds: {}'.format(msg)
-
 
 @Pyro4.expose
 class ROVServer(ROVSyncer):
     def __init__(self):
-        self.ns_process = subprocess.Popen(
-            'python -m Pyro4.naming',
-            shell=False)
+        self.ns_process = subprocess.Popen('pyro4-ns', shell=False)
         self.daemon = Pyro4.Daemon()
         uri = self.daemon.register(self)
-        with Pyro4.locateNS() as nameserver:
-            nameserver.register("ROVServer", uri)
+        with Pyro4.locateNS() as name_server:
+            name_server.register("ROVServer", uri)
         super(ROVServer, self).__init__()
 
     @Pyro4.oneway
@@ -52,6 +50,5 @@ class ROVServer(ROVSyncer):
 
 
 if __name__ == '__main__':
-
     with ROVServer() as server:
         server.serve()
