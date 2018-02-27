@@ -8,7 +8,7 @@ import pygame
 class Key(object):
     """Manages the state of a specific key on the keyboard"""
     def __init__(self, KeyASCII, ASCII, common, keycode, mode='hold'):
-        self._state = 'what'
+        self._state = False
         self._KeyASCII = KeyASCII
         self._ASCII = ASCII
         self._common = common
@@ -40,9 +40,6 @@ class Key(object):
 
     @state.setter
     def state(self, state):
-        self._state = state
-
-    def set(self, state):
         self._state = state
 
     @property
@@ -96,8 +93,7 @@ class KeyManager(object):
 
     def set(self, key, value):
         print('set {} = {}'.format(key, value))
-        # self.get(key).state = value
-        self.get(key).set(value)
+        self.get(key).state = value
 
     def set_from_pygame_event(self, event):
         for key in self._keys:
