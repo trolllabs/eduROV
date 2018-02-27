@@ -1,7 +1,6 @@
 var last_key;
 var key_dict = {event:'', keycode:0};
-var image_rotation = 180;
-var image_rotated = true;
+var video_rotation = 180;
 var getsensorID = setInterval(get_sensor, 10000);
 var MINIMUM_PANEL_WIDTH = 200;
 
@@ -36,15 +35,9 @@ function send_keys(json_string){
 }
 
 function rotate_image(){
-    image_rotation += 180;
-    document.getElementById("image").style.transform = `rotate(${image_rotation}deg)`;
-//    if (image_rotated){
-//        image_rotated = false;
-//        document.getElementById("image").style.transform = "rotate(0deg)";
-//    } else{
-//        image_rotated = true;
-//        document.getElementById("image").style.transform = "rotate(180deg)";
-//    }
+    video_rotation += 180;
+    document.getElementById("image").style.transform =
+        `rotate(${video_rotation}deg)`;
 }
 
 function get_sensor(){
