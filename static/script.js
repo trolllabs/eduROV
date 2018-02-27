@@ -76,7 +76,7 @@ function set_size(){
 
     var imgDispW = (bodH - 2*pad)*imgR;
     var imgDispH = imgDispW / imgR;
-    var panelW = max(parseInt((bodW-2*pad-imgDispW)/2), MINIMUM_PANEL_WIDTH);
+    var panelW = Math.max(parseInt((bodW-2*pad-imgDispW)/2), MINIMUM_PANEL_WIDTH);
     document.getElementsByClassName("grid-container")[0].setAttribute("style",
     `grid-template-columns: ${panelW}px auto ${panelW}px`);
 }
