@@ -1,7 +1,7 @@
 var last_key;
 var key_dict = {event:'', keycode:0};
 var image_rotated = false;
-var getsensorID = setInterval(get_sensor, 1000);
+var getsensorID = setInterval(get_sensor, 10000);
 var MINIMUM_PANEL_WIDTH = 200;
 
 function sleep(ms) {
