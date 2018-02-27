@@ -6,16 +6,44 @@ import pygame
 
 @Pyro4.expose
 class Key(object):
-    def __init__(self, KeyASCII, ASCII, common, keycode):
-        self.value = False
-        self.KeyASCII = KeyASCII
-        self.ASCII = ASCII
-        self.common = common
+    """Manages the state of a specific key on the keyboard"""
+    def __init__(self, KeyASCII, ASCII, common, keycode, mode='hold'):
+        self._state = 'what'
+        self._KeyASCII = KeyASCII
+        self._ASCII = ASCII
+        self._common = common
         if keycode:
-            self.keycode = int(keycode)
+            self._keycode = int(keycode)
         else:
-            self.keycode = None
-        self._mode = 'hold'
+            self._keycode = None
+        self._mode = self._valid_mode(mode)
+
+    @property
+    def keycode(self):
+        return self._keycode
+
+    @property
+    def KeyASCII(self):
+        return self._KeyASCII
+
+    @property
+    def ASCII(self):
+        return self._ASCII
+
+    @property
+    def common(self):
+        return self._common
+
+    @property
+    def state(self):
+        return self._state
+
+    @state.setter
+    def state(self, state):
+        self._state = state
+
+    def set(self, state):
+        self._state = state
 
     @property
     def mode(self):
@@ -23,81 +51,96 @@ class Key(object):
 
     @mode.setter
     def mode(self, mode):
-        self._mode = mode
-
-    def __str__(self):
-        return str(vars(self))
-
-    def set(self, value):
-        if value:
-            self.value = True
-        else:
-            self.value = False
+        self._mode = self._valid_mode(mode)
 
     def keydown(self):
-        self.value = True
+        if self._mode == 'toggle':
+            self._state = not self._state
+        else:
+            self._state = True
 
     def keyup(self):
-        self.value = False
+        if self._mode != 'toggle':
+            self._state = False
+
+    def _valid_mode(self, mode):
+        if mode in ['hold', 'toggle']:
+            return mode
+        else:
+            raise ValueError('Key mode has to be hold or toggle, not {}'
+                             .format(mode))
+
+    def __str__(self):
+        print_dict = {}
+        for key in vars(self):
+            print_dict.update({key.lstrip('_'): vars(self)[key]})
+        return str(print_dict)
 
 
 @Pyro4.expose
 class KeyManager(object):
+    """Keeps control of all user input from keyboard"""
     def __init__(self):
-        self.keys = []
+        self._keys = []
         with open('keys.txt', 'r') as f:
             for line in f.readlines()[1:]:
-                KeyASCII=line[0:14].rstrip()
-                ASCII=line[14:22].rstrip()
-                common=line[22:44].rstrip()
-                keycode=line[44:].rstrip()
-                self.keys.append(Key(KeyASCII, ASCII, common, keycode))
+                KeyASCII = line[0:14].rstrip()
+                ASCII = line[14:22].rstrip()
+                common = line[22:44].rstrip()
+                keycode = line[44:].rstrip()
+                self._keys.append(Key(KeyASCII, ASCII, common, keycode))
+
+    @property
+    def keys(self):
+        return self._keys
 
     def set(self, key, value):
-        key = self.lookup(key)
-        key.set(value)
+        print('set {} = {}'.format(key, value))
+        # self.get(key).state = value
+        self.get(key).set(value)
 
     def set_from_pygame_event(self, event):
-        for key in self.keys:
+        for key in self._keys:
             if event.key == pygame.__getattribute__(key.KeyASCII):
-                if event.type == event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:
                     key.keydown()
-                elif event.type == event.type == pygame.KEYUP:
+                elif event.type == pygame.KEYUP:
                     key.keyup()
                 return
 
-    def lookup(self, key):
-        if isinstance(key, str):
-            for _key in self.keys:
-                if _key.common == key:
-                    return _key
-        elif isinstance(key, int):
-            for _key in self.keys:
-                if _key.keycode == key:
-                    return _key
-        raise ValueError('Could not find key {}'.format(key))
+    def set_from_js_dict(self, js_dict):
+        for key in self._keys:
+            if key.keycode == js_dict['keycode']:
+                if js_dict['event'] == 'KEYDOWN':
+                    key.keydown()
+                elif js_dict['event'] == 'KEYUP':
+                    key.keyup()
+                return
 
-    def display(self, key):
-        print(self.lookup(key))
+    def get(self, key_idx):
+        if isinstance(key_idx, str):
+            for key in self._keys:
+                if key.common == key_idx or key.KeyASCII == key_idx:
+                    return key
+        elif isinstance(key_idx, int):
+            for key in self._keys:
+                if key.keycode == key_idx:
+                    return key
+        raise ValueError('Could not find key {}'.format(key_idx))
 
-    def get(self, key):
-        return self.lookup(key).value
-
-    def set_mode(self, key, mode):
-        self.lookup(key).mode = mode
-
-    def mode(self, key):
-        return self.lookup(key).mode
+    def state(self, key):
+        print('state {} = {}'.format(key, self.get(key).state))
+        return self.get(key).state
 
 
 @Pyro4.expose
 class ROVSyncer(object):
+    """Holds all variables for ROV related to control and sensors"""
     def __init__(self):
         self._sensor = {'temp': 0.0,
                         'pressure': 0.0,
                         'time': time.time()}
         self._keys = KeyManager()
-        print('Created syncer')
 
     @property
     def keys(self):
@@ -115,12 +158,15 @@ class ROVSyncer(object):
 
 @Pyro4.expose
 class ROVServer(ROVSyncer):
+    """Extends ROVSyncer such that it can be accessed on multiple machines"""
     def __init__(self):
         self.ns_process = subprocess.Popen('pyro4-ns', shell=False)
         self.daemon = Pyro4.Daemon()
-        uri = self.daemon.register(self)
+        rov_server_uri = self.daemon.register(self)
+        key_manager_uri = self.daemon.register(KeyManager)
         with Pyro4.locateNS() as name_server:
-            name_server.register("ROVServer", uri)
+            name_server.register("ROVServer", rov_server_uri)
+            name_server.register("KeyManager", key_manager_uri)
         super(ROVServer, self).__init__()
 
     @Pyro4.oneway
@@ -142,11 +188,9 @@ class ROVServer(ROVSyncer):
 
 
 if __name__ == '__main__':
-    # with ROVServer() as server:
-    #     server.serve()
-    keys = KeyManager()
-    keys.display(87)
-    keys.set(87, True)
-    keys.display(87)
-    keys.set_mode('q', 'toggle')
-    print(keys.mode('q'))
+    with ROVServer() as server:
+        server.serve()
+    # rov = ROVSyncer()
+    # print(rov.keys.get('w'))
+    # rov.keys.get('w').state = True
+    # print(rov.keys.get('w'))
