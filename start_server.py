@@ -85,10 +85,11 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             content_len = int(self.headers['Content-Length'])
             post_body = self.rfile.read(content_len).decode('utf-8')
             json_obj = json.loads(post_body)
-            print_text = ', '.join([KEYCODES[int(key)] for key in json_obj
-                                    if int(key) in KEYCODES])
-            if print_text:
-                print(print_text)
+            print(json_obj)
+            # print_text = ', '.join([KEYCODES[int(key)] for key in json_obj
+            #                         if int(key) in KEYCODES])
+            # if print_text:
+            #     print(print_text)
             self.send_response(200)
             self.end_headers()
 

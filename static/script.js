@@ -1,5 +1,5 @@
 var last_key;
-var pressed_keys = {};
+var key_dict = {'event'='', 'keycode':0};
 var image_rotated = false;
 var getsensorID = setInterval(get_sensor, 1000);
 var MINIMUM_PANEL_WIDTH = 200;
@@ -11,15 +11,17 @@ function sleep(ms) {
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode != last_key){
-        pressed_keys[evt.keyCode] = 1;
-        send_keys(JSON.stringify(pressed_keys))
+        key_dict['event'] = 'KEYDOWN';
+        key_dict['keycode'] = evt.keyCode;
+        send_keys(JSON.stringify(key_dict))
         last_key = evt.keyCode;
     }
 }
 
 document.onkeyup = function(evt) {
-    delete pressed_keys[evt.keyCode];
-    send_keys(JSON.stringify(pressed_keys))
+    key_dict['event'] = 'KEYUP';
+    key_dict['keycode'] = evt.keyCode;
+    send_keys(JSON.stringify(key_dict))
     last_key = 0;
 }
 
