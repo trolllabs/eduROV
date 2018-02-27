@@ -7,7 +7,8 @@ body {
 #image {
     display: block;
     margin: auto auto;
-    width: 100%
+    width: 100%;
+    transform: rotate(180deg);
 }
 
 .grid-container {
