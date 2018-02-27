@@ -2,6 +2,7 @@ var last_key;
 var pressed_keys = {};
 var image_rotated = false;
 var getsensorID = setInterval(get_sensor, 1000);
+var MINIMUM_PANEL_WIDTH = 200;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -73,7 +74,7 @@ function set_size(){
 
     var imgDispW = (bodH - 2*pad)*imgR;
     var imgDispH = imgDispW / imgR;
-    var panelW = parseInt((bodW-2*pad-imgDispW)/2);
+    var panelW = max(parseInt((bodW-2*pad-imgDispW)/2), MINIMUM_PANEL_WIDTH);
     document.getElementsByClassName("grid-container")[0].setAttribute("style",
     `grid-template-columns: ${panelW}px auto ${panelW}px`);
 }
