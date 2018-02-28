@@ -97,6 +97,7 @@ class ROVSyncer(object):
         self._sensor = {'temp': 0.0,
                         'pressure': 0.0,
                         'time': time.time()}
+        self._run = True
 
     @property
     def sensor(self):
@@ -106,6 +107,14 @@ class ROVSyncer(object):
     def sensor(self, values):
         self._sensor.update(values)
         self._sensor['time'] = time.time()
+
+    @property
+    def run(self):
+        return self._run
+
+    @run.setter
+    def run(self, bool):
+        self._run = bool
 
 
 # @Pyro4.expose
@@ -139,10 +148,20 @@ class ROVSyncer(object):
 #     def serve(self):
 #         self.daemon.requestLoop()
 
+# class NameServer():
+#     def __init__(self):
+#         self.ns_process = subprocess.Popen('pyro4-ns', shell=False)
+#
+#     def __exit__(self, exc_type, exc_val, exc_tb):
+#         print('Shutting down the pyro nameserver')
+#         self.ns_process.terminate()
+#         self.ns_process.wait()
+#
+#     def __enter__(self):
+#         return self
+
 
 def start_variable_server():
-    subprocess.Popen('pyro4-ns', shell=False)
-
     rov = ROVSyncer()
     keys = KeyManager()
     with Pyro4.Daemon() as daemon:
