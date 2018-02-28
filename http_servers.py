@@ -178,12 +178,6 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
 
     with picamera.PiCamera(resolution=video_resolution,
                            framerate=fps) as camera:
-        with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
-            print(keys.state('r'))
-            keys.keydown('r')
-            print(keys.state('r'))
-            keys.keyup('r')
-            print(keys.state('r'))
         stream_output = StreamingOutput()
         camera.start_recording(stream_output, format='mjpeg')
         try:
