@@ -54,7 +54,7 @@ function get_sensor(){
                 var left_text = "";
                 var sensor = JSON.parse(this.responseText);
                 for (var key in sensor) {
-                    left_text = left_text.concat(key + ": " + sensor[key] +
+                    left_text = left_text.concat(key + ": " + sensor[key].toFixed(2) +
                     "<br />");
                 }
                 document.getElementById("sensordata").innerHTML = left_text;
