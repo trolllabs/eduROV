@@ -2,7 +2,6 @@ import io
 import json
 import logging
 import os
-import platform
 import random
 import socketserver
 import time
@@ -11,11 +10,10 @@ from threading import Condition
 
 import Pyro4
 
-from support import server_ip
+from support import server_ip, detect_pi
 
-if 'raspberrypi' in platform._syscmd_uname('-a'):
+if detect_pi():
     import picamera
-cwd = os.path.dirname(os.path.abspath(__file__))
 
 
 class StreamingOutput(object):
@@ -45,6 +43,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     output = None
     keys = None
     rov = None
+    cwd = os.path.dirname(os.path.abspath(__file__))
     index_file = os.path.join(cwd, 'index.html')
     css_file = os.path.join(cwd, './static/style.css')
     script_file = os.path.join(cwd, './static/script.js')
@@ -162,7 +161,7 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        print('Shutting down server')
+        print('Shutting down http server')
         if self.debug:
             finish = time.time()
             frame_count = self.RequestHandlerClass.output.count

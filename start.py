@@ -47,6 +47,9 @@ if __name__ == '__main__':
         variable_server.start()
         time.sleep(5)
 
+        # Sense hat
+
+
         # Web servers
         video_res = valid_resolution(args.r)
         start_http_server(video_resolution=video_res,

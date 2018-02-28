@@ -11,6 +11,13 @@ STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
                         '1920x1080']
 
 
+def detect_pi():
+    if 'raspberrypi' in platform._syscmd_uname('-a'):
+        return True
+    else:
+        return False
+
+
 def valid_resolution(resolution):
     if 'x' in resolution:
         if len(resolution.split('x')) is 2:

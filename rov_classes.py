@@ -20,7 +20,6 @@ class Key(object):
             self.keycode = None
 
     def keydown(self):
-        print('{} keydown'.format(self.common))
         if self.mode == 'toggle':
             self.state = not self.state
         else:
