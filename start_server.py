@@ -4,7 +4,7 @@ import time
 import sys
 from support import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS, server_ip
-from .servers import StreamingOutput, WebpageServer, RequestHandler
+from servers import StreamingOutput, WebpageServer, RequestHandler
 
 if 'raspberrypi' in platform._syscmd_uname('-a'):
     import picamera
