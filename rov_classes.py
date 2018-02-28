@@ -41,6 +41,7 @@ class KeyManager(object):
 
     def __init__(self):
         self.keys = []
+        self.var = 45
         with open('keys.txt', 'r') as f:
             for line in f.readlines()[1:]:
                 KeyASCII = line[0:14].rstrip()
@@ -91,7 +92,11 @@ class KeyManager(object):
         self.get(key).keyup()
 
     def variable(self):
-        return 45
+        return self.var
+
+    def set_variable(self, value):
+        self.var = value
+
 
 
 class ROVSyncer(object):
