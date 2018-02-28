@@ -17,6 +17,7 @@ from support import server_ip
 
 if 'raspberrypi' in platform._syscmd_uname('-a'):
     import picamera
+cwd = os.path.dirname(os.path.abspath(__file__))
 
 
 class StreamingOutput(object):
@@ -44,7 +45,6 @@ class StreamingOutput(object):
 class RequestHandler(server.BaseHTTPRequestHandler):
     """Request server, handles request from the browser"""
     output = None
-    cwd = os.path.dirname(os.path.abspath(__file__))
     index_file = os.path.join(cwd, 'index.html')
     css_file = os.path.join(cwd, './static/style.css')
     script_file = os.path.join(cwd, './static/script.js')
@@ -174,10 +174,10 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
     print('Visit the webpage at {}'.format(server_ip(server_port)))
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
-    variable_server = subprocess.Popen('python rov_classes.py', shell=False)
+    subprocess.Popen('python {}'.format(os.path.join(cwd, 'rov_classes.py')), shell=False)
     # variable_server = multiprocessing.Process(target=start_variable_server)
     # variable_server.start()
-    # time.sleep(2)
+    time.sleep(4)
 
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         print(keys.state('r'))
