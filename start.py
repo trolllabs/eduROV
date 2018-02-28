@@ -18,12 +18,11 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
     pyro_classes.start()
     time.sleep(5)
 
-    client1 = Process(target=start_http_server,
+    web = Process(target=start_http_server,
                       args=(video_resolution, fps, server_port, debug))
-    client2 = Process(target=start_sense_hat)
-    clients = [client1, client2]
-    for cli in clients:
-        cli.start()
+    sense = Process(target=start_sense_hat)
+    web.start()
+    sense.start()
     with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
         try:
             while rov.run:
@@ -33,14 +32,13 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
         finally:
             print('Shutting down')
             rov.run = False
-            for cli in clients:
-                cli.join()
+            sense.join()
             time.sleep(3)
             print('shutting down the rest')
-            if pyro_classes.is_alive:
-                pyro_classes.terminate()
+            web.terminate()
+            pyro_classes.terminate()
             name_server.terminate()
-            name_server.wait()
+            # name_server.wait()
 
 
 if __name__ == '__main__':
