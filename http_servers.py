@@ -176,6 +176,13 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
     # variable_server = multiprocessing.Process(target=start_variable_server)
     # variable_server.start()
 
+    with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
+        print(keys.state('r'))
+        keys.keydown('r')
+        print(keys.state('r'))
+        keys.keyup('r')
+        print(keys.state('r'))
+
     with picamera.PiCamera(resolution=video_resolution,
                            framerate=fps) as camera:
         stream_output = StreamingOutput()
