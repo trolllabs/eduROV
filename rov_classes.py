@@ -137,3 +137,8 @@ class ROVServer(ROVSyncer):
 
     def serve(self):
         self.daemon.requestLoop()
+
+
+def start_variable_server():
+    with ROVServer() as server:
+        server.serve()

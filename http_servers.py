@@ -8,16 +8,13 @@ import socketserver
 import time
 from http import server
 from threading import Condition
+import multiprocessing
 
+from rov_classes import start_variable_server
 from support import server_ip
 
 if 'raspberrypi' in platform._syscmd_uname('-a'):
     import picamera
-
-cwd = os.path.dirname(os.path.abspath(__file__))
-index_file = os.path.join(cwd, 'index.html')
-css_file = os.path.join(cwd, './static/style.css')
-script_file = os.path.join(cwd, './static/script.js')
 
 
 class StreamingOutput(object):
@@ -45,14 +42,18 @@ class StreamingOutput(object):
 class RequestHandler(server.BaseHTTPRequestHandler):
     """Request server, handles request from the browser"""
     output = None
+    cwd = os.path.dirname(os.path.abspath(__file__))
+    index_file = os.path.join(cwd, 'index.html')
+    css_file = os.path.join(cwd, './static/style.css')
+    script_file = os.path.join(cwd, './static/script.js')
 
     def serve_static(self, path):
         if 'style.css' in path:
-            with open(css_file, 'rb') as f:
+            with open(self.css_file, 'rb') as f:
                 content = f.read()
                 content_type = 'text/css'
         elif 'script.js' in path:
-            with open(script_file, 'rb') as f:
+            with open(self.script_file, 'rb') as f:
                 content = f.read()
                 content_type = 'text/javascript'
         else:
@@ -123,7 +124,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.send_header('Location', '/index.html')
             self.end_headers()
         elif self.path == '/index.html':
-            with open(index_file, 'rb') as f:
+            with open(self.index_file, 'rb') as f:
                 content = f.read()
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
@@ -171,6 +172,8 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
     print('Visit the webpage at {}'.format(server_ip(server_port)))
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
+    variable_server = multiprocessing.Process(target=start_variable_server)
+    variable_server.start()
 
     with picamera.PiCamera(resolution=video_resolution,
                            framerate=fps) as camera:
@@ -179,7 +182,8 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
         try:
             with WebpageServer(server_address=('', server_port),
                                RequestHandlerClass=RequestHandler,
-                               stream_output=stream_output) as server:
+                               stream_output=stream_output,
+                               debug=debug) as server:
                 server.serve_forever()
         finally:
             camera.stop_recording()
