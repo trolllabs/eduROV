@@ -144,3 +144,6 @@ class ROVServer(ROVSyncer):
 def start_variable_server():
     with ROVServer() as server:
         server.serve()
+
+if __name__ == '__main__':
+    start_variable_server()
