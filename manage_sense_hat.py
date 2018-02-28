@@ -62,6 +62,7 @@ def start_sense_hat():
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             while rov.run:
+                # Read key presses
                 if keys.state('up arrow'):
                     sense.set_pixels(up)
                 elif keys.state('down arrow'):
@@ -72,7 +73,10 @@ def start_sense_hat():
                     sense.set_pixels(left)
                 else:
                     sense.clear()
-                time.sleep(0.005)
+                # Update sensors
+                rov.sensor = {'temp':sense.get_temperature(),
+                              'pressure':sense.get_pressure(),
+                              'humidity':sense.get_humidity()}
     print('closing sense hat')
 
 

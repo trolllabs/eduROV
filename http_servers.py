@@ -73,11 +73,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         self.end_headers()
 
     def serve_sensor(self):
-        cpu_load = random.randrange(100)
-        temperature = random.randrange(10, 30)
-        r = {"cpu_load": cpu_load, "temperature": temperature}
-        r = json.dumps(r)
-        content = r.encode('utf-8')
+        sensor_values = json.dumps(self.rov.sensor)
+        content = sensor_values.encode('utf-8')
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')
         self.send_header('Content-Length', len(content))
@@ -114,10 +111,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             post_body = self.rfile.read(content_len).decode('utf-8')
             json_obj = json.loads(post_body)
             self.keys.set_from_js_dict(json_obj)
-            # print(self.keys.variable())
-            # self.keys.set_variable(20)
-            # print(self.keys.variable())
-            # self.keys.set('up arrow', True)
             self.send_response(200)
             self.end_headers()
 
