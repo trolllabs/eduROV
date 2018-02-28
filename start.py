@@ -3,6 +3,7 @@ import multiprocessing
 import time
 
 from http_servers import start_http_server
+from manage_sense_hat import start_sense_hat
 from rov_classes import start_variable_server
 from support import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS
@@ -48,7 +49,8 @@ if __name__ == '__main__':
         time.sleep(5)
 
         # Sense hat
-
+        sense_hat = multiprocessing.Process(target=start_sense_hat)
+        sense_hat.start()
 
         # Web servers
         video_res = valid_resolution(args.r)
