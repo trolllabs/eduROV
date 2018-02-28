@@ -20,12 +20,14 @@ class Key(object):
             self.keycode = None
 
     def keydown(self):
+        print('{} keydown'.format(self.common))
         if self.mode == 'toggle':
             self.state = not self.state
         else:
             self.state = True
 
     def keyup(self):
+        print('{} keyup'.format(self.common))
         if self.mode != 'toggle':
             self.state = False
 
@@ -82,6 +84,7 @@ class KeyManager(object):
         raise ValueError('Could not find key {}'.format(key_idx))
 
     def state(self, key):
+        print('state: {} = {}'.format(self.get(key).common, self.get(key).state))
         return self.get(key).state
 
     def keydown(self, key):
