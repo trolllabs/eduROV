@@ -14,7 +14,7 @@ class KeyManager():
     def value(self, val):
         self._value = val
 
-if __name__ == "__main__":
+def start():
     subprocess.Popen('pyro4-ns', shell=False)
 
     keys = KeyManager()
@@ -23,3 +23,7 @@ if __name__ == "__main__":
         with Pyro4.locateNS() as ns:
             ns.register("KeyManager", uri)
         daemon.requestLoop()
+
+
+if __name__ == "__main__":
+    start()
