@@ -1,4 +1,4 @@
-from rov_classes import ROVServer
+from variable_server import ROVServer
 
 
 if __name__ == '__main__':
