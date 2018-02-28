@@ -71,3 +71,6 @@ def start_sense_hat():
             else:
                 sense.clear()
             time.sleep(1)
+
+if __name__ == '__main__':
+    start_sense_hat()

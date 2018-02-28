@@ -1,5 +1,6 @@
 import argparse
 import multiprocessing
+import subprocess
 import time
 
 from http_servers import start_http_server
@@ -49,8 +50,9 @@ if __name__ == '__main__':
         time.sleep(5)
 
         # Sense hat
-        sense_hat = multiprocessing.Process(target=start_sense_hat)
-        sense_hat.start()
+        subprocess.Popen(['python', 'manage_sense_hat.py'], shell=False)
+        # sense_hat = multiprocessing.Process(target=start_sense_hat)
+        # sense_hat.start()
 
         # Web servers
         video_res = valid_resolution(args.r)
