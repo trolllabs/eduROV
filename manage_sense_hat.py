@@ -58,9 +58,9 @@ right = [
 def start_sense_hat():
     sense = SenseHat()
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
+        print(keys.variable())
         while True:
-            print(keys.state(38))
-            if keys.state(38):
+            if keys.state('up arrow'):
                 sense.set_pixels(up)
             elif keys.state('down arrow'):
                 sense.set_pixels(down)

@@ -50,9 +50,7 @@ class KeyManager(object):
                 self.keys.append(Key(KeyASCII, ASCII, common, keycode))
 
     def set(self, key, state):
-        print('before {}'.format(self.get(key).state))
         self.get(key).state = state
-        print('after {}'.format(self.get(key).state))
 
     def set_from_pygame_event(self, event):
         for key in self.keys:
@@ -84,7 +82,6 @@ class KeyManager(object):
         raise ValueError('Could not find key {}'.format(key_idx))
 
     def state(self, key):
-        print('state: {} = {}'.format(self.get(key).common, self.get(key).state))
         return self.get(key).state
 
     def keydown(self, key):
@@ -92,6 +89,9 @@ class KeyManager(object):
 
     def keyup(self, key):
         self.get(key).keyup()
+
+    def variable(self):
+        return 45
 
 
 class ROVSyncer(object):
