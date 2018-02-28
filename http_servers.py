@@ -113,7 +113,10 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.keys.set_from_js_dict(json_obj)
             self.send_response(200)
             self.end_headers()
-
+        elif self.path.startswith('/stop'):
+            self.send_response(200)
+            self.end_headers()
+            self.rov.run = False
         else:
             self.send_404()
 

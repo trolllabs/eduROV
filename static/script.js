@@ -34,6 +34,13 @@ function send_keys(json_string){
     }
 }
 
+function stop_rov(){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "stop", true);
+    xhttp.setRequestHeader("Content-Type", "application/text");
+    xhttp.send();
+}
+
 function rotate_image(){
     video_rotation += 180;
     document.getElementById("image").style.transform =
