@@ -1,1 +1,4 @@
 picamera==1.13
+pygame==1.9.3
+Pyro4==4.70
+serpent==1.23

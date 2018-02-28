@@ -1,26 +1,26 @@
-import io
-import logging
-import socketserver
-from threading import Condition
-from http import server
-import socket
-import struct
-import os
 import argparse
-import time
+import io
+import json
+import logging
+import os
 import platform
 import random
-import json
+import socketserver
+import time
+import sys
+from http import server
+from threading import Condition
+from support import valid_resolution, args_resolution_help, \
+    STANDARD_RESOLUTIONS, server_ip
+
 if 'raspberrypi' in platform._syscmd_uname('-a'):
     import picamera
-    import fcntl
-from support import valid_resolution, args_resolution_help, \
-    STANDARD_RESOLUTIONS, KEYCODES
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 index_file = os.path.join(cwd, 'index.html')
 css_file = os.path.join(cwd, './static/style.css')
 script_file = os.path.join(cwd, './static/script.js')
+SERVER_PORT = 8000
 
 
 class StreamingOutput(object):
@@ -44,6 +44,7 @@ class StreamingOutput(object):
 
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
+    """Main server that provides the webpage"""
 
     def serve_static(self, path):
         if 'style.css' in path:
@@ -80,6 +81,30 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(content)
 
+    def serve_stream(self):
+        self.send_response(200)
+        self.send_header('Age', 0)
+        self.send_header('Cache-Control', 'no-cache, private')
+        self.send_header('Pragma', 'no-cache')
+        self.send_header('Content-Type',
+                         'multipart/x-mixed-replace; boundary=FRAME')
+        self.end_headers()
+        try:
+            while True:
+                with output.condition:
+                    output.condition.wait()
+                    frame = output.frame
+                self.wfile.write(b'--FRAME\r\n')
+                self.send_header('Content-Type', 'image/jpeg')
+                self.send_header('Content-Length', len(frame))
+                self.end_headers()
+                self.wfile.write(frame)
+                self.wfile.write(b'\r\n')
+        except Exception as e:
+            logging.warning(
+                'Removed streaming client %s: %s',
+                self.client_address, str(e))
+
     def do_POST(self):
         if self.path.startswith('/keys.json'):
             content_len = int(self.headers['Content-Length'])
@@ -98,7 +123,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Location', '/index.html')
             self.end_headers()
         elif self.path == '/index.html':
-            with open(index_file,'rb') as f:
+            with open(index_file, 'rb') as f:
                 content = f.read()
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
@@ -110,28 +135,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         elif self.path.startswith('/sensordata.json'):
             self.serve_sensor()
         elif self.path == '/stream.mjpg':
-            self.send_response(200)
-            self.send_header('Age', 0)
-            self.send_header('Cache-Control', 'no-cache, private')
-            self.send_header('Pragma', 'no-cache')
-            self.send_header('Content-Type',
-                             'multipart/x-mixed-replace; boundary=FRAME')
-            self.end_headers()
-            try:
-                while True:
-                    with output.condition:
-                        output.condition.wait()
-                        frame = output.frame
-                    self.wfile.write(b'--FRAME\r\n')
-                    self.send_header('Content-Type', 'image/jpeg')
-                    self.send_header('Content-Length', len(frame))
-                    self.end_headers()
-                    self.wfile.write(frame)
-                    self.wfile.write(b'\r\n')
-            except Exception as e:
-                logging.warning(
-                    'Removed streaming client %s: %s',
-                    self.client_address, str(e))
+            self.serve_stream()
         else:
             self.send_404()
 
@@ -139,37 +143,6 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
-
-
-def get_ip_address(ifname):
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    ip = socket.inet_ntoa(fcntl.ioctl(
-        s.fileno(),
-        0x8915,  # SIOCGIFADDR
-        struct.pack('256s', ifname[:15])
-    )[20:24])
-    print(ip)
-    s.close()
-
-
-def print_server_ip():
-    online_ips = []
-    for interface in [b'eth0', b'wlan0']:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        try:
-            ip = socket.inet_ntoa(fcntl.ioctl(
-                sock.fileno(),
-                0x8915,
-                struct.pack('256s', interface[:15])
-            )[20:24])
-            online_ips.append(ip)
-        except OSError:
-            pass
-        sock.close()
-    print('Visit the webpage at {}'
-          .format(' or '.join(['{}:8000'.format(ip) for ip in online_ips])))
 
 
 if __name__ == '__main__':
@@ -181,7 +154,7 @@ if __name__ == '__main__':
         type=str,
         default='1024x768',
         help='''resolution, use format WIDTHxHEIGHT or an integer 0-{} 
-        (default 1024x600)'''.format(len(STANDARD_RESOLUTIONS)-1))
+        (default 1024x600)'''.format(len(STANDARD_RESOLUTIONS) - 1))
     parser.add_argument(
         '-fps',
         metavar='FRAMERATE',
@@ -200,9 +173,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.resolutions:
         args_resolution_help()
+        sys.exit()
 
     res = valid_resolution(args.r)
-    print_server_ip()
+    print('Visit the webpage at {}'.format(server_ip(SERVER_PORT)))
     if args.debug:
         print('Using {} @ {} fps'.format(res, args.fps))
 
@@ -211,7 +185,7 @@ if __name__ == '__main__':
         camera.start_recording(output, format='mjpeg')
         start = time.time()
         try:
-            address = ('', 8000)
+            address = ('', SERVER_PORT)
             server = StreamingServer(address, StreamingHandler)
             server.serve_forever()
         except KeyboardInterrupt:
@@ -222,4 +196,4 @@ if __name__ == '__main__':
             if args.debug:
                 print('Sent {} images in {:.1f} seconds at {:.2f} fps'
                       .format(output.count,
-                              finish-start, output.count/(finish-start)))
+                              finish - start, output.count / (finish - start)))

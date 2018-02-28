@@ -1,11 +1,14 @@
-import sys
+import platform
+import socket
+import struct
+
+if 'raspberrypi' in platform._syscmd_uname('-a'):
+    import fcntl
 
 STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
                         '960x640', '1024x576', '1024x600', '1024x768',
                         '1152x864', '1280x720', '1296x972', '1640x1232',
                         '1920x1080']
-
-KEYCODES = {37: 'left', 38: 'up', 39: 'right', 40: 'down'}
 
 
 def valid_resolution(resolution):
@@ -29,4 +32,21 @@ def args_resolution_help():
     print('{:<8} {:<10}'.format('Number', 'Resolution'))
     for idx, res in enumerate(STANDARD_RESOLUTIONS):
         print('{:<8} {:<10}'.format(idx, res))
-    sys.exit()
+
+
+def server_ip(port):
+    online_ips = []
+    for interface in [b'eth0', b'wlan0']:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            ip = socket.inet_ntoa(fcntl.ioctl(
+                sock.fileno(),
+                0x8915,
+                struct.pack('256s', interface[:15])
+            )[20:24])
+            online_ips.append(ip)
+        except OSError:
+            pass
+        sock.close()
+    return ' or '.join(['{}:{}'.format(ip, port) for ip in online_ips])
