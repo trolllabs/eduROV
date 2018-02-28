@@ -1,4 +1,5 @@
 import Pyro4
+import subprocess
 
 @Pyro4.expose
 class KeyManager():
@@ -14,8 +15,9 @@ class KeyManager():
         self._value = val
 
 if __name__ == "__main__":
-    keys = KeyManager()
+    subprocess.Popen('pyro4-ns', shell=False)
 
+    keys = KeyManager()
     with Pyro4.Daemon() as daemon:
         uri = daemon.register(keys)
         with Pyro4.locateNS() as ns:
