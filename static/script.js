@@ -57,7 +57,10 @@ function get_sensor(){
                     left_text = left_text.concat(key + ": " +
                     sensor[key].toFixed(1) + "<br />");
                 }
+                var roll = sensor['roll']
                 document.getElementById("sensordata").innerHTML = left_text;
+                document.getElementById("roll").style.transform =
+                    `rotate(${roll}deg)`;
             }
         };
     xhttp.open("GET", "sensordata.json", true);
