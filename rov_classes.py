@@ -136,6 +136,7 @@ class ROVServer(ROVSyncer):
         self.daemon.close()
 
     def serve(self):
+        print('Will now start the request loop')
         self.daemon.requestLoop()
 
 
