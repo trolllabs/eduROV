@@ -48,21 +48,12 @@ if __name__ == '__main__':
         print('Using {} @ {} fps'.format(res, args.fps))
 
     with picamera.PiCamera(resolution=res, framerate=args.fps) as camera:
-        output = StreamingOutput()
-        camera.start_recording(output, format='mjpeg')
-        start = time.time()
+        stream_output = StreamingOutput()
+        camera.start_recording(stream_output, format='mjpeg')
         try:
-            address = ('', SERVER_PORT)
-            server = WebpageServer(server_address=address,
-                                   RequestHandlerClass=RequestHandler)
-            server.set_output(output)
-            server.serve_forever()
-        except KeyboardInterrupt:
-            print('Shutting down server')
+            with WebpageServer(server_address=('', SERVER_PORT),
+                                   RequestHandlerClass=RequestHandler,
+                                   stream_output=stream_output) as server:
+                server.serve_forever()
         finally:
             camera.stop_recording()
-            finish = time.time()
-            if args.debug:
-                print('Sent {} images in {:.1f} seconds at {:.2f} fps'
-                      .format(output.count,
-                              finish - start, output.count / (finish - start)))

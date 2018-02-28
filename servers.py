@@ -4,6 +4,7 @@ import json
 import logging
 import random
 import socketserver
+import time
 from http import server
 from threading import Condition
 
@@ -134,9 +135,23 @@ class RequestHandler(server.BaseHTTPRequestHandler):
 class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
-    def __init__(self, server_address, RequestHandlerClass):
-        super(WebpageServer, self).__init__(server_address, RequestHandlerClass)
+    def __init__(self, server_address, RequestHandlerClass,
+                 stream_output, debug=False):
+        self.start = time.time()
+        self.debug = debug
+        self.RequestHandlerClass.output = stream_output
+        super(WebpageServer, self).__init__(server_address,
+                                            RequestHandlerClass)
 
+    def __enter__(self):
+        return self
 
-    def set_output(self, output):
-        self.RequestHandlerClass.output = output
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print('Shutting down server')
+        if self.debug:
+            finish = time.time()
+            frame_count = self.RequestHandlerClass.output.count
+            print('Sent {} images in {:.1f} seconds at {:.2f} fps'
+                  .format(frame_count,
+                          finish - self.start,
+                          frame_count / (finish - self.start)))
