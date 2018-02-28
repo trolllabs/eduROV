@@ -4,6 +4,7 @@ import time
 from multiprocessing import Process
 
 import Pyro4
+import signal
 
 from http_servers import start_http_server
 from manage_sense_hat import start_sense_hat
@@ -11,9 +12,12 @@ from pyro_classes import start_pyro_classes
 from support import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS
 
+def preexec_function():
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
+
 
 def start_http_and_pyro(video_resolution, fps, server_port, debug):
-    name_server = subprocess.Popen('pyro4-ns', shell=False)
+    name_server = subprocess.Popen('pyro4-ns', shell=False, preexec_fn=preexec_function)
     pyro_classes = Process(target=start_pyro_classes)
     pyro_classes.start()
     time.sleep(5)
@@ -38,7 +42,6 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
             web.terminate()
             pyro_classes.terminate()
             name_server.terminate()
-            # name_server.wait()
 
 
 if __name__ == '__main__':
