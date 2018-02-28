@@ -1,4 +1,5 @@
 import time
+
 import Pyro4
 
 from support import detect_pi
@@ -53,18 +54,20 @@ right = [
     O, O, O, O, X, O, O, O
 ]
 
+
 def start_sense_hat():
     sense = SenseHat()
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         while True:
-            if keys.get('up arrow'):
-                sense.set_pixels(up)
-            elif keys.get('down arrow'):
-                sense.set_pixels(down)
-            elif keys.get('right arrow'):
-                sense.set_pixels(right)
-            elif keys.get('left arrow'):
-                sense.set_pixels(left)
-            else:
-                sense.clear()
+            print(keys.state('w'))
+            # if keys.get('up arrow'):
+            #     sense.set_pixels(up)
+            # elif keys.get('down arrow'):
+            #     sense.set_pixels(down)
+            # elif keys.get('right arrow'):
+            #     sense.set_pixels(right)
+            # elif keys.get('left arrow'):
+            #     sense.set_pixels(left)
+            # else:
+            #     sense.clear()
             time.sleep(0.1)
