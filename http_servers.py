@@ -9,6 +9,7 @@ import time
 from http import server
 from threading import Condition
 import multiprocessing
+import Pyro4
 
 from rov_classes import start_variable_server
 from support import server_ip
@@ -176,7 +177,8 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
     variable_server.start()
 
     with picamera.PiCamera(resolution=video_resolution,
-                           framerate=fps) as camera:
+                           framerate=fps) as camera, \
+            Pyro4.Proxy("PYRONAME:ROVServer") as rov:
         stream_output = StreamingOutput()
         camera.start_recording(stream_output, format='mjpeg')
         try:
@@ -186,4 +188,5 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
                                debug=debug) as server:
                 server.serve_forever()
         finally:
+            rov.shutdown()
             camera.stop_recording()
