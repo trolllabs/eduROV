@@ -176,7 +176,7 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
 
     with picamera.PiCamera(resolution=video_resolution,
                            framerate=fps) as camera, \
-            Pyro4.Proxy("PYRONAME:ROVServer") as rov, \
+            Pyro4.Proxy("PYRONAME:ROVSyncer") as rov, \
             Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         stream_output = StreamingOutput()
         camera.start_recording(stream_output, format='mjpeg')
