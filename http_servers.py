@@ -186,7 +186,7 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
                                RequestHandlerClass=RequestHandler,
                                stream_output=stream_output,
                                debug=debug) as server:
+                rov.shutdown()
                 server.serve_forever()
         finally:
-            rov.shutdown()
             camera.stop_recording()
