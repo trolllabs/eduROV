@@ -175,6 +175,7 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
     subprocess.Popen(['python', 'rov_classes.py'], shell=False)
+    time.sleep(5)
 
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         print(keys.state('r'))
