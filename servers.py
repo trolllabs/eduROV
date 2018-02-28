@@ -7,8 +7,6 @@ import socketserver
 from http import server
 from threading import Condition
 
-
-
 cwd = os.path.dirname(os.path.abspath(__file__))
 index_file = os.path.join(cwd, 'index.html')
 css_file = os.path.join(cwd, './static/style.css')
@@ -136,6 +134,9 @@ class RequestHandler(server.BaseHTTPRequestHandler):
 class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
+    def __init__(self, server_address, RequestHandlerClass):
+        super(WebpageServer, self).__init__(server_address, RequestHandlerClass)
+
 
     def set_output(self, output):
         self.RequestHandlerClass.output = output
