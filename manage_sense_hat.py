@@ -72,7 +72,7 @@ def start_sense_hat():
                     sense.set_pixels(left)
                 else:
                     sense.clear()
-                time.sleep(1)
+                time.sleep(0.005)
     print('closing sense hat')
 
 
