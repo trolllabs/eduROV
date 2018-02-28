@@ -175,24 +175,20 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
     # subprocess.Popen(['python', 'rov_classes.py'], shell=False)
-    # subprocess.Popen('python {}'.format(os.path.join(cwd, 'rov_classes.py')), shell=False)
     variable_server = multiprocessing.Process(target=start_variable_server)
     variable_server.start()
-    with Pyro4.Proxy("PYRONAME:ROVServer") as rov:
-        print(rov)
-        rov._pyroBind()
-        print(rov)
-    time.sleep(5)
+    time.sleep(5) # Wait for naming server to start
 
-    with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
+    with picamera.PiCamera(resolution=video_resolution,
+                           framerate=fps) as camera, \
+            Pyro4.Proxy("PYRONAME:ROVServer") as rov, \
+            Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         print(keys.state('r'))
         keys.keydown('r')
         print(keys.state('r'))
         keys.keyup('r')
         print(keys.state('r'))
-
-    with picamera.PiCamera(resolution=video_resolution,
-                           framerate=fps) as camera:
+        rov.shutdown()
         stream_output = StreamingOutput()
         camera.start_recording(stream_output, format='mjpeg')
         try:
