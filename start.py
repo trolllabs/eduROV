@@ -1,6 +1,9 @@
 import argparse
+import multiprocessing
+import time
 
 from http_servers import start_http_server
+from rov_classes import start_variable_server
 from support import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS
 
@@ -39,6 +42,12 @@ if __name__ == '__main__':
     if args.resolutions:
         args_resolution_help()
     else:
+        # Pyro servers
+        variable_server = multiprocessing.Process(target=start_variable_server)
+        variable_server.start()
+        time.sleep(5)
+
+        # Web servers
         video_res = valid_resolution(args.r)
         start_http_server(video_resolution=video_res,
                           fps=args.fps,

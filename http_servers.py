@@ -8,11 +8,9 @@ import socketserver
 import time
 from http import server
 from threading import Condition
-import multiprocessing
-import subprocess
+
 import Pyro4
 
-from rov_classes import start_variable_server
 from support import server_ip
 
 if 'raspberrypi' in platform._syscmd_uname('-a'):
@@ -116,8 +114,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             post_body = self.rfile.read(content_len).decode('utf-8')
             json_obj = json.loads(post_body)
             self.keys.set_from_js_dict(json_obj)
-            # print(type(json_obj))
-            # print(json_obj)
             self.send_response(200)
             self.end_headers()
 
@@ -177,13 +173,8 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 
 def start_http_server(video_resolution, fps, server_port, debug=False):
-    print('Visit the webpage at {}'.format(server_ip(server_port)))
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
-    # subprocess.Popen(['python', 'rov_classes.py'], shell=False)
-    variable_server = multiprocessing.Process(target=start_variable_server)
-    variable_server.start()
-    time.sleep(5) # Wait for naming server to start
 
     with picamera.PiCamera(resolution=video_resolution,
                            framerate=fps) as camera, \
@@ -198,6 +189,7 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
                                debug=debug,
                                rov_proxy=rov,
                                keys_proxy=keys) as server:
+                print('Visit the webpage at {}'.format(server_ip(server_port)))
                 server.serve_forever()
         finally:
             camera.stop_recording()
