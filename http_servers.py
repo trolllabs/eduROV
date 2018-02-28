@@ -175,6 +175,7 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
         print('Using {} @ {} fps'.format(video_resolution, fps))
     variable_server = multiprocessing.Process(target=start_variable_server)
     variable_server.start()
+    time.sleep(2)
 
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         print(keys.state('r'))

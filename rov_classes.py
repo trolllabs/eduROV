@@ -116,7 +116,6 @@ class ROVServer(ROVSyncer):
         self.daemon = Pyro4.Daemon()
         rov_server_uri = self.daemon.register(self)
         key_manager_uri = self.daemon.register(KeyManager)
-        print(key_manager_uri)
         with Pyro4.locateNS() as name_server:
             name_server.register("ROVServer", rov_server_uri)
             name_server.register("KeyManager", key_manager_uri)
@@ -137,7 +136,6 @@ class ROVServer(ROVSyncer):
         self.daemon.close()
 
     def serve(self):
-        print('Will now start the request loop')
         self.daemon.requestLoop()
 
 
