@@ -2,26 +2,31 @@ import multiprocessing
 import subprocess
 import Pyro4
 import time
-from client_one import client_one
-from variable_server import start_variable_server
+from client_one import client_one, client_two
+from pyro_classes import start_pyro_classes
 
 if __name__ == '__main__':
     name_server = subprocess.Popen('pyro4-ns', shell=False)
-    var_server = multiprocessing.Process(target=start_variable_server)
-    var_server.start()
+    pyro_classes = multiprocessing.Process(target=start_pyro_classes)
+    pyro_classes.start()
     time.sleep(5)
 
     client1 = multiprocessing.Process(target=client_one)
-    client1.start()
+    client2 = multiprocessing.Process(target=client_two)
+    clients = [client1, client2]
+    for cli in clients:
+        cli.start()
     with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
         try:
             while rov.run:
                 time.sleep(0.5)
         except KeyboardInterrupt:
-            print('Shutting down')
+            pass
         finally:
+            print('Shutting down')
             rov.run = False
-            client1.join()
-            var_server.terminate()
+            for cli in clients:
+                cli.join()
+            pyro_classes.terminate()
             name_server.terminate()
             name_server.wait()
