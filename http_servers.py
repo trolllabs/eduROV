@@ -178,6 +178,10 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
     # subprocess.Popen('python {}'.format(os.path.join(cwd, 'rov_classes.py')), shell=False)
     variable_server = multiprocessing.Process(target=start_variable_server)
     variable_server.start()
+    with Pyro4.Proxy("PYRONAME:ROVServer") as rov:
+        print(rov)
+        rov._pyroBind()
+        print(rov)
     time.sleep(5)
 
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
