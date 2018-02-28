@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import random
+import signal
 import socketserver
 import time
 from http import server
@@ -113,9 +114,9 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             post_body = self.rfile.read(content_len).decode('utf-8')
             json_obj = json.loads(post_body)
             self.keys.set_from_js_dict(json_obj)
-            print(self.keys.variable())
-            self.keys.set_variable(20)
-            print(self.keys.variable())
+            # print(self.keys.variable())
+            # self.keys.set_variable(20)
+            # print(self.keys.variable())
             # self.keys.set('up arrow', True)
             self.send_response(200)
             self.end_headers()
@@ -176,6 +177,7 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 
 def start_http_server(video_resolution, fps, server_port, debug=False):
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
 
@@ -195,4 +197,5 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
                 print('Visit the webpage at {}'.format(server_ip(server_port)))
                 server.serve_forever()
         finally:
+            print('closing web server')
             camera.stop_recording()

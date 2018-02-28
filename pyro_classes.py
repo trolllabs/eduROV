@@ -1,4 +1,3 @@
-import subprocess
 import time
 
 import Pyro4
@@ -20,14 +19,12 @@ class Key(object):
             self.keycode = None
 
     def keydown(self):
-        print('{} keydown'.format(self.common))
         if self.mode == 'toggle':
             self.state = not self.state
         else:
             self.state = True
 
     def keyup(self):
-        print('{} keyup'.format(self.common))
         if self.mode != 'toggle':
             self.state = False
 
@@ -41,7 +38,6 @@ class KeyManager(object):
 
     def __init__(self):
         self.keys = []
-        self.var = 45
         with open('keys.txt', 'r') as f:
             for line in f.readlines()[1:]:
                 KeyASCII = line[0:14].rstrip()
@@ -91,13 +87,8 @@ class KeyManager(object):
     def keyup(self, key):
         self.get(key).keyup()
 
-    def variable(self):
-        return self.var
 
-    def set_variable(self, value):
-        self.var = value
-
-
+@Pyro4.expose
 class ROVSyncer(object):
     """Holds all variables for ROV related to control and sensors"""
 
@@ -105,6 +96,7 @@ class ROVSyncer(object):
         self._sensor = {'temp': 0.0,
                         'pressure': 0.0,
                         'time': time.time()}
+        self._run = True
 
     @property
     def sensor(self):
@@ -115,43 +107,27 @@ class ROVSyncer(object):
         self._sensor.update(values)
         self._sensor['time'] = time.time()
 
+    @property
+    def run(self):
+        return self._run
 
-@Pyro4.expose
-class ROVServer(ROVSyncer):
-    """Extends ROVSyncer such that it can be accessed on multiple machines"""
-
-    def __init__(self):
-        self.ns_process = subprocess.Popen('pyro4-ns', shell=False)
-        self.daemon = Pyro4.Daemon()
-        rov_server_uri = self.daemon.register(self)
-        key_manager_uri = self.daemon.register(KeyManager)
-        with Pyro4.locateNS() as name_server:
-            name_server.register("ROVServer", rov_server_uri)
-            name_server.register("KeyManager", key_manager_uri)
-        super(ROVServer, self).__init__()
-
-    @Pyro4.oneway
-    def shutdown(self):
-        print('Shutting down the ROVServer')
-        self.__exit__(True, True, True)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.ns_process.terminate()
-        self.ns_process.wait()
-        self.daemon.shutdown()
-        self.daemon.close()
-
-    def serve(self):
-        self.daemon.requestLoop()
+    @run.setter
+    def run(self, bool):
+        self._run = bool
 
 
-def start_variable_server():
-    with ROVServer() as server:
-        server.serve()
+def start_pyro_classes():
+    """Registers pyro classes in name server and starts request loop"""
+    rov = ROVSyncer()
+    keys = KeyManager()
+    with Pyro4.Daemon() as daemon:
+        rov_uri = daemon.register(rov)
+        keys_uri = daemon.register(keys)
+        with Pyro4.locateNS() as ns:
+            ns.register("ROVSyncer", rov_uri)
+            ns.register("KeyManager", keys_uri)
+        daemon.requestLoop()
 
 
-if __name__ == '__main__':
-    start_variable_server()
+if __name__ == "__main__":
+    start_pyro_classes()

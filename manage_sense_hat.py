@@ -1,3 +1,4 @@
+import signal
 import time
 
 import Pyro4
@@ -56,21 +57,24 @@ right = [
 
 
 def start_sense_hat():
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
     sense = SenseHat()
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
-        while True:
-            print('sense' + str(keys.variable()))
-            if keys.state('up arrow'):
-                sense.set_pixels(up)
-            elif keys.state('down arrow'):
-                sense.set_pixels(down)
-            elif keys.state('right arrow'):
-                sense.set_pixels(right)
-            elif keys.state('left arrow'):
-                sense.set_pixels(left)
-            else:
-                sense.clear()
-            time.sleep(1)
+        with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
+            while rov.run:
+                print('sense' + str(keys.variable()))
+                if keys.state('up arrow'):
+                    sense.set_pixels(up)
+                elif keys.state('down arrow'):
+                    sense.set_pixels(down)
+                elif keys.state('right arrow'):
+                    sense.set_pixels(right)
+                elif keys.state('left arrow'):
+                    sense.set_pixels(left)
+                else:
+                    sense.clear()
+                time.sleep(1)
+    print('closing sense hat')
 
 
 if __name__ == '__main__':

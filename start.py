@@ -1,13 +1,47 @@
 import argparse
-import multiprocessing
 import subprocess
 import time
+from multiprocessing import Process
+
+import Pyro4
 
 from http_servers import start_http_server
 from manage_sense_hat import start_sense_hat
-from rov_classes import start_variable_server
+from pyro_classes import start_pyro_classes
 from support import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS
+
+
+def start_http_and_pyro(video_resolution, fps, server_port, debug):
+    name_server = subprocess.Popen('pyro4-ns', shell=False)
+    pyro_classes = Process(target=start_pyro_classes)
+    pyro_classes.start()
+    time.sleep(5)
+
+    client1 = Process(target=start_http_server,
+                      args=(video_resolution, fps, server_port, debug))
+    client2 = Process(target=start_sense_hat)
+    clients = [client1, client2]
+    for cli in clients:
+        cli.start()
+    with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
+        try:
+            while rov.run:
+                time.sleep(0.5)
+        except KeyboardInterrupt:
+            pass
+        finally:
+            print('Shutting down')
+            rov.run = False
+            for cli in clients:
+                cli.join()
+            time.sleep(3)
+            print('shutting down the rest')
+            if pyro_classes.is_alive:
+                pyro_classes.terminate()
+            name_server.terminate()
+            name_server.wait()
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -44,20 +78,8 @@ if __name__ == '__main__':
     if args.resolutions:
         args_resolution_help()
     else:
-        # Pyro servers
-        subprocess.Popen(['python', 'rov_classes.py'], shell=False)
-        # variable_server = multiprocessing.Process(target=start_variable_server)
-        # variable_server.start()
-        time.sleep(5)
-
-        # Sense hat
-        subprocess.Popen(['python', 'manage_sense_hat.py'], shell=False)
-        # sense_hat = multiprocessing.Process(target=start_sense_hat)
-        # sense_hat.start()
-
-        # Web servers
         video_res = valid_resolution(args.r)
-        start_http_server(video_resolution=video_res,
-                          fps=args.fps,
-                          server_port=args.port,
-                          debug=args.debug)
+        start_http_and_pyro(video_resolution=video_res,
+                            fps=args.fps,
+                            server_port=args.port,
+                            debug=args.debug)
