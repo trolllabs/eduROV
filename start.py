@@ -12,18 +12,20 @@ from pyro_classes import start_pyro_classes
 from support import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS
 
+
 def preexec_function():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
 def start_http_and_pyro(video_resolution, fps, server_port, debug):
-    name_server = subprocess.Popen('pyro4-ns', shell=False, preexec_fn=preexec_function)
+    name_server = subprocess.Popen('pyro4-ns', shell=False,
+                                   preexec_fn=preexec_function)
     pyro_classes = Process(target=start_pyro_classes)
     pyro_classes.start()
     time.sleep(5)
 
     web = Process(target=start_http_server,
-                      args=(video_resolution, fps, server_port, debug))
+                  args=(video_resolution, fps, server_port, debug))
     sense = Process(target=start_sense_hat)
     web.start()
     sense.start()
@@ -35,11 +37,11 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
             pass
         finally:
             print('Shutting down')
+            web.terminate()
             rov.run = False
             sense.join()
             time.sleep(3)
             print('shutting down the rest')
-            web.terminate()
             pyro_classes.terminate()
             name_server.terminate()
 
