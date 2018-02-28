@@ -27,6 +27,7 @@ if __name__ == '__main__':
             rov.run = False
             for cli in clients:
                 cli.join()
-            pyro_classes.terminate()
+            if pyro_classes.is_alive:
+                pyro_classes.terminate()
             name_server.terminate()
             name_server.wait()
