@@ -177,8 +177,13 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
     variable_server.start()
 
     with picamera.PiCamera(resolution=video_resolution,
-                           framerate=fps) as camera, \
-            Pyro4.Proxy("PYRONAME:ROVServer") as rov:
+                           framerate=fps) as camera:
+        with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
+            print(keys.state('r'))
+            keys.keydown('r')
+            print(keys.state('r'))
+            keys.keyup('r')
+            print(keys.state('r'))
         stream_output = StreamingOutput()
         camera.start_recording(stream_output, format='mjpeg')
         try:
@@ -186,7 +191,6 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
                                RequestHandlerClass=RequestHandler,
                                stream_output=stream_output,
                                debug=debug) as server:
-                rov.shutdown()
                 server.serve_forever()
         finally:
             camera.stop_recording()
