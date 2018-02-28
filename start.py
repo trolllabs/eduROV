@@ -75,7 +75,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--resolutions',
         action="store_true",
-        help='print the resolutions to use with the -r flag')
+        help='print the resolutions to use with the -r flag and exit')
 
     args = parser.parse_args()
     if args.resolutions:
