@@ -139,7 +139,7 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
                  stream_output, debug=False):
         self.start = time.time()
         self.debug = debug
-        self.RequestHandlerClass.output = stream_output
+        RequestHandlerClass.output = stream_output
         super(WebpageServer, self).__init__(server_address,
                                             RequestHandlerClass)
 
