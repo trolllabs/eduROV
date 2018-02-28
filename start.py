@@ -45,8 +45,9 @@ if __name__ == '__main__':
         args_resolution_help()
     else:
         # Pyro servers
-        variable_server = multiprocessing.Process(target=start_variable_server)
-        variable_server.start()
+        subprocess.Popen(['python', 'rov_classes.py'], shell=False)
+        # variable_server = multiprocessing.Process(target=start_variable_server)
+        # variable_server.start()
         time.sleep(5)
 
         # Sense hat
