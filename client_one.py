@@ -11,7 +11,7 @@ def client_one():
                 print(keys.state('w'))
                 keys.set('w', True)
                 print(keys.state('w'))
-                time.sleep(4)
+                time.sleep(2)
     print('client 1 finished')
 
 

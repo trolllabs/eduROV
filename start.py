@@ -27,6 +27,8 @@ if __name__ == '__main__':
             rov.run = False
             for cli in clients:
                 cli.join()
+            time.sleep(3)
+            print('shutting down the rest')
             if pyro_classes.is_alive:
                 pyro_classes.terminate()
             name_server.terminate()
