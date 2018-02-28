@@ -1,10 +1,10 @@
 import argparse
+import signal
 import subprocess
 import time
 from multiprocessing import Process
 
 import Pyro4
-import signal
 
 from http_servers import start_http_server
 from manage_sense_hat import start_sense_hat

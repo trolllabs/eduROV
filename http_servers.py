@@ -2,7 +2,6 @@ import io
 import json
 import logging
 import os
-import random
 import signal
 import socketserver
 import time

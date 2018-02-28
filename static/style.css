@@ -10,6 +10,7 @@ body {
     width: 100%;
     transform: rotate(180deg);
 }
+
 #roll {
     background-color: red;
     width: 150px;
@@ -24,6 +25,7 @@ body {
   grid-template-columns: 200px auto 200px;
   height: 100%;
 }
+
 .grid-container > div {
   padding: 10px 10px 0px 10px;
 }

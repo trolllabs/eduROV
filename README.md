@@ -31,7 +31,7 @@ The eduROV package works by starting a http server on the raspberry pi. This ser
 
 On the raspberry pi, run:
 ```
-python3 start_server.py
+python3 start.py
 ```
 This will print the ip address where the website can be accessed. Then, open this website in a browser on your computer.
 
@@ -39,5 +39,5 @@ This will print the ip address where the website can be accessed. Then, open thi
 
 For additional parameters and information, run:
 ```
-python start_server.py -h
+python start.py -h
 ```
