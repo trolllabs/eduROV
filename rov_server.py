@@ -5,7 +5,6 @@ import Pyro4
 import pygame
 
 
-@Pyro4.expose
 class Key(object):
     """Manages the state of a specific key on the keyboard"""
 
@@ -27,7 +26,7 @@ class Key(object):
             self.state = True
 
     def keyup(self):
-        if self._mode != 'toggle':
+        if self.mode != 'toggle':
             self.state = False
 
     def __str__(self):
@@ -90,7 +89,6 @@ class KeyManager(object):
         self.get(key).keyup()
 
 
-@Pyro4.expose
 class ROVSyncer(object):
     """Holds all variables for ROV related to control and sensors"""
 

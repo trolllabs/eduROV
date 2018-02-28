@@ -7,3 +7,5 @@ if __name__ == '__main__':
             print(keys.state('r'))
             keys.keydown('r')
             print(keys.state('r'))
+            keys.keyup('r')
+            print(keys.state('r'))
