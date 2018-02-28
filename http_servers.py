@@ -1,12 +1,18 @@
 import io
-import os
 import json
 import logging
+import os
+import platform
 import random
 import socketserver
 import time
 from http import server
 from threading import Condition
+
+from support import server_ip
+
+if 'raspberrypi' in platform._syscmd_uname('-a'):
+    import picamera
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 index_file = os.path.join(cwd, 'index.html')
@@ -15,6 +21,8 @@ script_file = os.path.join(cwd, './static/script.js')
 
 
 class StreamingOutput(object):
+    """Defines output for the picamera, used by request server"""
+
     def __init__(self):
         self.frame = None
         self.buffer = io.BytesIO()
@@ -35,7 +43,7 @@ class StreamingOutput(object):
 
 
 class RequestHandler(server.BaseHTTPRequestHandler):
-    """Main server that provides the webpage"""
+    """Request server, handles request from the browser"""
     output = None
 
     def serve_static(self, path):
@@ -133,8 +141,10 @@ class RequestHandler(server.BaseHTTPRequestHandler):
 
 
 class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
+    """Threaded HTTP server, forwards request to the RequestHandlerClass"""
     allow_reuse_address = True
     daemon_threads = True
+
     def __init__(self, server_address, RequestHandlerClass,
                  stream_output, debug=False):
         self.start = time.time()
@@ -155,3 +165,21 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
                   .format(frame_count,
                           finish - self.start,
                           frame_count / (finish - self.start)))
+
+
+def start_http_server(video_resolution, fps, server_port, debug=False):
+    print('Visit the webpage at {}'.format(server_ip(server_port)))
+    if debug:
+        print('Using {} @ {} fps'.format(video_resolution, fps))
+
+    with picamera.PiCamera(resolution=video_resolution,
+                           framerate=fps) as camera:
+        stream_output = StreamingOutput()
+        camera.start_recording(stream_output, format='mjpeg')
+        try:
+            with WebpageServer(server_address=('', server_port),
+                               RequestHandlerClass=RequestHandler,
+                               stream_output=stream_output) as server:
+                server.serve_forever()
+        finally:
+            camera.stop_recording()
