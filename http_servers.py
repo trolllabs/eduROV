@@ -45,6 +45,8 @@ class StreamingOutput(object):
 class RequestHandler(server.BaseHTTPRequestHandler):
     """Request server, handles request from the browser"""
     output = None
+    keys = None
+    rov = None
     index_file = os.path.join(cwd, 'index.html')
     css_file = os.path.join(cwd, './static/style.css')
     script_file = os.path.join(cwd, './static/script.js')
@@ -113,6 +115,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             content_len = int(self.headers['Content-Length'])
             post_body = self.rfile.read(content_len).decode('utf-8')
             json_obj = json.loads(post_body)
+            print(type(json_obj))
             print(json_obj)
             self.send_response(200)
             self.end_headers()
@@ -149,10 +152,12 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
     daemon_threads = True
 
     def __init__(self, server_address, RequestHandlerClass,
-                 stream_output, debug=False):
+                 stream_output, rov_proxy, keys_proxy, debug=False):
         self.start = time.time()
         self.debug = debug
         RequestHandlerClass.output = stream_output
+        RequestHandlerClass.rov = rov_proxy
+        RequestHandlerClass.keys = keys_proxy
         super(WebpageServer, self).__init__(server_address,
                                             RequestHandlerClass)
 
@@ -183,19 +188,15 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
                            framerate=fps) as camera, \
             Pyro4.Proxy("PYRONAME:ROVServer") as rov, \
             Pyro4.Proxy("PYRONAME:KeyManager") as keys:
-        print(keys.state('r'))
-        keys.keydown('r')
-        print(keys.state('r'))
-        keys.keyup('r')
-        print(keys.state('r'))
-        rov.shutdown()
         stream_output = StreamingOutput()
         camera.start_recording(stream_output, format='mjpeg')
         try:
             with WebpageServer(server_address=('', server_port),
                                RequestHandlerClass=RequestHandler,
                                stream_output=stream_output,
-                               debug=debug) as server:
+                               debug=debug,
+                               rov_proxy=rov,
+                               keys_proxy=keys) as server:
                 server.serve_forever()
         finally:
             camera.stop_recording()
