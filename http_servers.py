@@ -9,6 +9,7 @@ import time
 from http import server
 from threading import Condition
 import multiprocessing
+import subprocess
 import Pyro4
 
 from rov_classes import start_variable_server
@@ -173,9 +174,10 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
     print('Visit the webpage at {}'.format(server_ip(server_port)))
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
-    variable_server = multiprocessing.Process(target=start_variable_server)
-    variable_server.start()
-    time.sleep(2)
+    variable_server = subprocess.Popen('python rov_classes.py', shell=False)
+    # variable_server = multiprocessing.Process(target=start_variable_server)
+    # variable_server.start()
+    # time.sleep(2)
 
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         print(keys.state('r'))
