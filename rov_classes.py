@@ -48,7 +48,9 @@ class KeyManager(object):
                 self.keys.append(Key(KeyASCII, ASCII, common, keycode))
 
     def set(self, key, state):
+        print('before {}'.format(self.get(key).state))
         self.get(key).state = state
+        print('after {}'.format(self.get(key).state))
 
     def set_from_pygame_event(self, event):
         for key in self.keys:
