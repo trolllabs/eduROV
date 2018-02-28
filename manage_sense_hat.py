@@ -74,9 +74,13 @@ def start_sense_hat():
                 else:
                     sense.clear()
                 # Update sensors
+                orientation = sense.get_orientation()
                 rov.sensor = {'temp':sense.get_temperature(),
                               'pressure':sense.get_pressure(),
-                              'humidity':sense.get_humidity()}
+                              'humidity':sense.get_humidity(),
+                              'pitch':orientation['pitch'],
+                              'roll':orientation['roll'],
+                              'yaw':orientation['yaw']}
     print('closing sense hat')
 
 
