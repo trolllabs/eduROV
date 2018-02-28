@@ -115,8 +115,9 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             content_len = int(self.headers['Content-Length'])
             post_body = self.rfile.read(content_len).decode('utf-8')
             json_obj = json.loads(post_body)
-            print(type(json_obj))
-            print(json_obj)
+            self.keys.set_from_js_dict(json_obj)
+            # print(type(json_obj))
+            # print(json_obj)
             self.send_response(200)
             self.end_headers()
 
