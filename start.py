@@ -1,5 +1,4 @@
 import argparse
-import Pyro4
 
 from http_servers import start_http_server
 from support import valid_resolution, args_resolution_help, \
@@ -37,19 +36,11 @@ if __name__ == '__main__':
         help='print the resolutions to use with the -r flag')
 
     args = parser.parse_args()
-
-    with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
-        print(keys.state('r'))
-        keys.keydown('r')
-        print(keys.state('r'))
-        keys.keyup('r')
-        print(keys.state('r'))
-
-    # if args.resolutions:
-    #     args_resolution_help()
-    # else:
-    #     video_res = valid_resolution(args.r)
-    #     start_http_server(video_resolution=video_res,
-    #                       fps=args.fps,
-    #                       server_port=args.port,
-    #                       debug=args.debug)
+    if args.resolutions:
+        args_resolution_help()
+    else:
+        video_res = valid_resolution(args.r)
+        start_http_server(video_resolution=video_res,
+                          fps=args.fps,
+                          server_port=args.port,
+                          debug=args.debug)
