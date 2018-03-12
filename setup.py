@@ -11,6 +11,10 @@ from edurov.support import detect_pi
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+requirements = ['pygame', 'Pyro4']
+if detect_pi():
+    requirements.append(['picamera=>1.13'])
+
 setup(
     name='edurov',  # Required
     version='0.0.1a1',  # Required
@@ -43,8 +47,7 @@ setup(
     ],
     keywords='video education ROV picamera',  # Optional
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
-    install_requires=['pygame', 'Pyro4'] +
-                     (['picamera=>1.13'] if detect_pi() else []),  # Optional
+    install_requires=requirements,  # Optional
     python_requires='>=3',  # Optional
     package_data={  # Optional
         'edurov': ['index.html', 'keys.txt', 'static/script.js',
