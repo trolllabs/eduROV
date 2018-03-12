@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import argparse
-from eduROV.rov_functions import rov
-from eduROV.controller_functions import controller
-from eduROV.support import valid_resolution, args_resolution_help, STANDARD_RESOLUTIONS
+from edurov.rov_functions import rov
+from edurov.controller_functions import controller
+from edurov.support import valid_resolution, args_resolution_help, STANDARD_RESOLUTIONS
 
 
 if __name__ == '__main__':

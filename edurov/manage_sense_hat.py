@@ -2,7 +2,7 @@ import signal
 
 import Pyro4
 
-from eduROV.support import detect_pi
+from edurov.support import detect_pi
 
 if detect_pi():
     from sense_hat import SenseHat

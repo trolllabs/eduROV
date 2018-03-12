@@ -10,7 +10,7 @@ from threading import Condition
 
 import Pyro4
 
-from eduROV.support import server_ip, detect_pi
+from edurov.support import server_ip, detect_pi
 
 if detect_pi():
     import picamera

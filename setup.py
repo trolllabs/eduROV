@@ -5,14 +5,14 @@ from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
-from eduROV.support import detect_pi
+from edurov.support import detect_pi
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='eduROV',  # Required
+    name='edurov',  # Required
     version='0.0.1a1',  # Required
     description='A educational project for remotely operated vehicles',  # Required
     long_description=long_description,  # Optional
@@ -47,12 +47,12 @@ setup(
                      (['picamera=>1.13'] if detect_pi() else []),  # Optional
     python_requires='>=3',  # Optional
     package_data={  # Optional
-        'eduROV': ['index.html', 'keys.txt', 'static/script.js',
+        'edurov': ['index.html', 'keys.txt', 'static/script.js',
                    'static/style.css'],
     },
     entry_points={  # Optional
         'console_scripts': [
-            'eduROV-http = eduROV.http:main',
+            'edurov-http = edurov.http:main',
         ],
     },
 )

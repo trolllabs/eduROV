@@ -6,10 +6,10 @@ from multiprocessing import Process
 
 import Pyro4
 
-from eduROV.http_servers import start_http_server
-from eduROV.manage_sense_hat import start_sense_hat
-from eduROV.pyro_classes import start_pyro_classes
-from eduROV.support import valid_resolution, args_resolution_help, \
+from edurov.http_servers import start_http_server
+from edurov.manage_sense_hat import start_sense_hat
+from edurov.pyro_classes import start_pyro_classes
+from edurov.support import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS, detect_pi
 
 
