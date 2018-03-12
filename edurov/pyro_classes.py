@@ -2,6 +2,7 @@ import time
 
 import Pyro4
 import pygame
+import os
 
 
 class Key(object):
@@ -38,7 +39,8 @@ class KeyManager(object):
 
     def __init__(self):
         self.keys = []
-        with open('keys.txt', 'r') as f:
+        cwd = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(cwd, 'keys.txt'), 'r') as f:
             for line in f.readlines()[1:]:
                 KeyASCII = line[0:14].rstrip()
                 ASCII = line[14:22].rstrip()
