@@ -5,7 +5,7 @@ from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
-import sys
+from edurov.support import detect_pi
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -43,9 +43,7 @@ setup(
     ],
     keywords='video education ROV picamera',  # Optional
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
-    install_requires=['pygame',
-                      'Pyro4',
-                      'picamera=>1.13;platform_system=="Linux"'],  # Optional
+    install_requires=['pygame', 'Pyro4']+(['picamera=>1.13' if detect_pi() else []]),  # Optional
     python_requires='>=3',  # Optional
     package_data={  # Optional
         'edurov': ['index.html', 'keys.txt', 'static/script.js',
