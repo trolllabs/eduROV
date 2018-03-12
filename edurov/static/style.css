@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#image {
+    display: block;
+    margin: auto auto;
+    width: 100%;
+    transform: rotate(180deg);
+}
+
+#roll {
+    background-color: red;
+    width: 150px;
+    height: 20px;
+    margin: 100 auto;
+    text-align: center;
+    transform: rotate(0deg);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 200px auto 200px;
+  height: 100%;
+}
+
+.grid-container > div {
+  padding: 10px 10px 0px 10px;
+}
+
+.side-panel{
+  background-color: rgba(0, 0, 0, 0.1);
+}
