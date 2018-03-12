@@ -62,7 +62,8 @@ def server_ip(port):
 
 def requirements_met():
     if detect_pi():
-        camera = subprocess.check_output(['ls', '-l']).rstrip()
+        camera = subprocess.check_output(['vcgencmd',
+                                          'get_camera']).decode().rstrip()
         if '0' in camera:
             print('Camera not enabled or connected properly')
             return False
