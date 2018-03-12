@@ -1,6 +1,23 @@
+## Because of pypi
+
+# general things to ignore
+build/
+dist/
+*.egg-info/
+*.egg
+*.py[cod]
+__pycache__/
+*.so
+*~
+
+# due to using tox and pytest
+.tox
+.cache
+
+## eduROV specific
 stream.mjpg
 .idea
-# Created by https://www.gitignore.io/api/macos,python,windows
+
 
 ### macOS ###
 *.DS_Store
