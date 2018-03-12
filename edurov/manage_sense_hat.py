@@ -1,9 +1,8 @@
 import signal
-import time
 
 import Pyro4
 
-from support import detect_pi
+from eduROV.support import detect_pi
 
 if detect_pi():
     from sense_hat import SenseHat

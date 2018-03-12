@@ -6,11 +6,11 @@ from multiprocessing import Process
 
 import Pyro4
 
-from http_servers import start_http_server
-from manage_sense_hat import start_sense_hat
-from pyro_classes import start_pyro_classes
-from support import valid_resolution, args_resolution_help, \
-    STANDARD_RESOLUTIONS
+from eduROV.http_servers import start_http_server
+from eduROV.manage_sense_hat import start_sense_hat
+from eduROV.pyro_classes import start_pyro_classes
+from eduROV.support import valid_resolution, args_resolution_help, \
+    STANDARD_RESOLUTIONS, detect_pi
 
 
 def preexec_function():
@@ -20,6 +20,7 @@ def preexec_function():
 def start_http_and_pyro(video_resolution, fps, server_port, debug):
     name_server = subprocess.Popen('pyro4-ns', shell=False,
                                    preexec_fn=preexec_function)
+    time.sleep(2)
     pyro_classes = Process(target=start_pyro_classes)
     pyro_classes.start()
     time.sleep(5)
@@ -46,7 +47,7 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
             name_server.terminate()
 
 
-if __name__ == '__main__':
+def main(args=None):
     parser = argparse.ArgumentParser(
         description='Start a streaming video server on raspberry pi')
     parser.add_argument(
@@ -78,7 +79,10 @@ if __name__ == '__main__':
         help='print the resolutions to use with the -r flag and exit')
 
     args = parser.parse_args()
-    if args.resolutions:
+
+    if not detect_pi():
+        print('The http method can only be started on the ROV')
+    elif args.resolutions:
         args_resolution_help()
     else:
         video_res = valid_resolution(args.r)
@@ -86,3 +90,7 @@ if __name__ == '__main__':
                             fps=args.fps,
                             server_port=args.port,
                             debug=args.debug)
+
+
+if __name__ == '__main__':
+    main()
