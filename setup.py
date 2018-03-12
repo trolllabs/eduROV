@@ -43,7 +43,7 @@ setup(
     ],
     keywords='video education ROV picamera',  # Optional
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
-    install_requires=['pygame', 'Pyro4']+(['picamera=>1.13' if detect_pi() else []]),  # Optional
+    install_requires=['pygame', 'Pyro4']+(['picamera=>1' if detect_pi() else []]),  # Optional
     python_requires='>=3',  # Optional
     package_data={  # Optional
         'edurov': ['index.html', 'keys.txt', 'static/script.js',
