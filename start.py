@@ -20,6 +20,7 @@ def preexec_function():
 def start_http_and_pyro(video_resolution, fps, server_port, debug):
     name_server = subprocess.Popen('pyro4-ns', shell=False,
                                    preexec_fn=preexec_function)
+    time.sleep(5)
     pyro_classes = Process(target=start_pyro_classes)
     pyro_classes.start()
     time.sleep(5)
