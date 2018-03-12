@@ -1,14 +1,7 @@
 import platform
 import socket
 import struct
-
-if 'raspberrypi' in platform._syscmd_uname('-a'):
-    import fcntl
-
-STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
-                        '960x640', '1024x576', '1024x600', '1024x768',
-                        '1152x864', '1280x720', '1296x972', '1640x1232',
-                        '1920x1080']
+import subprocess
 
 
 def detect_pi():
@@ -16,6 +9,15 @@ def detect_pi():
         return True
     else:
         return False
+
+
+if detect_pi():
+    import fcntl
+
+STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
+                        '960x640', '1024x576', '1024x600', '1024x768',
+                        '1152x864', '1280x720', '1296x972', '1640x1232',
+                        '1920x1080']
 
 
 def valid_resolution(resolution):
@@ -57,3 +59,11 @@ def server_ip(port):
             pass
         sock.close()
     return ' or '.join(['{}:{}'.format(ip, port) for ip in online_ips])
+
+def requirements_met():
+    if detect_pi():
+        camera = subprocess.check_output(['ls', '-l']).rstrip()
+        if '0' in camera:
+            print('Camera not enabled or connected properly')
+            return False
+    return True

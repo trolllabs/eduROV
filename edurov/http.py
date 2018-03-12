@@ -10,7 +10,7 @@ from edurov.http_servers import start_http_server
 from edurov.manage_sense_hat import start_sense_hat
 from edurov.pyro_classes import start_pyro_classes
 from edurov.support import valid_resolution, args_resolution_help, \
-    STANDARD_RESOLUTIONS, detect_pi
+    STANDARD_RESOLUTIONS, detect_pi, requirements_met
 
 
 def preexec_function():
@@ -82,6 +82,8 @@ def main(args=None):
 
     if not detect_pi():
         print('The http method can only be started on the ROV')
+    elif not requirements_met():
+        return
     elif args.resolutions:
         args_resolution_help()
     else:

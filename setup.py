@@ -12,7 +12,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='edurov',
-    version='0.0.1a1',
+    version='0.0.1a2',
     description='A educational project for remotely operated vehicles',
     long_description=long_description,
     url='https://github.com/trolllabs/eduROV',
