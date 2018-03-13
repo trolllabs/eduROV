@@ -4,8 +4,7 @@ from edurov.rov_functions import rov
 from edurov.controller_functions import controller
 from edurov.support import valid_resolution, args_resolution_help, STANDARD_RESOLUTIONS
 
-
-if __name__ == '__main__':
+def main(args=None):
     choices = {'controller': controller, 'rov': rov}
     parser = argparse.ArgumentParser(
         description='Stream video from picamera to machine on same network',
@@ -29,7 +28,8 @@ if __name__ == '__main__':
         metavar='RESOLUTION',
         type=str,
         default='1024x768',
-        help='''resolution, use format WIDTHxHEIGHT or an integer 0-{}\n(default 1024x600)'''.format(len(STANDARD_RESOLUTIONS)-1))
+        help='''resolution, use format WIDTHxHEIGHT or an integer 0-{}\n(default 1024x600)'''.format(
+            len(STANDARD_RESOLUTIONS) - 1))
     parser.add_argument(
         '-f',
         action="store_true",
@@ -55,3 +55,6 @@ if __name__ == '__main__':
                    port=args.p,
                    resolution=res,
                    fullscreen=args.f)
+
+if __name__ == '__main__':
+    main()

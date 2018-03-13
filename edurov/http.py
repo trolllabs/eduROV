@@ -3,6 +3,8 @@ import signal
 import subprocess
 import time
 from multiprocessing import Process
+import warnings
+warnings.simplefilter('error', UserWarning)
 
 import Pyro4
 
@@ -10,7 +12,7 @@ from edurov.http_servers import start_http_server
 from edurov.manage_sense_hat import start_sense_hat
 from edurov.pyro_classes import start_pyro_classes
 from edurov.support import valid_resolution, args_resolution_help, \
-    STANDARD_RESOLUTIONS, detect_pi, requirements_met
+    STANDARD_RESOLUTIONS, detect_pi, check_requirements
 
 
 def preexec_function():
@@ -80,10 +82,9 @@ def main(args=None):
 
     args = parser.parse_args()
 
+    check_requirements()
     if not detect_pi():
-        print('The http method can only be started on the ROV')
-    elif not requirements_met():
-        return
+        warnings.warn('The http method can only be started on the ROV')
     elif args.resolutions:
         args_resolution_help()
     else:

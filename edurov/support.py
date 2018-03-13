@@ -2,6 +2,7 @@ import platform
 import socket
 import struct
 import subprocess
+import warnings
 
 
 def detect_pi():
@@ -60,11 +61,10 @@ def server_ip(port):
         sock.close()
     return ' or '.join(['{}:{}'.format(ip, port) for ip in online_ips])
 
-def requirements_met():
+def check_requirements():
     if detect_pi():
         camera = subprocess.check_output(['vcgencmd',
                                           'get_camera']).decode().rstrip()
         if '0' in camera:
-            print('Camera not enabled or connected properly')
-            return False
-    return True
+            warnings.simplefilter('error', UserWarning)
+            warnings.warn('Camera not enabled or connected properly')
