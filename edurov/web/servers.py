@@ -145,6 +145,9 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         else:
             self.send_404()
 
+    def log_message(self, format, *args):
+        return
+
 
 class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
     """Threaded HTTP server, forwards request to the RequestHandlerClass"""
