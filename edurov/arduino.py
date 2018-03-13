@@ -54,7 +54,9 @@ def start_arduino_coms(debug=False):
                     if not debug:
                         ser.write(state)
                     else:
-                        print(state)
+                        pass
+                        # print(state)
+                print(state)
 
     print('closing arduino coms')
 
