@@ -122,7 +122,7 @@ class ROVSyncer(object):
         self._run = bool
 
 
-def start_pyro_classes():
+def start_sync_classes():
     """Registers pyro classes in name server and starts request loop"""
     rov = ROVSyncer()
     keys = KeyManager()
@@ -136,4 +136,4 @@ def start_pyro_classes():
 
 
 if __name__ == "__main__":
-    start_pyro_classes()
+    start_sync_classes()

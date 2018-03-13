@@ -39,6 +39,7 @@ setup(
     entry_points={
         'console_scripts': [
             'edurov-web = edurov.web:main',
+            'edurov-duo = edurov.duo:main',
         ],
     },
 )

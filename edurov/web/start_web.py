@@ -14,7 +14,7 @@ warnings.simplefilter('error', UserWarning)
 import Pyro4
 
 from edurov.sense import start_sense_hat
-from edurov.sync import start_pyro_classes
+from edurov.sync import start_sync_classes
 from edurov.utils import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS, detect_pi, check_requirements
 from .servers import start_http_server
@@ -28,7 +28,7 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
     name_server = subprocess.Popen('pyro4-ns', shell=False,
                                    preexec_fn=preexec_function)
     time.sleep(2)
-    pyro_classes = Process(target=start_pyro_classes)
+    pyro_classes = Process(target=start_sync_classes)
     pyro_classes.start()
     time.sleep(5)
 
