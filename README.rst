@@ -8,6 +8,10 @@ We are committed to be fully open-source, both software and hardware-wise, every
 
 Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
 
+.. note::
+
+    This is a test note
+
 
 Installation
 =================
