@@ -12,10 +12,10 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='edurov',
-    version='0.0.1a3',
+    version='0.0.1a4',
     description='A educational project for remotely operated vehicles',
     long_description=long_description,
-    licence='GPLv3',
+    license='GPLv3',
     url='https://github.com/trolllabs/eduROV',
     author='trolllabs',
     author_email='martinloland@gmail.com',
