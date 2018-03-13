@@ -93,6 +93,18 @@ class KeyManager(object):
     def keyup(self, key):
         self.get(key).keyup()
 
+    @property
+    def qweasd_dict(self):
+        state = {
+            'q':self.get('q').state,
+            'w':self.get('w').state,
+            'e':self.get('e').state,
+            'a':self.get('a').state,
+            's':self.get('s').state,
+            'd':self.get('d').state,
+        }
+        return state
+
 
 @Pyro4.expose
 class ROVSyncer(object):

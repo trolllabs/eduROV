@@ -23,23 +23,24 @@ def start_arduino_coms(debug=False):
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             while rov.run:
-                if keys.state('w'):
+                dic = keys.qweasd_dict
+                if dic['w']:
                     states[0] = 1
-                elif keys.state('s'):
+                elif dic['s']:
                     states[0] = 2
                 else:
                     states[0] = 0
 
-                if keys.state('a'):
+                if dic['a']:
                     states[1] = 1
-                elif keys.state('q'):
+                elif dic['q']:
                     states[1] = 2
                 else:
                     states[1] = 0
 
-                if keys.state('e'):
+                if dic['e']:
                     states[2] = 2
-                elif keys.state('d'):
+                elif dic['d']:
                     states[2] = 1
                 else:
                     states[2] = 0
