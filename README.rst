@@ -39,9 +39,9 @@ Usage
 Methods
 +++++++
 
-:Web The raspberry pi will serve a web page that can be viewed in web browser
+:Web: The raspberry pi will serve a web page that can be viewed in web browser
   on any computer on the same network
-:Duo Requires that the eduROV packaged is installed on second computer and the
+:Duo: Requires that the eduROV packaged is installed on second computer and the
   video is viewed using pygame
 
 Web method
