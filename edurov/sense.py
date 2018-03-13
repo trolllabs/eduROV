@@ -66,13 +66,14 @@ def start_sense_hat():
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             while rov.run:
                 # Read key presses
-                if keys.state('up arrow'):
+                dic = keys.arrow_dict
+                if dic['up arrow']:
                     sense.set_pixels(left)
-                elif keys.state('down arrow'):
+                elif dic['down arrow']:
                     sense.set_pixels(right)
-                elif keys.state('right arrow'):
+                elif dic['right arrow']:
                     sense.set_pixels(up)
-                elif keys.state('left arrow'):
+                elif dic['left arrow']:
                     sense.set_pixels(down)
                 else:
                     sense.clear()

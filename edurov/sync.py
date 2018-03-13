@@ -105,6 +105,16 @@ class KeyManager(object):
         }
         return state
 
+    @property
+    def arrow_dict(self):
+        state = {
+            'up arrow':self.get('up arrow').state,
+            'down arrow':self.get('down arrow').state,
+            'left arrow':self.get('left arrow').state,
+            'right arrow':self.get('right arrow').state,
+        }
+        return state
+
 
 @Pyro4.expose
 class ROVSyncer(object):
