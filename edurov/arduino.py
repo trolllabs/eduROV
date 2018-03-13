@@ -23,32 +23,26 @@ def start_arduino_coms(debug=False):
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             while rov.run:
-                if keys.state('a'):
-                    print('yep')
-                    states[1] = 1
-                else:
-                    print('nope')
-                    states[1] = 0
-                if keys.state('q'):
-                    states[1] = 2
-                else:
-                    states[1] = 0
                 if keys.state('w'):
                     states[0] = 1
-                else:
-                    states[0] = 0
-                if keys.state('s'):
+                elif keys.state('s'):
                     states[0] = 2
                 else:
                     states[0] = 0
+
+                if keys.state('a'):
+                    states[1] = 1
+                elif keys.state('q'):
+                    states[1] = 2
+                else:
+                    states[1] = 0
+
                 if keys.state('e'):
                     states[2] = 2
-                else:
-                    states[0] = 0
-                if keys.state('d'):
+                elif keys.state('d'):
                     states[2] = 1
                 else:
-                    states[0] = 0
+                    states[2] = 0
 
                 state = ''.join([str(n) for n in states])
                 if state != lastState:
@@ -56,9 +50,7 @@ def start_arduino_coms(debug=False):
                     if not debug:
                         ser.write(state)
                     else:
-                        pass
-                        # print(state)
-                # print(state)
+                        print(state)
 
     print('closing arduino coms')
 
