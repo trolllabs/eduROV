@@ -14,6 +14,7 @@ warnings.simplefilter('error', UserWarning)
 import Pyro4
 
 from edurov.sense import start_sense_hat
+from edurov.arduino import start_arduino_coms
 from edurov.sync import start_sync_classes
 from edurov.utils import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS, detect_pi, check_requirements
@@ -35,8 +36,11 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
     web = Process(target=start_http_server,
                   args=(video_resolution, fps, server_port, debug))
     sense = Process(target=start_sense_hat)
+    arduino = Process(target=start_arduino_coms,
+                      args=(debug,))
     web.start()
     sense.start()
+    arduino.start()
     with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
         try:
             while rov.run:
@@ -48,6 +52,7 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
             web.terminate()
             rov.run = False
             sense.join()
+            arduino.join()
             time.sleep(3)
             print('shutting down the rest')
             pyro_classes.terminate()
@@ -89,7 +94,7 @@ def main(args=None):
 
     check_requirements()
     if not detect_pi():
-        warnings.warn('The http method can only be started on the ROV')
+        warnings.warn('The web method can only be started on the ROV')
     elif args.resolutions:
         args_resolution_help()
     else:

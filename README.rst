@@ -59,7 +59,7 @@ Duo method
 
 The controlling computer needs to be started first::
 
-  edurov-duo control ""
+  edurov-duo control " "
 
 This will start the duo method in control mode at all ip's. This command will
 print the ip address the ROV should connect to, e.g. ``ROV should connect
