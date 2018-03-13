@@ -1,8 +1,12 @@
+"""
+Manage the sense hat
+"""
+
 import signal
 
 import Pyro4
 
-from edurov.support import detect_pi
+from edurov.utils import detect_pi
 
 if detect_pi():
     from sense_hat import SenseHat

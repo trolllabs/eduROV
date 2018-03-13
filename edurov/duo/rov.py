@@ -1,9 +1,12 @@
-#!/usr/bin/env python3
+"""
+Classes and functions for the rov part in a duo setup
+"""
+
 import socket
-import platform
 import io
 import struct
-if 'raspberrypi' in platform._syscmd_uname('-a'):
+from edurov.utils import detect_pi
+if detect_pi():
     import picamera
 
 

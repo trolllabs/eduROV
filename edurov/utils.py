@@ -1,3 +1,7 @@
+"""
+Different utility functions
+"""
+
 import platform
 import socket
 import struct

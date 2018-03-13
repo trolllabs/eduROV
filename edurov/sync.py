@@ -1,8 +1,12 @@
+"""
+Synchronizing the state of ROV and controller
+"""
+
+import os
 import time
 
 import Pyro4
 import pygame
-import os
 
 
 class Key(object):

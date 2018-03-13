@@ -1,11 +1,14 @@
-#!/usr/bin/env python3
+"""
+Argument parser for the duo method
+"""
+
 import argparse
-from edurov.rov_functions import rov
-from edurov.controller_functions import controller
-from edurov.support import valid_resolution, args_resolution_help, STANDARD_RESOLUTIONS
+from .control import control_main
+from .rov import rov_main
+from edurov.utils import valid_resolution, args_resolution_help, STANDARD_RESOLUTIONS
 
 def main(args=None):
-    choices = {'controller': controller, 'rov': rov}
+    choices = {'control': control_main, 'rov': rov_main}
     parser = argparse.ArgumentParser(
         description='Stream video from picamera to machine on same network',
         formatter_class=argparse.RawTextHelpFormatter)
@@ -46,15 +49,17 @@ def main(args=None):
     res = valid_resolution(args.r)
 
     function_ = choices[args.role]
-    if function_ is rov:
-        rov(host=args.ip,
+    if function_ is rov_main:
+        rov_main(
+            host=args.ip,
             port=args.p,
             resolution=res)
-    elif function_ is controller:
-        controller(ip=args.ip,
-                   port=args.p,
-                   resolution=res,
-                   fullscreen=args.f)
+    elif function_ is control_main:
+        control_main(
+            ip=args.ip,
+            port=args.p,
+            resolution=res,
+            fullscreen=args.f)
 
 if __name__ == '__main__':
     main()

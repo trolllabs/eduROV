@@ -1,6 +1,6 @@
 import os
 from setuptools import setup, find_packages
-from edurov.support import detect_pi
+from edurov.utils import detect_pi
 
 
 def read(fname):
@@ -38,7 +38,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'edurov-http = edurov.http:main',
+            'edurov-web = edurov.web:main',
         ],
     },
 )

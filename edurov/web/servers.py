@@ -1,3 +1,7 @@
+"""
+Sever classes used in the web method
+"""
+
 import io
 import json
 import logging
@@ -10,7 +14,7 @@ from threading import Condition
 
 import Pyro4
 
-from edurov.support import server_ip, detect_pi
+from edurov.utils import server_ip, detect_pi
 
 if detect_pi():
     import picamera

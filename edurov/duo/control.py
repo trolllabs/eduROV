@@ -1,4 +1,7 @@
-#!/usr/bin/env python3
+"""
+Classes and functions for the control part in a duo setup
+"""
+
 import struct
 import io
 import sys
@@ -108,7 +111,7 @@ def resolution_to_tuple(resolution):
     return screen_size
 
 
-def controller_main(ip, port, resolution, fullscreen):
+def control_main(ip, port, resolution, fullscreen):
     screen_size = resolution_to_tuple(resolution)
     with Screen(screen_size=screen_size, fullscreen=fullscreen) as screen:
         with Server(ip, port) as server:

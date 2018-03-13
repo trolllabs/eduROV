@@ -1,18 +1,23 @@
+"""
+Argument parser for the web method
+"""
+
 import argparse
 import signal
 import subprocess
 import time
-from multiprocessing import Process
 import warnings
+from multiprocessing import Process
+
 warnings.simplefilter('error', UserWarning)
 
 import Pyro4
 
-from edurov.http_servers import start_http_server
-from edurov.manage_sense_hat import start_sense_hat
-from edurov.pyro_classes import start_pyro_classes
-from edurov.support import valid_resolution, args_resolution_help, \
+from edurov.sense import start_sense_hat
+from edurov.sync import start_pyro_classes
+from edurov.utils import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS, detect_pi, check_requirements
+from .servers import start_http_server
 
 
 def preexec_function():
