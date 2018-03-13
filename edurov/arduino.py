@@ -11,13 +11,11 @@ from edurov.utils import detect_pi
 if detect_pi():
     import serial
 
-states = [0, 0, 0]
-state = "000"
-lastState = "000"
-
 
 def start_arduino_coms(debug=False):
     signal.signal(signal.SIGINT, signal.SIG_IGN)
+    states = [0, 0, 0]
+    lastState = '000'
     if not debug:
         ser = serial.Serial('/dev/ttyACM0', 115200, timeout=0.05)
         ser.close()
