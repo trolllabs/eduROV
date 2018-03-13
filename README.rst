@@ -21,7 +21,7 @@ Preparation
 - if python 3 is not your default python interpreter, pip3 should be used for
   installation as in this instruction
 - the camera on the raspberry pi has to be enabled, see
-https://www.raspberrypi.org/documentation/configuration/camera.md
+  https://www.raspberrypi.org/documentation/configuration/camera.md
 
 Installation
 ------------
@@ -37,15 +37,15 @@ Usage
 -----
 
 Methods
-+++++++
+=======
 
 :Web: The raspberry pi will serve a web page that can be viewed in web browser
   on any computer on the same network
-:Duo: Requires that the eduROV packaged is installed on second computer and the
-  video is viewed using pygame
+:Duo: Requires that the eduROV packaged is installed on a second computer and
+  the video is viewed using pygame
 
 Web method
-==========
+++++++++++
 
 On the raspberry pi, run the following command::
 
@@ -55,14 +55,14 @@ This will start the web server and print the ip where the web page can be
 viewed.
 
 Duo method
-==========
+++++++++++
 
 The controlling computer needs to be started first::
 
   edurov-duo control ""
 
 This will start the duo method in control mode at all ip's. This command will
-print the ip address the ROV should connect to, example ``ROV should connect
+print the ip address the ROV should connect to, e.g. ``ROV should connect
 to 192.168.0.190``. Then on the raspberry pi, run the following command::
 
   edurov-duo rov 192.168.0.190
