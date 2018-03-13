@@ -1,20 +1,17 @@
-# Always prefer setuptools over distutils
+import os
 from setuptools import setup, find_packages
-# To use a consistent encoding
-from codecs import open
-from os import path
-
-here = path.abspath(path.dirname(__file__))
 from edurov.support import detect_pi
 
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
+
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
 
 setup(
     name='edurov',
-    version='0.0.1a4',
+    version='0.0.1a5',
     description='A educational project for remotely operated vehicles',
-    long_description=long_description,
+    long_description=read('README.rst'),
     license='GPLv3',
     url='https://github.com/trolllabs/eduROV',
     author='trolllabs',
@@ -32,11 +29,11 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     keywords='video education ROV picamera',
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=find_packages(),
     install_requires=[
-         'pygame',
-         'Pyro4']+
-         (['picamera==1.13' if detect_pi() else []]),
+                         'pygame',
+                         'Pyro4'] +
+                     (['picamera==1.13' if detect_pi() else []]),
     python_requires='>=3',
     include_package_data=True,
     entry_points={

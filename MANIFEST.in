@@ -1,3 +1,5 @@
+include README.rst
+include LICENSE.txt
 include edurov/index.html
 include edurov/keys.txt
 include edurov/static/script.js

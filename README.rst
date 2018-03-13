@@ -1,5 +1,7 @@
+======
 eduROV
-**********
+======
+
 The eduROV project is all about spreading the joy of technology and learning.
 The eduROV is being developed as a DIY ROV kit meant to be affordable and usable by schools, hobbyists, researchers and others as they see fit.
 We are committed to be fully open-source, both software and hardware-wise, everything we develop will be available to you. Using other open-source and or open-acces tools and platforms.
@@ -7,10 +9,10 @@ We are committed to be fully open-source, both software and hardware-wise, every
 Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
 
 Installation
-=================
+============
 
 Controller machine
--------------------
+------------------
 
 - eduROV requires python 3, if you don't have python installed, you can download it here: https://www.python.org/downloads/ Running ``python --version`` in a terminal should give you ``Python 3.x.x``
 - to download the required files chose ONE of the following methods:
@@ -32,7 +34,7 @@ Controller machine
     pip install -r controller_requirements.txt
 
 Raspberry pi
---------------
+------------
 
 - python 3 should be installed already, check by running ``python3 --version``
 - download the files and move into the newly created folder::
@@ -46,7 +48,7 @@ Raspberry pi
 
   
 Usage
-=========
+=====
 
 The eduROV package works by creating an internet server on the controlling computer, the raspberry pi then streams the video so that you can view the video feed.
 
@@ -66,7 +68,7 @@ Then, on the raspberry pi, run::
 Replace the ip address with the one printed on your computer.
 
 Help
-=======
+====
 
 For additional paramters and information, run::
 
