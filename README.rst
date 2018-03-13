@@ -15,36 +15,33 @@ Installation
 Controller machine
 -------------------
 
-- eduROV requires python 3, if you don't have python installed, you can download it here: https://www.python.org/downloads/ Running `python --version` in a terminal should give you `Python 3.x.x`
+- eduROV requires python 3, if you don't have python installed, you can download it here: https://www.python.org/downloads/ Running ``python --version`` in a terminal should give you ``Python 3.x.x``
 - to download the required files chose ONE of the following methods:
+
   1. **Using git**
-  
-     Open a terminal window on chosen location, then run:
+     Open a terminal window on chosen location, then run::
 
      git clone https://github.com/trolllabs/eduROV.git
 
   2. **Without git**
-  
      Download the files from this link: https://github.com/trolllabs/eduROV/archive/master.zip
-     
      Extract the files
 - open a terminal window in the newly created folder and install the requirements::
 
     pip install -r controller_requirements.txt
 
-    
 Raspberry pi
 --------------
 
 - python 3 should be installed already, check by running ``python3 --version``
 - download the files and move into the newly created folder::
 
-  git clone https://github.com/trolllabs/eduROV.git
-  cd eduROV/
+      git clone https://github.com/trolllabs/eduROV.git
+      cd eduROV/
 
-- install the requirements:
+- install the requirements::
 
-  pip install -r rov_requirements.txt
+    pip install -r rov_requirements.txt
 
   
 Usage
