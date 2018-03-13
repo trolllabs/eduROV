@@ -3,76 +3,76 @@ eduROV
 ======
 
 The eduROV project is all about spreading the joy of technology and learning.
-The eduROV is being developed as a DIY ROV kit meant to be affordable and usable by schools, hobbyists, researchers and others as they see fit.
-We are committed to be fully open-source, both software and hardware-wise, everything we develop will be available to you. Using other open-source and or open-acces tools and platforms.
+The eduROV is being developed as a DIY ROV kit meant to be affordable and
+usable by schools, hobbyists, researchers and others as they see fit.
+We are committed to be fully open-source, both software and hardware-wise,
+everything we develop will be available to you. Using other open-source and or
+open-acces tools and platforms.
 
 Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
 
 :GitHub: https://github.com/trolllabs/eduROV
 :PyPI: https://pypi.org/project/edurov/
 
+Preparation
+-----------
+- eduROV requires python 3, if you don't have python installed, you can
+download it here: https://www.python.org/downloads/
+- if python 3 is not your default python interpreter, pip3 should be used for
+installation as in this instruction
+- the camera on the raspberry pi has to be enabled, see
+https://www.raspberrypi.org/documentation/configuration/camera.md
+
 Installation
 ============
+Run the following command in a terminal window on your raspberry pi
+(sudo rights are needed to enable console scripts)::
 
-Controller machine
-------------------
+  sudo pip3 install edurov --pre
 
-- eduROV requires python 3, if you don't have python installed, you can download it here: https://www.python.org/downloads/ Running ``python --version`` in a terminal should give you ``Python 3.x.x``
-- to download the required files chose ONE of the following methods:
+If you are planning on using the *duo* method as described below, you will also
+need to perform this installation on your controlling computer.
 
-  1. **Using git**
-
-     Open a terminal window on chosen location, then run::
-
-        git clone https://github.com/trolllabs/eduROV.git
-
-  2. **Without git**
-
-     Download the files from this link: https://github.com/trolllabs/eduROV/archive/master.zip
-
-     Extract the files
-
-- open a terminal window in the newly created folder and install the requirements::
-
-    pip install -r controller_requirements.txt
-
-Raspberry pi
-------------
-
-- python 3 should be installed already, check by running ``python3 --version``
-- download the files and move into the newly created folder::
-
-      git clone https://github.com/trolllabs/eduROV.git
-      cd eduROV/
-
-- install the requirements::
-
-    pip install -r rov_requirements.txt
-
-  
 Usage
 =====
 
-The eduROV package works by creating an internet server on the controlling computer, the raspberry pi then streams the video so that you can view the video feed.
+Methods
++++++++
 
-On the controller, run::
+:Web: The raspberry pi will serve a web page that can be viewed in web browser
+  on any computer on the same network
+:Duo: Requires that the eduROV packaged is installed on second computer and the
+  video is viewed using pygame
 
-    python start.py controller ""
+Web method
+----------
 
-This should open a window with the title _eduROV (Waiting for connection)_. In the terminal, the following (or similar) should be written::
+On the raspberry pi, run the following command::
 
-    Listening at ('0.0.0.0', 1060)
-    ROV should connect to 169.254.148.52
+  edurov-web
 
-Then, on the raspberry pi, run::
+This will start the web server and print the ip where the web page can be
+viewed.
 
-    python3 start.py rov 169.254.148.52
+Duo method
+----------
 
-Replace the ip address with the one printed on your computer.
+The controlling computer needs to be started first::
+
+  edurov-duo control ""
+
+This will start the duo method in control mode at all ip's. This command will
+print the ip address the ROV should connect to, example ``ROV should connect
+to 192.168.0.190``. Then on the raspberry pi, run the following command::
+
+  edurov-duo rov 192.168.0.190
+
+Remember to change the ip to the one printed on your controlling computer.
 
 Help
 ====
 
-For additional paramters and information, run::
+For additional parameters and information, the following commands can be used::
 
-    python start.py -h
+    edurov-web -h
+    edurov-duo -h
