@@ -67,13 +67,13 @@ def start_sense_hat():
             while rov.run:
                 # Read key presses
                 if keys.state('up arrow'):
-                    sense.set_pixels(up)
-                elif keys.state('down arrow'):
-                    sense.set_pixels(down)
-                elif keys.state('right arrow'):
-                    sense.set_pixels(right)
-                elif keys.state('left arrow'):
                     sense.set_pixels(left)
+                elif keys.state('down arrow'):
+                    sense.set_pixels(right)
+                elif keys.state('right arrow'):
+                    sense.set_pixels(up)
+                elif keys.state('left arrow'):
+                    sense.set_pixels(down)
                 else:
                     sense.clear()
                 # Update sensors
@@ -83,7 +83,8 @@ def start_sense_hat():
                               'humidity':sense.get_humidity(),
                               'pitch':orientation['pitch'],
                               'roll':orientation['roll'],
-                              'yaw':orientation['yaw']}
+                              'yaw':orientation['yaw'],
+                              'north':sense.get_compass()}
     print('closing sense hat')
 
 
