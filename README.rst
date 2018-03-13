@@ -19,13 +19,17 @@ Controller machine
 - to download the required files chose ONE of the following methods:
 
   1. **Using git**
+
      Open a terminal window on chosen location, then run::
 
-     git clone https://github.com/trolllabs/eduROV.git
+        git clone https://github.com/trolllabs/eduROV.git
 
   2. **Without git**
+
      Download the files from this link: https://github.com/trolllabs/eduROV/archive/master.zip
+
      Extract the files
+
 - open a terminal window in the newly created folder and install the requirements::
 
     pip install -r controller_requirements.txt
