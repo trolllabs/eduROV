@@ -24,8 +24,10 @@ def start_arduino_coms(debug=False):
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             while rov.run:
                 if keys.state('a'):
+                    print('yep')
                     states[1] = 1
                 else:
+                    print('nope')
                     states[1] = 0
                 if keys.state('q'):
                     states[1] = 2
@@ -56,7 +58,7 @@ def start_arduino_coms(debug=False):
                     else:
                         pass
                         # print(state)
-                print(state)
+                # print(state)
 
     print('closing arduino coms')
 
