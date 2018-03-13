@@ -39,8 +39,8 @@ Usage
 Methods
 -------
 
-:Web: The raspberry pi will serve a web page that can be viewed in web browser
-  on any computer on the same network
+:Web: The raspberry pi will serve a web page that can be viewed in a web
+  browser on any computer on the same network
 :Duo: Requires that the eduROV packaged is installed on a second computer and
   the video is viewed using pygame
 
@@ -52,7 +52,7 @@ On the raspberry pi, run the following command::
   edurov-web
 
 This will start the web server and print the ip where the web page can be
-viewed.
+viewed, e.g. ``Visit the webpage at 192.168.0.197:8000``.
 
 Duo method
 ----------
