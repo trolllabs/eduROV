@@ -83,8 +83,7 @@ def start_sense_hat():
                               'humidity':sense.get_humidity(),
                               'pitch':orientation['pitch'],
                               'roll':orientation['roll'],
-                              'yaw':orientation['yaw'],
-                              'north':sense.get_compass()}
+                              'yaw':orientation['yaw']}
     print('closing sense hat')
 
 
