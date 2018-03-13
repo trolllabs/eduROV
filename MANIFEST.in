@@ -1,0 +1,4 @@
+include edurov/index.html
+include edurov/keys.txt
+include edurov/static/script.js
+include edurov/static/style.css

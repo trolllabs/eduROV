@@ -12,9 +12,10 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='edurov',
-    version='0.0.1a2',
+    version='0.0.1a3',
     description='A educational project for remotely operated vehicles',
     long_description=long_description,
+    licence='GPLv3',
     url='https://github.com/trolllabs/eduROV',
     author='trolllabs',
     author_email='martinloland@gmail.com',
@@ -27,17 +28,17 @@ setup(
         'Topic :: Multimedia :: Video :: Display',
         'Framework :: Robot Framework',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Programming Language :: Python',
         'Programming Language :: Python :: 3',
     ],
     keywords='video education ROV picamera',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['pygame', 'Pyro4']+
-                     (['picamera==1.13' if detect_pi() else []]),
+    install_requires=[
+         'pygame',
+         'Pyro4']+
+         (['picamera==1.13' if detect_pi() else []]),
     python_requires='>=3',
-    package_data={
-        'edurov': ['index.html', 'keys.txt', 'static/script.js',
-                   'static/style.css'],
-    },
+    include_package_data=True,
     entry_points={
         'console_scripts': [
             'edurov-http = edurov.http:main',
