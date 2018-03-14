@@ -52,6 +52,18 @@ def start_arduino_coms(debug=False):
                         ser.write(state)
                     else:
                         print(state)
+                if not debug:
+                	if ser.inWaiting():
+	                	serialInput = ser.readline()
+	                	tempWater, pressureWater, batteryVoltage = serialInput.split(':')
+
+	                	rov.sensor = {
+	                		'tempWater':float(tempWater),
+	                		'pressureWater':float(pressureWater),
+	                		'batteryVoltage':float(batteryVoltage)
+	                	}
+
+
 
     print('closing arduino coms')
 
