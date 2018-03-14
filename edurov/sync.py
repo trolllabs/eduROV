@@ -52,6 +52,9 @@ class KeyManager(object):
                 keycode = line[44:].rstrip()
                 self.keys.append(Key(KeyASCII, ASCII, common, keycode))
 
+    def set_mode(self, key, mode):
+        self.get(key).mode = mode
+
     def set(self, key, state):
         self.get(key).state = state
 
