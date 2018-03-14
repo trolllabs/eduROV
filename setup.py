@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
     name='edurov',
-    version='0.0.1b6',
+    version='0.0.1b7',
     description='A educational project for remotely operated vehicles',
     long_description=read('README.rst'),
     license='GPLv3',

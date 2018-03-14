@@ -46,13 +46,13 @@ def start_arduino_coms(debug=False):
                 else:
                     states[2] = 0
                 # Light
-                states[3] = keys.state('l')
+                states[3] = int(keys.state('l'))
 
                 state = ''.join([str(n) for n in states])
                 if state != lastState:
                     lastState = state
                     if not debug:
-                        ser.write(state)
+                        ser.write(state.encode())
                     else:
                         print(state)
                 if not debug:
@@ -64,7 +64,8 @@ def start_arduino_coms(debug=False):
                         rov.sensor = {
                             'tempWater':float(tempWater),
                             'pressureWater':float(pressureWater),
-                            'batteryVoltage':float(batteryVoltage)
+                            'batteryVoltage':float(batteryVoltage),
+                            'light':keys.state('l')
                         }
 
 
