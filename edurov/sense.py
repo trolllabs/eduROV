@@ -83,7 +83,7 @@ def start_sense_hat():
                               'pressure':sense.get_pressure(),
                               'humidity':sense.get_humidity(),
                               'pitch':orientation['pitch'],
-                              'roll':orientation['roll'],
+                              'roll':orientation['roll']+180,
                               'yaw':orientation['yaw']}
     print('closing sense hat')
 
