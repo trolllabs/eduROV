@@ -22,6 +22,7 @@ def start_arduino_coms(debug=False):
         ser.open()
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
+            keys.set_mode(key='l', mode='toggle')
             while rov.run:
                 dic = keys.qweasd_dict
                 if dic['w']:
