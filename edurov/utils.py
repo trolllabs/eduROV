@@ -99,5 +99,5 @@ def receive_arduino(serial_connection):
 
 def warning_format(message, category, filename, lineno,
                    file=None, line=None):
-    return 'WARNING:\n {}:{}\n {}:{}\n'.format(
+    return 'WARNING:\n  {}: {}\n  File: {}:{}\n'.format(
         category.__name__, message, filename, lineno)
