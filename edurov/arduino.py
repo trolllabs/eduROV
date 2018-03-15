@@ -36,7 +36,8 @@ def get_serial_connection(port, baudrate, timeout):
         pass
     finally:
         warnings.simplefilter('default', UserWarning)
-        warnings.warn('Was not able to establish serial connection')
+        warnings.warn('Was not able to establish serial connection at {}'
+                      .format(port))
         return None
 
 
