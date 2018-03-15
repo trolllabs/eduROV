@@ -7,7 +7,6 @@ import socket
 import struct
 import subprocess
 import warnings
-warnings.formatwarning = warning_format
 
 
 def detect_pi():
@@ -97,7 +96,8 @@ def receive_arduino(serial_connection):
                 warnings.warn('Received incomplete serial string')
     return None
 
+
 def warning_format(message, category, filename, lineno,
-                        file=None, line=None):
+                   file=None, line=None):
     return '-> {}:{}: {}:{}'.format(
         filename, lineno, category.__name__, message)

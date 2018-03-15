@@ -7,7 +7,9 @@ import warnings
 
 import Pyro4
 
-from edurov.utils import detect_pi, send_arduino, receive_arduino
+from edurov.utils import detect_pi, send_arduino, receive_arduino, warning_format
+warnings.formatwarning = warning_format
+warnings.simplefilter('default', UserWarning)
 
 if detect_pi():
     import serial
@@ -35,7 +37,6 @@ def get_serial_connection(port, baudrate, timeout):
     except serial.serialutil.SerialException:
         pass
     finally:
-        warnings.simplefilter('default', UserWarning)
         warnings.warn('Was not able to establish serial connection at {}'
                       .format(port))
         return None
