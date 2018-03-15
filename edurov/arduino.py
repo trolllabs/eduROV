@@ -3,6 +3,7 @@ Send motor commands to the arduino
 """
 
 import signal
+import warnings
 
 import Pyro4
 
@@ -23,14 +24,28 @@ def valid_arduino_string(arduino_string):
     return False
 
 
+def get_serial_connection(port, baudrate, timeout):
+    try:
+        ser = serial.Serial('/dev/ttyACM0', 115200, timeout=0.05)
+        ser.close()
+        ser.open()
+        return ser
+    except FileNotFoundError:
+        warnings.simplefilter('default', UserWarning)
+        warnings.warn('Was not able to establish serial connection')
+        return None
+
+
 def start_arduino_coms(debug=False):
     signal.signal(signal.SIGINT, signal.SIG_IGN)
     states = [0, 0, 0, 0]
     lastState = '0000'
     if not debug:
-        ser = serial.Serial('/dev/ttyACM0', 115200, timeout=0.05)
-        ser.close()
-        ser.open()
+        ser = get_serial_connection(
+            port='/dev/ttyACM0',
+            baudrate=115200,
+            timeout=0.05
+        )
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             keys.set_mode(key='l', mode='toggle')
@@ -62,11 +77,11 @@ def start_arduino_coms(debug=False):
                 state = ''.join([str(n) for n in states])
                 if state != lastState:
                     lastState = state
-                    if not debug:
+                    if not debug and ser:
                         send_arduino(msg=state, serial_connection=ser)
                     else:
                         print(state)
-                if not debug:
+                if not debug and ser:
                     arduino_string = receive_arduino(serial_connection=ser)
                     if valid_arduino_string(arduino_string):
                         v1, v2, v3 = arduino_string.split(':')
