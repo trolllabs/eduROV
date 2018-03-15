@@ -85,11 +85,12 @@ def send_arduino(msg, serial_connection):
 
 def receive_arduino(serial_connection):
     if serial_connection.inWaiting():
-        msg = serial_connection.readline()
+        msg = serial_connection.readline().decode().rstrip()
         if len(msg) >= 6:
             length = int(msg[:6], 0)
             data = msg[6:]
             if length == len(data):
+                print('yep: ' + data)
                 return data.decode()
             else:
                 print(data)
