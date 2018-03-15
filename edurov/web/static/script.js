@@ -1,6 +1,6 @@
 var last_key;
 var key_dict = {event:'', keycode:0};
-var video_rotation = 180;
+var video_rotation = 0;
 var getsensorID = setInterval(get_sensor, 80);
 var MINIMUM_PANEL_WIDTH = 200;
 

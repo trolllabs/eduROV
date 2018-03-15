@@ -8,7 +8,7 @@ body {
     display: block;
     margin: auto auto;
     width: 100%;
-    transform: rotate(180deg);
+    transform: rotate(0deg);
 }
 
 #roll {
