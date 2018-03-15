@@ -31,15 +31,13 @@ def get_serial_connection(port, baudrate, timeout):
         ser.open()
         return ser
     except FileNotFoundError:
-        warnings.simplefilter('default', UserWarning)
-        warnings.warn('Was not able to establish serial connection')
-        return None
+        pass
     except serial.serialutil.SerialException:
+        pass
+    finally:
         warnings.simplefilter('default', UserWarning)
         warnings.warn('Was not able to establish serial connection')
         return None
-    finally:
-        print('did not enable')
 
 
 def start_arduino_coms(debug=False):
