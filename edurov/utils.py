@@ -87,15 +87,18 @@ def receive_arduino(serial_connection):
     if serial_connection.inWaiting():
         msg = serial_connection.readline().decode().rstrip()
         if len(msg) >= 6:
-            length = int(msg[:6], 0)
-            data = msg[6:]
-            if length == len(data):
-                print('yep: ' + data)
-                return data
-            else:
-                print(data)
-                # warnings.simplefilter('default', UserWarning)
-                # warnings.warn('Received incomplete serial string')
+            try:
+                length = int(msg[:6], 0)
+                data = msg[6:]
+                if length == len(data):
+                    print('yep: ' + data)
+                    return data
+                else:
+                    print(data)
+                    # warnings.simplefilter('default', UserWarning)
+                    # warnings.warn('Received incomplete serial string')
+            except ValueError:
+                pass
     return None
 
 
