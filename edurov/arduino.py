@@ -30,7 +30,7 @@ def get_serial_connection(port, baudrate, timeout):
         ser.close()
         ser.open()
         return ser
-    except FileNotFoundError:
+    except FileNotFoundError or serial.serialutil.SerialException:
         warnings.simplefilter('default', UserWarning)
         warnings.warn('Was not able to establish serial connection')
         return None
