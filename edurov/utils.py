@@ -10,7 +10,7 @@ import warnings
 
 
 def detect_pi():
-    if 'raspberrypi' in platform._syscmd_uname('-a'):
+    if 'Linux' in platform.platform():
         return True
     else:
         return False
@@ -65,6 +65,7 @@ def server_ip(port):
         sock.close()
     return ' or '.join(['{}:{}'.format(ip, port) for ip in online_ips])
 
+
 def check_requirements():
     if detect_pi():
         camera = subprocess.check_output(['vcgencmd',
@@ -72,3 +73,25 @@ def check_requirements():
         if '0' in camera:
             warnings.simplefilter('error', UserWarning)
             warnings.warn('Camera not enabled or connected properly')
+
+
+def send_arduino(msg, serial_connection):
+    if not isinstance(msg, bytes):
+        msg = str(msg).encode()
+    length = "{0:#0{1}x}".format(len(msg), 6).encode()
+    data = length + msg
+    serial_connection.write(data)
+
+
+def receive_arduino(serial_connection):
+    if serial_connection.inWaiting():
+        msg = serial_connection.readline()
+        if len(msg) >= 6:
+            length = int(msg[:6], 0)
+            data = msg[6:]
+            if length == len(data):
+                return data.decode()
+            else:
+                warnings.simplefilter('default', UserWarning)
+                warnings.warn('Received incomplete serial string')
+    return None

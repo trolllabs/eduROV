@@ -6,10 +6,21 @@ import signal
 
 import Pyro4
 
-from edurov.utils import detect_pi
+from edurov.utils import detect_pi, send_arduino, receive_arduino
 
 if detect_pi():
     import serial
+
+
+def valid_arduino_string(arduino_string):
+    if arduino_string:
+        if arduino_string.count(':') == 2:
+            try:
+                [float(v) for v in arduino_string.split(':')]
+                return True
+            except:
+                return False
+    return False
 
 
 def start_arduino_coms(debug=False):
@@ -45,30 +56,27 @@ def start_arduino_coms(debug=False):
                     states[2] = 1
                 else:
                     states[2] = 0
-                # Light
-                states[3] = int(keys.state('l'))
+                light_state = int(keys.state('l'))
+                states[3] = light_state
 
                 state = ''.join([str(n) for n in states])
                 if state != lastState:
                     lastState = state
                     if not debug:
-                        ser.write(state.encode())
+                        send_arduino(msg=state, serial_connection=ser)
                     else:
                         print(state)
                 if not debug:
-                    if ser.inWaiting():
-                        serialInput = ser.readline()
-                        tempWater, pressureWater, batteryVoltage = \
-                         serialInput.split(':')
+                    arduino_string = receive_arduino(serial_connection=ser)
+                    if valid_arduino_string(arduino_string):
+                        v1, v2, v3 = arduino_string.split(':')
 
                         rov.sensor = {
-                            'tempWater':float(tempWater),
-                            'pressureWater':float(pressureWater),
-                            'batteryVoltage':float(batteryVoltage),
-                            'light':keys.state('l')
+                            'tempWater': float(v1),
+                            'pressureWater': float(v2),
+                            'batteryVoltage': float(v3),
+                            'light': light_state
                         }
-
-
 
     print('closing arduino coms')
 
