@@ -33,10 +33,9 @@ def get_serial_connection(port, baudrate, timeout):
         pass
     except serial.serialutil.SerialException:
         pass
-    finally:
-        warning(message='Could not establish serial connection at {}'
-                .format(port), filter='default')
-        return None
+    warning(message='Could not establish serial connection at {}'
+            .format(port), filter='default')
+    return None
 
 
 def start_arduino_coms(debug=False):
