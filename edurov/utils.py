@@ -92,8 +92,9 @@ def receive_arduino(serial_connection):
             if length == len(data):
                 return data.decode()
             else:
-                warnings.simplefilter('default', UserWarning)
-                warnings.warn('Received incomplete serial string')
+                print(data)
+                # warnings.simplefilter('default', UserWarning)
+                # warnings.warn('Received incomplete serial string')
     return None
 
 
