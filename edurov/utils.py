@@ -91,7 +91,7 @@ def receive_arduino(serial_connection):
             data = msg[6:]
             if length == len(data):
                 print('yep: ' + data)
-                return data.decode()
+                return data
             else:
                 print(data)
                 # warnings.simplefilter('default', UserWarning)
