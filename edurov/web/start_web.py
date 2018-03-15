@@ -6,10 +6,7 @@ import argparse
 import signal
 import subprocess
 import time
-import warnings
 from multiprocessing import Process
-
-warnings.simplefilter('error', UserWarning)
 
 import Pyro4
 
@@ -17,7 +14,7 @@ from edurov.sense import start_sense_hat
 from edurov.arduino import start_arduino_coms
 from edurov.sync import start_sync_classes
 from edurov.utils import valid_resolution, args_resolution_help, \
-    STANDARD_RESOLUTIONS, detect_pi, check_requirements
+    STANDARD_RESOLUTIONS, detect_pi, check_requirements, warning
 from .servers import start_http_server
 
 
@@ -94,7 +91,7 @@ def main(args=None):
 
     check_requirements()
     if not detect_pi():
-        warnings.warn('The web method can only be started on the ROV')
+        warning('The web method can only be started on the ROV')
     elif args.resolutions:
         args_resolution_help()
     else:

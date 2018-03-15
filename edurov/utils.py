@@ -71,8 +71,7 @@ def check_requirements():
         camera = subprocess.check_output(['vcgencmd',
                                           'get_camera']).decode().rstrip()
         if '0' in camera:
-            warnings.simplefilter('error', UserWarning)
-            warnings.warn('Camera not enabled or connected properly')
+            warning('Camera not enabled or connected properly')
 
 
 def send_arduino(msg, serial_connection):
@@ -91,15 +90,19 @@ def receive_arduino(serial_connection):
                 length = int(msg[:6], 0)
                 data = msg[6:]
                 if length == len(data):
-                    print('yep: ' + data)
                     return data
                 else:
-                    print(data)
-                    # warnings.simplefilter('default', UserWarning)
-                    # warnings.warn('Received incomplete serial string')
+                    warning('Received incomplete serial string: {}'
+                            .format(data), 'default')
             except ValueError:
                 pass
     return None
+
+
+def warning(message, filter='error', category=UserWarning):
+    warnings.simplefilter(filter, category)
+    warnings.formatwarning = warning_format
+    warnings.warn(message)
 
 
 def warning_format(message, category, filename, lineno,
