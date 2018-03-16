@@ -35,7 +35,7 @@ void updateOutput(String msg) {
   if(msg[2] == '1'){
     digitalWrite(ch4a, HIGH);
     digitalWrite(ch4b, LOW);
-  }else if(msg[1] == '2'){
+  }else if(msg[2] == '2'){
     digitalWrite(ch4a, LOW);
     digitalWrite(ch4b, HIGH);
   }else{

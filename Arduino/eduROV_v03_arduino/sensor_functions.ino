@@ -7,13 +7,14 @@ double kPaRead(int pin) {
 }
 
 double getTemp(int pin) {
-  //Peading tmp36 at analogpin "pin"
+  //Reading temperature sensor lm35 at analogpin "pin"
   double tempVals = 0;
-  for (int i = 0; i < 10; i++) {
-    double sensorMilliVolt = analogRead(pin) * (5000.0 / 1024);
-    tempVals += (sensorMilliVolt - 500) / 10;
+  for(int i = 0; i < 10; i++){
+    tempVals += (500.0*analogRead(pin))/1024;
   }
-  return (tempVals / 10);
+  double temp = tempVals/10.0;
+  return temp;
+  
 }
 
 double getVolt(int pin){

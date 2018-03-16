@@ -34,6 +34,9 @@
 String input = " ";
 String output = " ";
 
+unsigned long messageTime = 0;
+unsigned int delayTime = 100; //how long between each sensor update - milliseconds
+
 //Sensor variables
 volatile double pressure = 0;
 volatile double temp = 0;
@@ -76,15 +79,18 @@ void loop() {
       input += inChar;
     }
     //Test print to verify input, use for debugging only
-    //Serial.println(input);
+    Serial.println(input);
   }
 
   //Reading sensors
   pressure = kPaRead(pressPin);
   temp = getTemp(tempPin);
   battVolt = getVolt(battVoltPin);
-
-  printSensorValues();
+  
+  if ((millis() - messageTime) > delayTime) {
+    messageTime = millis();
+    printSensorValues();
+  }
   updateOutput(input);
 
 }
