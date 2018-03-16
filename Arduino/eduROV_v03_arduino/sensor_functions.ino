@@ -20,7 +20,7 @@ double getVolt(int pin){
   //Read battery voltage value from "pin"
   //Convert to voltage
   //Multiply by 2, since the PCB has an onboard voltage divider to make the voltage readable by the Arduino ADC
-  return (((5.0*analogRead(pin))/1023)*2)
+  return (((5.0*analogRead(pin))/1023)*2);
 }
 
 void printSensorValues(){

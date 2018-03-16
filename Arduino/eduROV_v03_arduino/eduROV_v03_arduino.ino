@@ -1,15 +1,15 @@
 /*
- * eduROV Arduino code
- * Handles:
- * - Motor controls
- * - External temperature sensor
- * - External pressure sensor
- * - Battery voltage measurement
- * - LED lanterns
- * - Serial communications to the eduROV python server
- * 
- * Provided as-is and free to be modified as you see fit.
- */
+   eduROV Arduino code
+   Handles:
+   - Motor controls
+   - External temperature sensor
+   - External pressure sensor
+   - Battery voltage measurement
+   - LED lanterns
+   - Serial communications to the eduROV python server
+
+   Provided as-is and free to be modified as you see fit.
+*/
 
 //Sensor pins:
 #define pressPin A0
@@ -31,8 +31,8 @@
 #define ledPin 13
 
 //Communication variables
-volatile String input = " ";
-volatile String output = " ";
+String input = " ";
+String output = " ";
 
 //Sensor variables
 volatile double pressure = 0;
@@ -69,9 +69,9 @@ void setup() {
 
 void loop() {
   //Serial read
-  if(Serial.available() > 0){
+  if (Serial.available() > 0) {
     input = "";
-    while(Serial.available()){
+    while (Serial.available()) {
       char inChar = (char)Serial.read();
       input += inChar;
     }
@@ -80,7 +80,7 @@ void loop() {
   }
 
   //Reading sensors
-  pressure = kpaRead(pressPin);
+  pressure = kPaRead(pressPin);
   temp = getTemp(tempPin);
   battVolt = getVolt(battVoltPin);
 
