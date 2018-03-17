@@ -10,6 +10,7 @@ from multiprocessing import Process
 
 import Pyro4
 import Pyro4.naming
+import socket
 
 from edurov.sense import start_sense_hat
 from edurov.arduino import start_arduino_coms
@@ -26,7 +27,14 @@ def preexec_function():
 def start_http_and_pyro(video_resolution, fps, server_port, debug):
     # name_server = subprocess.Popen('pyro4-ns', shell=False,
     #                                preexec_fn=preexec_function)
-    nameserverUri, nameserverDaemon, broadcastServer = Pyro4.naming.startNS()
+
+    Pyro4.config.SERVERTYPE = "thread"
+
+    hostname = socket.gethostname()
+    my_ip = Pyro4.socketutil.getIpAddress(None, workaround127=True)
+
+
+    nameserverUri, nameserverDaemon, broadcastServer = Pyro4.naming.startNS(host=my_ip)
     assert broadcastServer is not None, "expect a broadcast server to be created"
     print("got a Nameserver, uri=%s" % nameserverUri)
 
