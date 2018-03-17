@@ -31,10 +31,10 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
     Pyro4.config.SERVERTYPE = "thread"
 
     hostname = socket.gethostname()
-    my_ip = Pyro4.socketutil.getIpAddress(None, workaround127=True)
+    my_ip = Pyro4.socketutil.getIpAddress(None, workaround127=False)
 
 
-    nameserverUri, nameserverDaemon, broadcastServer = Pyro4.naming.startNS()
+    nameserverUri, nameserverDaemon, broadcastServer = Pyro4.naming.startNS(host=my_ip)
     assert broadcastServer is not None, "expect a broadcast server to be created"
     print("got a Nameserver, uri=%s" % nameserverUri)
 
