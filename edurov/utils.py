@@ -29,7 +29,12 @@ def is_int(number):
     if isinstance(number, int):
         return True
     else:
-        return False
+        try:
+            if isinstance(int(number), int):
+                return True
+        except ValueError:
+            pass
+    return False
 
 
 def valid_resolution(resolution):
