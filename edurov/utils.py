@@ -25,21 +25,29 @@ STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
                         '1920x1080']
 
 
+def is_int(number):
+    if isinstance(number, int):
+        return True
+    else:
+        return False
+
+
 def valid_resolution(resolution):
     if 'x' in resolution:
-        if len(resolution.split('x')) is 2:
+        w, h = resolution.split('x')
+        if is_int(w) and is_int(h):
             return resolution
         else:
-            raise ValueError('Resolution must be WIDTHxHEIGHT or an integer')
-    try:
+            warning('Resolution must be WIDTHxHEIGHT or an integer')
+    elif is_int(resolution):
         idx = int(resolution)
         if idx in range(0, len(STANDARD_RESOLUTIONS)):
             return STANDARD_RESOLUTIONS[idx]
         else:
-            raise ValueError('Resolution index must be inr range 0-{}, not {}'
-                             .format(len(STANDARD_RESOLUTIONS), idx))
-    except ValueError:
-        raise ValueError('Resolution must be WIDTHxHEIGHT or an integer')
+            warning('Resolution index must be inr range 0-{}, not {}'
+                    .format(len(STANDARD_RESOLUTIONS), idx))
+    else:
+        warning('Resolution must be WIDTHxHEIGHT or an integer')
 
 
 def args_resolution_help():
