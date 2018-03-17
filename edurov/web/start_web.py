@@ -9,11 +9,9 @@ import time
 from multiprocessing import Process
 
 import Pyro4
-import Pyro4.naming
-import socket
 
-from edurov.sense import start_sense_hat
 from edurov.arduino import start_arduino_coms
+from edurov.sense import start_sense_hat
 from edurov.sync import start_sync_classes
 from edurov.utils import valid_resolution, args_resolution_help, \
     STANDARD_RESOLUTIONS, detect_pi, check_requirements, warning
@@ -25,12 +23,8 @@ def preexec_function():
 
 
 def start_http_and_pyro(video_resolution, fps, server_port, debug):
-    # name_server = subprocess.Popen('pyro4-ns', shell=False,
-    #                                preexec_fn=preexec_function)
-
-    Pyro4.naming.startNSloop()
-
-
+    name_server = subprocess.Popen('pyro4-ns', shell=False,
+                                   preexec_fn=preexec_function)
     time.sleep(2)
     pyro_classes = Process(target=start_sync_classes)
     pyro_classes.start()
