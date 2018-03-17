@@ -9,6 +9,7 @@ import time
 from multiprocessing import Process
 
 import Pyro4
+import Pyro4.naming
 
 from edurov.sense import start_sense_hat
 from edurov.arduino import start_arduino_coms
@@ -28,7 +29,7 @@ def start_http_and_pyro(video_resolution, fps, server_port, debug):
     nameserverUri, nameserverDaemon, broadcastServer = Pyro4.naming.startNS()
     assert broadcastServer is not None, "expect a broadcast server to be created"
     print("got a Nameserver, uri=%s" % nameserverUri)
-    
+
     time.sleep(2)
     pyro_classes = Process(target=start_sync_classes)
     pyro_classes.start()
