@@ -35,6 +35,8 @@ def is_int(number):
 def valid_resolution(resolution):
     if 'x' in resolution:
         w, h = resolution.split('x')
+        print(w)
+        print(h)
         if is_int(w) and is_int(h):
             return resolution
         else:
