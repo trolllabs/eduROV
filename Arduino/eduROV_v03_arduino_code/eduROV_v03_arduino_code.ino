@@ -73,13 +73,9 @@ void setup() {
 void loop() {
   //Serial read
   if (Serial.available() > 0) {
-    input = "";
-    while (Serial.available()) {
-      char inChar = (char)Serial.read();
-      input += inChar;
-    }
+    input = receive_signal();
     //Test print to verify input, use for debugging only
-    Serial.println(input);
+    //Serial.println(input);
   }
 
   //Reading sensors

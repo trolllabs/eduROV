@@ -28,9 +28,10 @@ void printSensorValues(){
   //message is started with the number of bytes available in the message
   //All values are separated by a colon ":", including the message length
   String msg = String(temp) + ':' + String(pressure) + ':' + String(battVolt);
-  int len = msg.length() + 1;
-  msg = String(len) + ":" + msg;
   
-  Serial.println(msg);
+  send_signal(msg);
+  //int len = msg.length() + 1;
+  //msg = String(len) + ":" + msg;
+  //Serial.println(msg);
 }
 
