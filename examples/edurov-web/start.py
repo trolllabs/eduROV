@@ -6,6 +6,7 @@ import signal
 
 import Pyro4
 from sense_hat import SenseHat
+import time
 
 from edurov import WebMethod
 from edurov.arduino import get_serial_connection, send_arduino, \
@@ -77,6 +78,8 @@ def senser(debug=False):
                       'pitch': orientation['pitch'],
                       'roll': orientation['roll'] + 180,
                       'yaw': orientation['yaw']}
+        print(orientation['roll'])
+        time.sleep(1)
 
 
 def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
