@@ -71,15 +71,14 @@ def senser(debug=False):
     signal.signal(signal.SIGINT, signal.SIG_IGN)
     sense = SenseHat()
     with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
-        orientation = sense.get_orientation()
-        rov.sensor = {'temp': sense.get_temperature(),
-                      'pressure': sense.get_pressure(),
-                      'humidity': sense.get_humidity(),
-                      'pitch': orientation['pitch'],
-                      'roll': orientation['roll'] + 180,
-                      'yaw': orientation['yaw']}
-        print(orientation['roll'])
-        time.sleep(1)
+        while rov.run:
+            orientation = sense.get_orientation()
+            rov.sensor = {'temp': sense.get_temperature(),
+                          'pressure': sense.get_pressure(),
+                          'humidity': sense.get_humidity(),
+                          'pitch': orientation['pitch'],
+                          'roll': orientation['roll'] + 180,
+                          'yaw': orientation['yaw']}
 
 
 def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
