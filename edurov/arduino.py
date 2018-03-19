@@ -23,9 +23,9 @@ def valid_arduino_string(arduino_string):
     return False
 
 
-def get_serial_connection(port, baudrate, timeout):
+def get_serial_connection(port='/dev/ttyACM0', baudrate=115200, timeout=0.05):
     try:
-        ser = serial.Serial('/dev/ttyACM0', 115200, timeout=0.05)
+        ser = serial.Serial(port, baudrate, timeout)
         ser.close()
         ser.open()
         return ser
@@ -43,11 +43,7 @@ def start_arduino_coms(debug=False):
     states = [0, 0, 0, 0]
     lastState = '0000'
     if not debug:
-        ser = get_serial_connection(
-            port='/dev/ttyACM0',
-            baudrate=115200,
-            timeout=0.05
-        )
+        ser = get_serial_connection(        )
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             keys.set_mode(key='l', mode='toggle')
