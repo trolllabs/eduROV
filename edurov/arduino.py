@@ -25,13 +25,15 @@ def valid_arduino_string(arduino_string):
 
 def get_serial_connection(port='/dev/ttyACM0', baudrate=115200, timeout=0.05):
     try:
-        ser = serial.Serial(port, baudrate, timeout)
+        ser = serial.Serial(port, baudrate, timeout=timeout)
         ser.close()
         ser.open()
         return ser
     except FileNotFoundError:
         pass
     except serial.serialutil.SerialException:
+        pass
+    except ValueError:
         pass
     warning(message='Could not establish serial connection at {}'
             .format(port), filter='default')
