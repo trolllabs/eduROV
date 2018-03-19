@@ -41,6 +41,7 @@ class WebMethod(object):
         time.sleep(4)
         web_server = Process(target=start_http_server,
                       args=(self.res, self.fps, self.server_port, self.debug))
+        web_server.start()
         processes = []
         for f in self.run_funcs:
             p = Process(target=f)
