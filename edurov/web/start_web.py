@@ -14,12 +14,9 @@ from edurov.arduino import start_arduino_coms
 from edurov.sense import start_sense_hat
 from edurov.sync import start_sync_classes
 from edurov.utils import valid_resolution, args_resolution_help, \
-    STANDARD_RESOLUTIONS, detect_pi, check_requirements, warning
+    STANDARD_RESOLUTIONS, detect_pi, check_requirements, warning, \
+    preexec_function
 from .servers import start_http_server
-
-
-def preexec_function():
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
 def start_http_and_pyro(video_resolution, fps, server_port, debug):

@@ -7,6 +7,7 @@ import socket
 import struct
 import subprocess
 import warnings
+import signal
 
 
 def detect_pi():
@@ -35,6 +36,10 @@ def is_int(number):
         except ValueError:
             pass
     return False
+
+
+def preexec_function():
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
 def valid_resolution(resolution):
