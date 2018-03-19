@@ -89,7 +89,7 @@ def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
         debug=debug,
         runtime_functions=[arduino, senser]
     )
-    web_method.serve()
+    web_method.serve(20)
 
 
 if __name__ == '__main__':

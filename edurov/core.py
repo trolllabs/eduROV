@@ -31,8 +31,7 @@ class WebMethod(object):
         self.run_funcs = runtime_functions
 
     def serve(self, timeout=None):
-        if timeout:
-            self.start = time.time()
+        start = time.time()
         name_server = subprocess.Popen('pyro4-ns', shell=False,
                                        preexec_fn=preexec_function)
         time.sleep(2)
@@ -40,7 +39,8 @@ class WebMethod(object):
         pyro_classes.start()
         time.sleep(4)
         web_server = Process(target=start_http_server,
-                      args=(self.res, self.fps, self.server_port, self.debug))
+                             args=(
+                             self.res, self.fps, self.server_port, self.debug))
         web_server.start()
         processes = []
         for f in self.run_funcs:
@@ -51,7 +51,9 @@ class WebMethod(object):
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             try:
                 while rov.run:
-                    pass
+                    if timeout:
+                        if time.time()-start >= timeout:
+                            break
             except KeyboardInterrupt:
                 pass
             finally:
