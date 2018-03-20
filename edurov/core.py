@@ -35,11 +35,12 @@ class WebMethod(object):
         self.check_index_file()
 
     def check_index_file(self):
+        if not 'index.html' in self.index_file:
+            warning('The index files must be called "index.html')
         if os.path.isfile(self.index_file):
             self.index_file = os.path.abspath(self.index_file)
         else:
-            warning('could not find file "{}"\n'
-                    'Needs a absolute path to index file'
+            warning('could not find "{}", needs absolute path'
                     .format(self.index_file))
 
     def serve(self, timeout=None):

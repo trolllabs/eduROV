@@ -47,32 +47,39 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     output = None
     keys = None
     rov = None
-
     base_folder = None
     index_file = None
 
-    # cwd = os.path.dirname(os.path.abspath(__file__))
-    # css_file = os.path.join(cwd, './static/style.css')
-    # script_file = os.path.join(cwd, './static/script.js')
-    #
-    # def serve_static(self, path):
-    #     if 'style.css' in path:
-    #         with open(self.css_file, 'rb') as f:
-    #             content = f.read()
-    #             content_type = 'text/css'
-    #     elif 'script.js' in path:
-    #         with open(self.script_file, 'rb') as f:
-    #             content = f.read()
-    #             content_type = 'text/javascript'
-    #     else:
-    #         self.send_404()
-    #         return
-    #
-    #     self.send_response(200)
-    #     self.send_header('Content-Type', content_type)
-    #     self.send_header('Content-Length', len(content))
-    #     self.end_headers()
-    #     self.wfile.write(content)
+    def do_GET(self):
+        if self.path == '/':
+            self.send_response(301)
+            self.send_header('Location', '/index.html')
+            self.end_headers()
+        elif self.path == '/stream.mjpg':
+            self.serve_stream()
+        elif self.path.startswith('/sensordata.json'):
+            self.serve_sensor()
+        else:
+            path = os.path.join(self.base_folder, self.path[1:])
+            if os.path.isfile(path):
+                self.serve_path(path)
+            else:
+                self.send_404()
+
+    def do_POST(self):
+        if self.path.startswith('/keys.json'):
+            content_len = int(self.headers['Content-Length'])
+            post_body = self.rfile.read(content_len).decode('utf-8')
+            json_obj = json.loads(post_body)
+            self.keys.set_from_js_dict(json_obj)
+            self.send_response(200)
+            self.end_headers()
+        elif self.path.startswith('/stop'):
+            self.send_response(200)
+            self.end_headers()
+            self.rov.run = False
+        else:
+            self.send_404()
 
     def serve_path(self, path):
         if 'style.css' in path:
@@ -126,60 +133,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
                 'Removed streaming client %s: %s',
                 self.client_address, str(e))
 
-    def do_POST(self):
-        if self.path.startswith('/keys.json'):
-            content_len = int(self.headers['Content-Length'])
-            post_body = self.rfile.read(content_len).decode('utf-8')
-            json_obj = json.loads(post_body)
-            self.keys.set_from_js_dict(json_obj)
-            self.send_response(200)
-            self.end_headers()
-        elif self.path.startswith('/stop'):
-            self.send_response(200)
-            self.end_headers()
-            self.rov.run = False
-        else:
-            self.send_404()
-
-    def do_GET(self):
-        if self.path == '/':
-            self.send_response(301)
-            self.send_header('Location', '/index.html')
-            self.end_headers()
-        elif self.path == '/stream.mjpg':
-            self.serve_stream()
-        elif self.path.startswith('/sensordata.json'):
-            self.serve_sensor()
-        else:
-            print(self.base_folder)
-            path =  os.path.join(self.base_folder, self.path[1:])
-            print(path)
-            if os.path.isfile(path):
-                self.serve_path(path)
-            else:
-                self.send_404()
-
-
-        # elif self.path == '/index.html':
-        #     with open(self.index_file, 'rb') as f:
-        #         content = f.read()
-        #     self.send_response(200)
-        #     self.send_header('Content-Type', 'text/html')
-        #     self.send_header('Content-Length', len(content))
-        #     self.end_headers()
-        #     self.wfile.write(content)
-        #     print(self.base_folder)
-        # elif self.path.startswith('/static/'):
-        #     self.serve_static(self.path)
-        # elif self.path.startswith('/sensordata.json'):
-        #     self.serve_sensor()
-        # elif self.path == '/stream.mjpg':
-        #     self.serve_stream()
-        # else:
-        #     self.send_404()
-    #
-    # def log_message(self, format, *args):
-    #     return
+    def log_message(self, format, *args):
+        return
 
 
 class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
@@ -194,9 +149,8 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
         RequestHandlerClass.output = stream_output
         RequestHandlerClass.rov = rov_proxy
         RequestHandlerClass.keys = keys_proxy
-        print(index_file)
-        print(os.path.abspath(os.path.dirname(index_file)))
-        RequestHandlerClass.base_folder = os.path.abspath(os.path.dirname(index_file))
+        RequestHandlerClass.base_folder = os.path.abspath(
+            os.path.dirname(index_file))
         RequestHandlerClass.index_file = index_file
         super(WebpageServer, self).__init__(server_address,
                                             RequestHandlerClass)
