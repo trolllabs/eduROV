@@ -29,6 +29,10 @@ class WebMethod(object):
         self.server_port = server_port
         self.debug = debug
         self.run_funcs = runtime_functions
+        if index_file:
+            self.index_file = index_file
+        else:
+            self.index_file = 'index.html'
 
     def serve(self, timeout=None):
         start = time.time()
@@ -38,9 +42,10 @@ class WebMethod(object):
         pyro_classes = Process(target=start_sync_classes)
         pyro_classes.start()
         time.sleep(4)
-        web_server = Process(target=start_http_server,
-                             args=(
-                             self.res, self.fps, self.server_port, self.debug))
+        web_server = Process(
+            target=start_http_server,
+            args=(self.res, self.fps, self.server_port, self.debug,
+                  self.index_file))
         web_server.start()
         processes = []
         for f in self.run_funcs:
