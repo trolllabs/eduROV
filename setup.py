@@ -9,11 +9,12 @@ def read(fname):
 
 setup(
     name='edurov',
-    version='0.0.1rc1',
+    version='0.0.2a1',
     description='A educational project for remotely operated vehicles',
     long_description=read('README.rst'),
     license='GPLv3',
     url='https://github.com/trolllabs/eduROV',
+
     author='trolllabs',
     author_email='martinloland@gmail.com',
     classifiers=[
@@ -40,6 +41,12 @@ setup(
         'console_scripts': [
             'edurov-web = edurov.web:main',
             'edurov-duo = edurov.duo:main',
+            'edurov-ex = examples.edurov_web.start:main'
         ],
+    },
+    project_urls={
+        'Documentation': 'http://http://edurov.no/',
+        'Source': 'https://github.com/trolllabs/eduROV/',
+        'Tracker': 'https://github.com/trolllabs/eduROV/issues',
     },
 )
