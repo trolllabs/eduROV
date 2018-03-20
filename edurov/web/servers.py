@@ -152,7 +152,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.serve_sensor()
         else:
             print(self.base_folder)
-            path =  os.path.join(self.base_folder, self.path)
+            path =  os.path.join(self.base_folder, self.path[1:])
             print(path)
             if os.path.isfile(path):
                 self.serve_path(path)
