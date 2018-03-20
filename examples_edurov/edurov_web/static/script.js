@@ -53,8 +53,8 @@ function get_sensor(){
             if (this.readyState == 4 && this.status == 200) {
                 var left_text = "";
                 var sensor = JSON.parse(this.responseText);
+                var left_text = "";
                 for (var key in sensor) {
-                    var left_text = "";
                     left_text += "<tr>"
                     left_text += "<td><b>"
                     left_text += key
