@@ -1,1 +1,0 @@
-from .start_web import main

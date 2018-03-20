@@ -7,7 +7,7 @@ import Pyro4
 
 from edurov.sync import start_sync_classes
 from edurov.utils import warning, preexec_function
-from edurov.web.servers import start_http_server
+from edurov.web import start_http_server
 
 
 class WebMethod(object):
