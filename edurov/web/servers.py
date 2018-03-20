@@ -125,8 +125,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.send_404()
 
     def do_GET(self):
-        print(self.index_file_)
-        print(os.path.dirname(os.path.abspath(self.index_file_)))
         if self.path == '/':
             self.send_response(301)
             self.send_header('Location', '/index.html')
@@ -139,6 +137,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.send_header('Content-Length', len(content))
             self.end_headers()
             self.wfile.write(content)
+            print('index file: '+self.index_file_)
+            print('index folder: '+os.path.abspath(os.path.dirname(self.index_file_)))
         elif self.path.startswith('/static/'):
             self.serve_static(self.path)
         elif self.path.startswith('/sensordata.json'):

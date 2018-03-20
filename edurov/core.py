@@ -30,13 +30,13 @@ class WebMethod(object):
         self.server_port = server_port
         self.debug = debug
         self.run_funcs = runtime_functions
-        cwd = os.path.dirname(os.path.abspath(__file__))
-        index = os.path.join(cwd, index_file)
-        print(index)
-        if index_file:
-            self.index_file = index
+        self.check_index_file(index_file)
+
+    def check_index_file(self, index_file):
+        if os.path.isfile(index_file):
+            self.index_file = os.path.abspath(index_file)
         else:
-            self.index_file = '/index.html'
+            print('could not find file "{}"'.format(index_file))
 
     def serve(self, timeout=None):
         start = time.time()
