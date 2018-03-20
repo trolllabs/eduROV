@@ -11,7 +11,7 @@ from edurov.web.servers import start_http_server
 
 class WebMethod(object):
     def __init__(self, video_resolution='1024x768', fps=30, server_port=8000,
-                 debug=False, runtime_functions=None):
+                 debug=False, runtime_functions=None, index_file=None):
         if callable(runtime_functions):
             runtime_functions = [runtime_functions]
         elif isinstance(runtime_functions, list):

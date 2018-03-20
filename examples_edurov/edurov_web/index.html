@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>eduROV</title>
+<script src="./static/script.js"></script>
+<link rel="stylesheet" type="text/css" href="./static/style.css">
+</head>
+<body onload="set_size()">
+
+<div class="grid-container">
+  <div class="side-panel">
+    <div id="sensordata"></div>
+    <div id="roll">ROLL</div>
+  </div>
+  <div class="center-panel">
+    <img id="image" src="stream.mjpg">
+  </div>
+  <div class="side-panel">
+      <h2>Options</h2>
+      <button type="button" onclick="rotate_image()">Rotate video</button>
+      <button type="button" onclick="stop_rov()">Shutdown</button>
+      <h2>Information</h2>
+      Use F11 to enter fullscreen<br />
+      Arrow-keys for control
+  </div>
+</div>
+
+</body>
+</html>

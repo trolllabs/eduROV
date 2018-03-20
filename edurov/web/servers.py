@@ -47,6 +47,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     output = None
     keys = None
     rov = None
+    index_file_ = None
     cwd = os.path.dirname(os.path.abspath(__file__))
     index_file = os.path.join(cwd, 'index.html')
     css_file = os.path.join(cwd, './static/style.css')
@@ -124,6 +125,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.send_404()
 
     def do_GET(self):
+        print(self.index_file_)
+        print(os.path.dirname(os.path.abspath(self.index_file_)))
         if self.path == '/':
             self.send_response(301)
             self.send_header('Location', '/index.html')
@@ -154,13 +157,14 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
-    def __init__(self, server_address, RequestHandlerClass,
-                 stream_output, rov_proxy, keys_proxy, debug=False):
+    def __init__(self, server_address, RequestHandlerClass, stream_output,
+                 rov_proxy, keys_proxy, debug=False, index_file=None):
         self.start = time.time()
         self.debug = debug
         RequestHandlerClass.output = stream_output
         RequestHandlerClass.rov = rov_proxy
         RequestHandlerClass.keys = keys_proxy
+        RequestHandlerClass.index_file_ = index_file
         super(WebpageServer, self).__init__(server_address,
                                             RequestHandlerClass)
 
@@ -178,7 +182,8 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
                           frame_count / (finish - self.start)))
 
 
-def start_http_server(video_resolution, fps, server_port, debug=False):
+def start_http_server(video_resolution, fps, server_port, index_file,
+                      debug=False):
     signal.signal(signal.SIGINT, signal.SIG_IGN)
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
@@ -195,7 +200,8 @@ def start_http_server(video_resolution, fps, server_port, debug=False):
                                stream_output=stream_output,
                                debug=debug,
                                rov_proxy=rov,
-                               keys_proxy=keys) as server:
+                               keys_proxy=keys,
+                               index_file=index_file) as server:
                 print('Visit the webpage at {}'.format(server_ip(server_port)))
                 server.serve_forever()
         finally:
