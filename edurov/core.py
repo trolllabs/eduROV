@@ -31,7 +31,7 @@ class WebMethod(object):
         self.debug = debug
         self.run_funcs = runtime_functions
         self.index_file = index_file
-        self.check_index_file(index_file)
+        self.check_index_file()
 
     def check_index_file(self):
         if os.path.isfile(self.index_file):
