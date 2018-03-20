@@ -1,14 +1,22 @@
 """
-Classes and functions for the control part in a duo setup
+Classes and functions for the duo setup
 """
 
-import struct
 import io
-import sys
 import socket
+import struct
+import sys
 from multiprocessing.pool import ThreadPool
+
 import pygame
 from PIL import Image
+
+from edurov.utils import detect_pi
+from edurov.utils import resolution_to_tuple
+
+if detect_pi():
+    import picamera
+
 BLACK = 0, 0, 0
 
 
@@ -102,13 +110,50 @@ class Screen(object):
         sys.exit()
 
 
-def resolution_to_tuple(resolution):
-    if 'x' not in resolution:
-        raise ValueError('Resolution must be in format WIDTHxHEIGHT')
-    screen_size = tuple([int(val) for val in resolution.split('x')])
-    if len(screen_size) is not 2:
-        raise ValueError('Error in parsing resolution, len is not 2')
-    return screen_size
+class SplitFrames(object):
+    def __init__(self, connection):
+        self.connection = connection
+        self.stream = io.BytesIO()
+        self.count = 0
+
+    def write(self, buf):
+        if buf.startswith(b'\xff\xd8'):
+            size = self.stream.tell()
+            if size > 0:
+                self.connection.write(struct.pack('<L', size))
+                self.connection.flush()
+                self.stream.seek(0)
+                self.connection.write(self.stream.read(size))
+                self.count += 1
+                self.stream.seek(0)
+        self.stream.write(buf)
+
+
+class Client(object):
+    def __init__(self, ip, port):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.sock.connect((ip, port))
+        print('Client has been assigned socket name', self.sock.getsockname())
+        self.conn = self.sock.makefile('wb')
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print('Shutting down client')
+        self.conn.write(struct.pack('<L', 0))
+        self.conn.close()
+        self.sock.close()
+
+
+def rov_main(host, port, resolution):
+    with Client(host, port) as client:
+        output = SplitFrames(client.conn)
+        with picamera.PiCamera(resolution=resolution, framerate=30) as camera:
+            camera.start_recording(output, format='mjpeg')
+            while True:
+                camera.wait_recording(1)
 
 
 def control_main(ip, port, resolution, fullscreen):

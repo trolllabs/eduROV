@@ -39,6 +39,15 @@ def is_int(number):
     return False
 
 
+def resolution_to_tuple(resolution):
+    if 'x' not in resolution:
+        raise ValueError('Resolution must be in format WIDTHxHEIGHT')
+    screen_size = tuple([int(val) for val in resolution.split('x')])
+    if len(screen_size) is not 2:
+        raise ValueError('Error in parsing resolution, len is not 2')
+    return screen_size
+
+
 def preexec_function():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
@@ -118,18 +127,7 @@ def receive_arduino(serial_connection):
     return None
 
 
-def valid_arduino_string(arduino_string):
-    if arduino_string:
-        if arduino_string.count(':') == 2:
-            try:
-                [float(v) for v in arduino_string.split(':')]
-                return True
-            except:
-                return False
-    return False
-
-
-def get_serial_connection(port='/dev/ttyACM0', baudrate=115200, timeout=0.05):
+def serial_connection(port='/dev/ttyACM0', baudrate=115200, timeout=0.05):
     try:
         ser = serial.Serial(port, baudrate, timeout=timeout)
         ser.close()

@@ -1,64 +1,57 @@
-"""
-Starts the edurov-web version.
-"""
-
 import os
 
 import Pyro4
 
 from edurov import WebMethod
-from edurov.utils import detect_pi, get_serial_connection, send_arduino, \
-    receive_arduino, valid_arduino_string
+from edurov.utils import detect_pi, serial_connection, send_arduino, \
+    receive_arduino
 
 if detect_pi():
     from sense_hat import SenseHat
 
 
-def arduino(debug=False):
-    states = [0, 0, 0, 0]
+def valid_arduino_string(arduino_string):
+    if arduino_string:
+        if arduino_string.count(':') == 2:
+            try:
+                [float(v) for v in arduino_string.split(':')]
+                return True
+            except:
+                return False
+    return False
+
+
+def arduino():
     lastState = '0000'
-    if not debug:
-        ser = get_serial_connection()
+    ser = serial_connection()
+    config = {'w': [0, 1],
+              's': [0, 2],
+              'a': [1, 1],
+              'q': [1, 2],
+              'd': [2, 1],
+              'e': [2, 2]}
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             keys.set_mode(key='l', mode='toggle')
             while rov.run:
                 dic = keys.qweasd_dict
-                if dic['w']:
-                    states[0] = 1
-                elif dic['s']:
-                    states[0] = 2
-                else:
-                    states[0] = 0
-
-                if dic['a']:
-                    states[1] = 1
-                elif dic['q']:
-                    states[1] = 2
-                else:
-                    states[1] = 0
-
-                if dic['e']:
-                    states[2] = 2
-                elif dic['d']:
-                    states[2] = 1
-                else:
-                    states[2] = 0
+                states = [0, 0, 0, 0]
+                for key in config:
+                    if dic[key]:
+                        states[config[key][0]] = config[key][1]
                 light_state = int(keys.state('l'))
                 states[3] = light_state
-
                 state = ''.join([str(n) for n in states])
                 if state != lastState:
                     lastState = state
-                    if not debug and ser:
+                    if ser:
                         send_arduino(msg=state, serial_connection=ser)
                     else:
                         print(state)
-                if not debug and ser:
+                if ser:
                     arduino_string = receive_arduino(serial_connection=ser)
                     if valid_arduino_string(arduino_string):
                         v1, v2, v3 = arduino_string.split(':')
-
                         rov.sensor = {
                             'tempWater': float(v1),
                             'pressureWater': float(v2),

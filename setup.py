@@ -40,7 +40,7 @@ setup(
     entry_points={
         'console_scripts': [
             'edurov-web = examples_edurov.entry_points:edurov_web',
-            'edurov-duo = edurov.duo:main'
+            'edurov-duo = examples_edurov.entry_points:edurov_duo'
         ],
     },
     project_urls={

@@ -1,1 +1,0 @@
-from .start_duo import main

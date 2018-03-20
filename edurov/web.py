@@ -6,7 +6,6 @@ import io
 import json
 import logging
 import os
-import signal
 import socketserver
 import time
 from http import server
@@ -171,7 +170,6 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 def start_http_server(video_resolution, fps, server_port, index_file,
                       debug=False):
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
 

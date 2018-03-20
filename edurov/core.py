@@ -55,6 +55,7 @@ class WebMethod(object):
             target=start_http_server,
             args=(self.res, self.fps, self.server_port, self.index_file,
                   self.debug))
+        web_server.daemon = True
         web_server.start()
         processes = []
         for f in self.run_funcs:
@@ -79,13 +80,3 @@ class WebMethod(object):
                     p.join(3)
                 pyro_classes.terminate()
                 name_server.terminate()
-
-
-class KeyConnection(object):
-    def __init__(self):
-        pass
-
-
-class RovConnection(object):
-    def __init__(self):
-        pass
