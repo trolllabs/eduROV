@@ -87,7 +87,7 @@ function set_size(){
     var imgR = imgW / imgH;
     var bodR = bodW / bodH;
 
-    if (bodW<576){
+    if (bodW<992){
         document.getElementsByClassName("grid-container")[0].setAttribute("style",
         `grid-template-columns: auto`);
     }else{
