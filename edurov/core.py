@@ -30,6 +30,8 @@ class WebMethod(object):
         self.server_port = server_port
         self.debug = debug
         self.run_funcs = runtime_functions
+
+        print(os.path.abspath(index_file))
         self.index_file = index_file
         self.check_index_file()
 
