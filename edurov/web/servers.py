@@ -158,7 +158,7 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
     daemon_threads = True
 
     def __init__(self, server_address, RequestHandlerClass, stream_output,
-                 rov_proxy, keys_proxy, debug=False, index_file=None):
+                 rov_proxy, keys_proxy, index_file=None, debug=False):
         self.start = time.time()
         self.debug = debug
         RequestHandlerClass.output = stream_output

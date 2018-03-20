@@ -30,9 +30,10 @@ class WebMethod(object):
         self.debug = debug
         self.run_funcs = runtime_functions
         if index_file:
+            print('in WebMethod ' + index_file)
             self.index_file = index_file
         else:
-            self.index_file = 'index.html'
+            self.index_file = '\index.html'
 
     def serve(self, timeout=None):
         start = time.time()
@@ -44,8 +45,8 @@ class WebMethod(object):
         time.sleep(4)
         web_server = Process(
             target=start_http_server,
-            args=(self.res, self.fps, self.server_port, self.debug,
-                  self.index_file))
+            args=(self.res, self.fps, self.server_port, self.index_file,
+                  self.debug))
         web_server.start()
         processes = []
         for f in self.run_funcs:
