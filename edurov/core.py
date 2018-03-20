@@ -59,6 +59,7 @@ class WebMethod(object):
         processes = []
         for f in self.run_funcs:
             p = Process(target=f)
+            p.daemon = True
             p.start()
             processes.append(p)
 

@@ -3,11 +3,11 @@ Different utility functions
 """
 
 import platform
+import signal
 import socket
 import struct
 import subprocess
 import warnings
-import signal
 
 
 def detect_pi():
@@ -18,6 +18,7 @@ def detect_pi():
 
 
 if detect_pi():
+    import serial
     import fcntl
 
 STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
@@ -114,6 +115,34 @@ def receive_arduino(serial_connection):
                             .format(data), 'default')
             except ValueError:
                 pass
+    return None
+
+
+def valid_arduino_string(arduino_string):
+    if arduino_string:
+        if arduino_string.count(':') == 2:
+            try:
+                [float(v) for v in arduino_string.split(':')]
+                return True
+            except:
+                return False
+    return False
+
+
+def get_serial_connection(port='/dev/ttyACM0', baudrate=115200, timeout=0.05):
+    try:
+        ser = serial.Serial(port, baudrate, timeout=timeout)
+        ser.close()
+        ser.open()
+        return ser
+    except FileNotFoundError:
+        pass
+    except serial.serialutil.SerialException:
+        pass
+    except ValueError:
+        pass
+    warning(message='Could not establish serial connection at {}'
+            .format(port), filter='default')
     return None
 
 

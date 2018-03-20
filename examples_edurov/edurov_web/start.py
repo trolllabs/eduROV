@@ -3,21 +3,18 @@ Starts the edurov-web version.
 """
 
 import os
-import signal
 
 import Pyro4
 
 from edurov import WebMethod
-from edurov.arduino import get_serial_connection, send_arduino, \
+from edurov.utils import detect_pi, get_serial_connection, send_arduino, \
     receive_arduino, valid_arduino_string
-from edurov.utils import detect_pi
 
 if detect_pi():
     from sense_hat import SenseHat
 
 
 def arduino(debug=False):
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
     states = [0, 0, 0, 0]
     lastState = '0000'
     if not debug:
@@ -70,8 +67,7 @@ def arduino(debug=False):
                         }
 
 
-def senser(debug=False):
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
+def senser():
     sense = SenseHat()
     with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
         while rov.run:
