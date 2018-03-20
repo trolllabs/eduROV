@@ -151,6 +151,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         elif self.path.startswith('/sensordata.json'):
             self.serve_sensor()
         else:
+            print(self.base_folder)
             path =  os.path.join(self.base_folder, self.path)
             print(path)
             if os.path.isfile(path):
