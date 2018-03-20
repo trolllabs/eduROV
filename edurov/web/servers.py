@@ -47,9 +47,12 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     output = None
     keys = None
     rov = None
-    index_file_ = None
+
+    base_folder = None
+
+    index_file = None
     cwd = os.path.dirname(os.path.abspath(__file__))
-    index_file = os.path.join(cwd, 'index.html')
+    # index_file = os.path.join(cwd, 'index.html')
     css_file = os.path.join(cwd, './static/style.css')
     script_file = os.path.join(cwd, './static/script.js')
 
@@ -137,8 +140,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.send_header('Content-Length', len(content))
             self.end_headers()
             self.wfile.write(content)
-            print('index file: '+self.index_file_)
-            print('index folder: '+os.path.abspath(os.path.dirname(self.index_file_)))
         elif self.path.startswith('/static/'):
             self.serve_static(self.path)
         elif self.path.startswith('/sensordata.json'):
@@ -164,7 +165,8 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
         RequestHandlerClass.output = stream_output
         RequestHandlerClass.rov = rov_proxy
         RequestHandlerClass.keys = keys_proxy
-        RequestHandlerClass.index_file_ = index_file
+        RequestHandlerClass.base_folder = os.path.abspath(os.path.dirname(index_file))
+        RequestHandlerClass.index_file = index_file
         super(WebpageServer, self).__init__(server_address,
                                             RequestHandlerClass)
 

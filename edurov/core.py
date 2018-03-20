@@ -1,7 +1,7 @@
+import os
 import subprocess
 import time
 from multiprocessing import Process
-import os
 
 import Pyro4
 
@@ -31,8 +31,6 @@ class WebMethod(object):
         self.debug = debug
         self.run_funcs = runtime_functions
 
-        print(os.path.abspath(__file__))
-        print(os.path.abspath(index_file))
         self.index_file = index_file
         self.check_index_file()
 
@@ -40,7 +38,9 @@ class WebMethod(object):
         if os.path.isfile(self.index_file):
             self.index_file = os.path.abspath(self.index_file)
         else:
-            warning('could not find file "{}"'.format(self.index_file))
+            warning('could not find file "{}"\n'
+                    'Needs a absolute path to index file'
+                    .format(self.index_file))
 
     def serve(self, timeout=None):
         start = time.time()
@@ -65,7 +65,7 @@ class WebMethod(object):
             try:
                 while rov.run:
                     if timeout:
-                        if time.time()-start >= timeout:
+                        if time.time() - start >= timeout:
                             break
             except KeyboardInterrupt:
                 pass
