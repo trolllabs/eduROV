@@ -1,6 +1,23 @@
 import os
+import sys
+
 from setuptools import setup, find_packages
+
 from edurov.utils import detect_pi
+
+CURRENT_PYTHON = sys.version_info[:2]
+REQUIRED_PYTHON = (3, 0)
+
+if CURRENT_PYTHON < REQUIRED_PYTHON:
+    sys.stderr.write(
+        """
+        ==========================
+        Unsupported Python version
+        ==========================
+        
+        eduROV requires python 3, try using pip3 instead of pip.
+        """)
+    sys.exit(1)
 
 
 def read(fname):
@@ -47,5 +64,5 @@ setup(
         'Documentation': 'http://http://edurov.no/',
         'Source': 'https://github.com/trolllabs/eduROV/',
         'Tracker': 'https://github.com/trolllabs/eduROV/issues',
-    },
+    }
 )

@@ -24,6 +24,7 @@ def valid_arduino_string(arduino_string):
 def arduino():
     lastState = '0000'
     ser = serial_connection()
+    # 'letter': [position, value]
     config = {'w': [0, 1],
               's': [0, 2],
               'a': [1, 1],
