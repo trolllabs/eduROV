@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
     name='edurov',
-    version='0.0.2a4',
+    version='0.0.2a5',
     description='A educational project for remotely operated vehicles',
     long_description=read('README.rst'),
     license='GPLv3',
@@ -30,18 +30,19 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     keywords='video education ROV picamera',
-    packages=find_packages(),
     install_requires=[
                          'pygame',
                          'Pyro4'] +
                      (['picamera==1.13' if detect_pi() else []]),
     python_requires='>=3',
+    packages=find_packages(),
+    package_data={'examples': ['edurov_web/*.py','*.py']},
     include_package_data=True,
     entry_points={
         'console_scripts': [
             'edurov-web = edurov.web:main',
             'edurov-duo = edurov.duo:main',
-            'edurov-ex = edurov.entry:print_me'
+            'edurov-ex = examples:main'
         ],
     },
     project_urls={
