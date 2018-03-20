@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
     name='edurov',
-    version='0.0.2a1',
+    version='0.0.2a2',
     description='A educational project for remotely operated vehicles',
     long_description=read('README.rst'),
     license='GPLv3',
@@ -41,7 +41,7 @@ setup(
         'console_scripts': [
             'edurov-web = edurov.web:main',
             'edurov-duo = edurov.duo:main',
-            'edurov-ex = examples.entry_points:edurov_web'
+            'edurov-ex = edurov.entry:print_me'
         ],
     },
     project_urls={

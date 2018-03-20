@@ -4,7 +4,9 @@ include edurov/keys.txt
 include edurov/web/index.html
 include edurov/web/static/script.js
 include edurov/web/static/style.css
-recursive-include examples *
+
+include examples/edurov_web/start.py
+include examples/entry_points.py
 global-exclude */.svn/*
 global-exclude */.idea/*
 global-exclude *.class
