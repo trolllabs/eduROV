@@ -1,10 +1,6 @@
 include README.rst
 include LICENSE.txt
-include edurov/keys.txt
-include edurov/web/index.html
-include edurov/web/static/script.js
-include edurov/web/static/style.css
-graft examples
+graft edurov examples
 global-exclude */.svn/*
 global-exclude */.idea/*
 global-exclude *.class

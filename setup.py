@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
     name='edurov',
-    version='0.0.2a3',
+    version='0.0.2a4',
     description='A educational project for remotely operated vehicles',
     long_description=read('README.rst'),
     license='GPLv3',
@@ -37,9 +37,6 @@ setup(
                      (['picamera==1.13' if detect_pi() else []]),
     python_requires='>=3',
     include_package_data=True,
-    # package_data={'': ['entry_points.py', 'start.py']},
-    data_files=[('examples',['examples/entry_points.py',
-                             'examples/edurov_web/start.py'])],
     entry_points={
         'console_scripts': [
             'edurov-web = edurov.web:main',
