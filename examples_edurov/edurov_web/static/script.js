@@ -2,7 +2,7 @@ var last_key;
 var key_dict = {event:'', keycode:0};
 var video_rotation = 0;
 var getsensorID = setInterval(get_sensor, 80);
-var MINIMUM_PANEL_WIDTH = 200;
+var MINIMUM_PANEL_WIDTH = 250;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -54,13 +54,23 @@ function get_sensor(){
                 var left_text = "";
                 var sensor = JSON.parse(this.responseText);
                 for (var key in sensor) {
-                    left_text = left_text.concat(key + ": " +
-                    sensor[key].toFixed(1) + "<br />");
+                    var left_text = "";
+                    left_text += "<tr>"
+                    left_text += "<td><b>"
+                    left_text += key
+                    left_text += "</b></td>"
+                    left_text += "<td>"
+                    left_text += sensor[key].toFixed(1)
+                    left_text += "</td>"
+                    left_text += "</tr>"
                 }
                 var roll = sensor['roll']
                 document.getElementById("sensordata").innerHTML = left_text;
                 document.getElementById("roll").style.transform =
                     `rotate(${roll}deg)`;
+            }else{
+                var left_text = "No data";
+                document.getElementById("sensordata").innerHTML = left_text;
             }
         };
     xhttp.open("GET", "sensordata.json", true);

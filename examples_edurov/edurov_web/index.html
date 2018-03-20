@@ -1,27 +1,69 @@
 <html>
 <head>
-<title>eduROV</title>
-<script src="./static/script.js"></script>
-<link rel="stylesheet" type="text/css" href="./static/style.css">
+    <title>eduROV</title>
+    <script src="./static/script.js"></script>
+    <link rel="stylesheet" type="text/css" href="./static/style.css">
+    <link rel="stylesheet" type="text/css" href="./static/bootstrap.css">
 </head>
 <body onload="set_size()">
 
 <div class="grid-container">
-  <div class="side-panel">
-    <div id="sensordata"></div>
-    <div id="roll">ROLL</div>
-  </div>
-  <div class="center-panel">
-    <img id="image" src="stream.mjpg">
-  </div>
-  <div class="side-panel">
-      <h2>Options</h2>
-      <button type="button" onclick="rotate_image()">Rotate video</button>
-      <button type="button" onclick="stop_rov()">Shutdown</button>
-      <h2>Information</h2>
-      Use F11 to enter fullscreen<br />
-      Arrow-keys for control
-  </div>
+    <div class="side-panel">
+        <div class="card bg-light">
+            <h5 class="card-header">Sensors</h5>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tbody id="sensordata">
+                    <tr>
+                        <td><b>Pressure</b></td>
+                        <td>11.51</td>
+                    </tr>
+                    <tr>
+                        <td><b>Temperature</b></td>
+                        <td>20.4</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="roll">ROLL</div>
+    </div>
+    <div class="center-panel">
+        <img id="image" src="stream.mjpg">
+    </div>
+    <div class="side-panel">
+        <div class="card bg-light">
+            <h5 class="card-header">Options</h5>
+            <div class="card-body">
+                <button type="button" onclick="rotate_image()"
+                        class="btn btn-outline-primary btn-sm btn-block">Flip
+                    video
+                </button>
+                <button type="button" onclick="stop_rov()"
+                        class="btn btn-outline-danger btn-sm btn-block">
+                    Shutdown
+                </button>
+            </div>
+        </div>
+        <div class="card bg-light">
+            <h5 class="card-header">Shortkeys</h5>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tbody>
+                    <tr>
+                        <td><b>F11</b></td>
+                        <td>Fullscreen</td>
+                    </tr>
+                    <tr>
+                        <td><b>L</b></td>
+                        <td>Lights</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 </body>
