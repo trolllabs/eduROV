@@ -31,6 +31,7 @@ class WebMethod(object):
         self.debug = debug
         self.run_funcs = runtime_functions
 
+        print(os.path.abspath(__file__))
         print(os.path.abspath(index_file))
         self.index_file = index_file
         self.check_index_file()
