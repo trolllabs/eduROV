@@ -4,6 +4,7 @@ var video_rotation = 0;
 var getsensorID = setInterval(get_sensor, 80);
 var MINIMUM_PANEL_WIDTH = 250;
 var light = false;
+var KEYCODE_L = 76;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -11,14 +12,15 @@ function sleep(ms) {
 
 document.onkeydown = function(evt) {
     evt = evt || window.event;
-    if (evt.keyCode != last_key){
+    else (evt.keyCode != last_key){
+        if (evt.keyCode == KEYCODE_L){
+            toggle_light();
+        }else{
         key_dict['event'] = 'KEYDOWN';
         key_dict['keycode'] = evt.keyCode;
         send_keys(JSON.stringify(key_dict))
         last_key = evt.keyCode;
-    }
-    if (evt.keyCode == 76){
-        toggle_light();
+        }
     }
 }
 
@@ -47,6 +49,7 @@ function toggle_light(){
         light = true;
         btn.className += " active";
     }
+    send_keys(JSON.stringify({event:'KEYDOWN', keycode:KEYCODE_L};))
 }
 
 function stop_rov(){
