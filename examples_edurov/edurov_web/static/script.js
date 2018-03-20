@@ -12,7 +12,7 @@ function sleep(ms) {
 
 document.onkeydown = function(evt) {
     evt = evt || window.event;
-    else (evt.keyCode != last_key){
+    if (evt.keyCode != last_key){
         if (evt.keyCode == KEYCODE_L){
             toggle_light();
         }else{
@@ -49,7 +49,7 @@ function toggle_light(){
         light = true;
         btn.className += " active";
     }
-    send_keys(JSON.stringify({event:'KEYDOWN', keycode:KEYCODE_L};))
+    send_keys(JSON.stringify({event:'KEYDOWN', keycode:KEYCODE_L}));
 }
 
 function stop_rov(){
