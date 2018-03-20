@@ -39,8 +39,8 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'edurov-web = examples_edurov.entry_points:edurov_web'
-            'edurov-duo = edurov.duo:main',
+            'edurov-web = examples_edurov.entry_points:edurov_web',
+            'edurov-duo = edurov.duo:main'
         ],
     },
     project_urls={
