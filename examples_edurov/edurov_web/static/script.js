@@ -68,9 +68,6 @@ function get_sensor(){
                 document.getElementById("sensordata").innerHTML = left_text;
                 document.getElementById("roll").style.transform =
                     `rotate(${roll}deg)`;
-            }else{
-                var left_text = "No data";
-                document.getElementById("sensordata").innerHTML = left_text;
             }
         };
     xhttp.open("GET", "sensordata.json", true);
