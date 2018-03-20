@@ -8,30 +8,23 @@
 <body onload="set_size()">
 
 <div class="grid-container">
-    <div class="side-panel">
+    <div class="d-none d-sm-block side-panel ">
         <div class="card bg-light">
             <h5 class="card-header">Sensors</h5>
             <div class="card-body">
                 <table class="table table-sm">
                     <tbody id="sensordata">
-                    <tr>
-                        <td><b>Pressure</b></td>
-                        <td>11.51</td>
-                    </tr>
-                    <tr>
-                        <td><b>Temperature</b></td>
-                        <td>20.4</td>
-                    </tr>
+                    No data
                     </tbody>
                 </table>
             </div>
         </div>
-        <div id="roll">ROLL</div>
+        <div id="roll"><b>ROLL</b></div>
     </div>
     <div class="center-panel">
         <img id="image" src="stream.mjpg">
     </div>
-    <div class="side-panel">
+    <div class="d-none d-sm-block side-panel">
         <div class="card bg-light">
             <h5 class="card-header">Options</h5>
             <div class="card-body">
@@ -46,7 +39,7 @@
             </div>
         </div>
         <div class="card bg-light">
-            <h5 class="card-header">Shortkeys</h5>
+            <h5 class="card-header">Hotkeys</h5>
             <div class="card-body">
                 <table class="table table-sm">
                     <tbody>
