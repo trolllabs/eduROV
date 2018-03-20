@@ -193,6 +193,8 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
         RequestHandlerClass.output = stream_output
         RequestHandlerClass.rov = rov_proxy
         RequestHandlerClass.keys = keys_proxy
+        print(index_file)
+        print(os.path.abspath(os.path.dirname(index_file)))
         RequestHandlerClass.base_folder = os.path.abspath(os.path.dirname(index_file))
         RequestHandlerClass.index_file = index_file
         super(WebpageServer, self).__init__(server_address,
