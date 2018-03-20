@@ -5,12 +5,14 @@ Starts the edurov-web version.
 import signal
 
 import Pyro4
-from sense_hat import SenseHat
-import time
 
 from edurov import WebMethod
 from edurov.arduino import get_serial_connection, send_arduino, \
     receive_arduino, valid_arduino_string
+from edurov.utils import detect_pi
+
+if detect_pi():
+    from sense_hat import SenseHat
 
 
 def arduino(debug=False):
