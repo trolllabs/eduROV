@@ -140,6 +140,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.send_header('Content-Length', len(content))
             self.end_headers()
             self.wfile.write(content)
+            print(self.base_folder)
         elif self.path.startswith('/static/'):
             self.serve_static(self.path)
         elif self.path.startswith('/sensordata.json'):
