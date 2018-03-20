@@ -152,6 +152,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.serve_sensor()
         else:
             path =  os.path.join(self.base_folder, self.path)
+            print(path)
             if os.path.isfile(path):
                 self.serve_path(path)
             else:
@@ -175,9 +176,9 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         #     self.serve_stream()
         # else:
         #     self.send_404()
-
-    def log_message(self, format, *args):
-        return
+    #
+    # def log_message(self, format, *args):
+    #     return
 
 
 class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
