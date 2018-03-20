@@ -3,6 +3,7 @@ var key_dict = {event:'', keycode:0};
 var video_rotation = 0;
 var getsensorID = setInterval(get_sensor, 80);
 var MINIMUM_PANEL_WIDTH = 250;
+var light = false;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -15,6 +16,9 @@ document.onkeydown = function(evt) {
         key_dict['keycode'] = evt.keyCode;
         send_keys(JSON.stringify(key_dict))
         last_key = evt.keyCode;
+    }
+    if (evt.keyCode == 76){
+        toggle_light();
     }
 }
 
@@ -31,6 +35,17 @@ function send_keys(json_string){
         xhttp.open("POST", "keys.json", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(json_string);
+    }
+}
+
+function toggle_light(){
+    var btn = document.getElementById("lightBtn");
+    if(light){
+        light = false;
+        btn.className = btn.className.replace(" active", "");
+    }else{
+        light = true;
+        btn.className += " active";
     }
 }
 

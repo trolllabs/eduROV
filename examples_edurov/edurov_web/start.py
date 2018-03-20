@@ -39,8 +39,7 @@ def arduino():
                 for key in config:
                     if dic[key]:
                         states[config[key][0]] = config[key][1]
-                light_state = int(keys.state('l'))
-                states[3] = light_state
+                states[3] = int(keys.state('l'))
                 state = ''.join([str(n) for n in states])
                 if state != lastState:
                     lastState = state
@@ -55,8 +54,7 @@ def arduino():
                         rov.sensor = {
                             'tempWater': float(v1),
                             'pressureWater': float(v2),
-                            'batteryVoltage': float(v3),
-                            'light': light_state
+                            'batteryVoltage': float(v3)
                         }
 
 
