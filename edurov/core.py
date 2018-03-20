@@ -1,6 +1,7 @@
 import subprocess
 import time
 from multiprocessing import Process
+import os
 
 import Pyro4
 
@@ -29,11 +30,13 @@ class WebMethod(object):
         self.server_port = server_port
         self.debug = debug
         self.run_funcs = runtime_functions
+        cwd = os.path.dirname(os.path.abspath(__file__))
+        index = os.path.join(cwd, index_file)
+        print(index)
         if index_file:
-            print('in WebMethod ' + index_file)
-            self.index_file = index_file
+            self.index_file = index
         else:
-            self.index_file = '\index.html'
+            self.index_file = '/index.html'
 
     def serve(self, timeout=None):
         start = time.time()

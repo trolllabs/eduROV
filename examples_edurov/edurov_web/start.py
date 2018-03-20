@@ -90,7 +90,7 @@ def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
         server_port=server_port,
         debug=debug,
         runtime_functions=[arduino, senser],
-        index_file = '\index.html'
+        index_file = '/index.html'
     )
     web_method.serve()
 
