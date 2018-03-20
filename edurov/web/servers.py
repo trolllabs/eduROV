@@ -49,26 +49,40 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     rov = None
 
     base_folder = None
-
     index_file = None
-    cwd = os.path.dirname(os.path.abspath(__file__))
-    # index_file = os.path.join(cwd, 'index.html')
-    css_file = os.path.join(cwd, './static/style.css')
-    script_file = os.path.join(cwd, './static/script.js')
 
-    def serve_static(self, path):
+    # cwd = os.path.dirname(os.path.abspath(__file__))
+    # css_file = os.path.join(cwd, './static/style.css')
+    # script_file = os.path.join(cwd, './static/script.js')
+    #
+    # def serve_static(self, path):
+    #     if 'style.css' in path:
+    #         with open(self.css_file, 'rb') as f:
+    #             content = f.read()
+    #             content_type = 'text/css'
+    #     elif 'script.js' in path:
+    #         with open(self.script_file, 'rb') as f:
+    #             content = f.read()
+    #             content_type = 'text/javascript'
+    #     else:
+    #         self.send_404()
+    #         return
+    #
+    #     self.send_response(200)
+    #     self.send_header('Content-Type', content_type)
+    #     self.send_header('Content-Length', len(content))
+    #     self.end_headers()
+    #     self.wfile.write(content)
+
+    def serve_path(self, path):
         if 'style.css' in path:
-            with open(self.css_file, 'rb') as f:
-                content = f.read()
-                content_type = 'text/css'
+            content_type = 'text/css'
         elif 'script.js' in path:
-            with open(self.script_file, 'rb') as f:
-                content = f.read()
-                content_type = 'text/javascript'
+            content_type = 'text/javascript'
         else:
-            self.send_404()
-            return
-
+            content_type = 'text/html'
+        with open(path, 'rb') as f:
+            content = f.read()
         self.send_response(200)
         self.send_header('Content-Type', content_type)
         self.send_header('Content-Length', len(content))
@@ -132,23 +146,35 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.send_response(301)
             self.send_header('Location', '/index.html')
             self.end_headers()
-        elif self.path == '/index.html':
-            with open(self.index_file, 'rb') as f:
-                content = f.read()
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/html')
-            self.send_header('Content-Length', len(content))
-            self.end_headers()
-            self.wfile.write(content)
-            print(self.base_folder)
-        elif self.path.startswith('/static/'):
-            self.serve_static(self.path)
-        elif self.path.startswith('/sensordata.json'):
-            self.serve_sensor()
         elif self.path == '/stream.mjpg':
             self.serve_stream()
+        elif self.path.startswith('/sensordata.json'):
+            self.serve_sensor()
         else:
-            self.send_404()
+            path =  os.path.join(self.base_folder, self.path)
+            if os.path.isfile(path):
+                self.serve_path(path)
+            else:
+                self.send_404()
+
+
+        # elif self.path == '/index.html':
+        #     with open(self.index_file, 'rb') as f:
+        #         content = f.read()
+        #     self.send_response(200)
+        #     self.send_header('Content-Type', 'text/html')
+        #     self.send_header('Content-Length', len(content))
+        #     self.end_headers()
+        #     self.wfile.write(content)
+        #     print(self.base_folder)
+        # elif self.path.startswith('/static/'):
+        #     self.serve_static(self.path)
+        # elif self.path.startswith('/sensordata.json'):
+        #     self.serve_sensor()
+        # elif self.path == '/stream.mjpg':
+        #     self.serve_stream()
+        # else:
+        #     self.send_404()
 
     def log_message(self, format, *args):
         return
