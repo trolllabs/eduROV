@@ -88,7 +88,7 @@ function get_sensor(){
                     `rotate(${roll}deg)`;
             }
         };
-    xhttp.open("GET", "sensordata.json", true);
+    xhttp.open("GET", "sensor.json", true);
     xhttp.send();
 }
 

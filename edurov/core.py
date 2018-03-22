@@ -12,27 +12,46 @@ from edurov.web import start_http_server
 
 class WebMethod(object):
     def __init__(self, video_resolution='1024x768', fps=30, server_port=8000,
-                 debug=False, runtime_functions=None, index_file=None):
-        if callable(runtime_functions):
-            runtime_functions = [runtime_functions]
-        elif isinstance(runtime_functions, list):
-            for f in runtime_functions:
-                if not callable(f):
-                    warning('Parameter runtime_functions has to be a function '
-                            'or a list of functions, not {}'.format(type(f)))
-        else:
-            warning('Parameter runtime_functions has to be a function '
-                    'or a list of functions, not {}'
-                    .format(type(runtime_functions)))
+                 debug=False, runtime_functions=None, index_file=None,
+                 response_dict=None):
 
         self.res = video_resolution
         self.fps = fps
         self.server_port = server_port
         self.debug = debug
-        self.run_funcs = runtime_functions
-
+        self.run_funcs = self.valid_runtime_functions(runtime_functions)
+        self.resp_dic = self.valid_response_dict(response_dict)
         self.index_file = index_file
         self.check_index_file()
+
+    def valid_response_dict(self, response_dict):
+        if response_dict:
+            if not isinstance(response_dict, dict):
+                warning(
+                    'Parameter response_dict has to be a dictionary, not {}'
+                        .format(type(response_dict)))
+            else:
+                for key in response_dict:
+                    if not callable(response_dict[key]):
+                        warning('{} is not a callable function'
+                                .format(str(response_dict[key])))
+        return response_dict
+
+    def valid_runtime_functions(self, runtime_functions):
+        if runtime_functions:
+            if callable(runtime_functions):
+                runtime_functions = [runtime_functions]
+            elif isinstance(runtime_functions, list):
+                for f in runtime_functions:
+                    if not callable(f):
+                        warning(
+                            'Parameter runtime_functions has to be a function '
+                            'or a list of functions, not {}'.format(type(f)))
+            else:
+                warning('Parameter runtime_functions has to be a function '
+                        'or a list of functions, not {}'
+                        .format(type(runtime_functions)))
+        return runtime_functions
 
     def check_index_file(self):
         if not 'index.html' in self.index_file:
@@ -54,7 +73,7 @@ class WebMethod(object):
         web_server = Process(
             target=start_http_server,
             args=(self.res, self.fps, self.server_port, self.index_file,
-                  self.debug))
+                  self.debug, self.resp_dic))
         web_server.daemon = True
         web_server.start()
         processes = []

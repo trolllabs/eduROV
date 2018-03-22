@@ -15,7 +15,6 @@ import Pyro4
 
 from edurov.utils import server_ip, detect_pi, warning
 
-
 if detect_pi():
     import picamera
 
@@ -49,6 +48,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     rov = None
     base_folder = None
     index_file = None
+    response_dict = None
 
     def do_GET(self):
         if self.path == '/':
@@ -57,12 +57,16 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.end_headers()
         elif self.path == '/stream.mjpg':
             self.serve_stream()
-        elif self.path.startswith('/sensordata.json'):
-            self.serve_sensor()
+        elif self.path.startswith('/sensor.json'):
+            self.serve_rov_data('sensor')
         else:
             path = os.path.join(self.base_folder, self.path[1:])
             if os.path.isfile(path):
                 self.serve_path(path)
+            elif self.response_dict:
+                if self.path in self.response_dict:
+                    content = self.response_dict[self.path]().encode('utf-8')
+                    self.serve_content(content)
             else:
                 warning(message='Bad response. Got: GET: {}. Could not find {}'
                         .format(self.path, path), filter='default')
@@ -83,6 +87,13 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         else:
             self.send_404()
 
+    def serve_content(self, content, content_type='text/html'):
+        self.send_response(200)
+        self.send_header('Content-Type', content_type)
+        self.send_header('Content-Length', len(content))
+        self.end_headers()
+        self.wfile.write(content)
+
     def serve_path(self, path):
         if 'style.css' in path:
             content_type = 'text/css'
@@ -92,24 +103,22 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             content_type = 'text/html'
         with open(path, 'rb') as f:
             content = f.read()
-        self.send_response(200)
-        self.send_header('Content-Type', content_type)
-        self.send_header('Content-Length', len(content))
-        self.end_headers()
-        self.wfile.write(content)
+        self.serve_content(content, content_type)
 
     def send_404(self):
         self.send_error(404)
         self.end_headers()
 
-    def serve_sensor(self):
-        sensor_values = json.dumps(self.rov.sensor)
-        content = sensor_values.encode('utf-8')
-        self.send_response(200)
-        self.send_header('Content-Type', 'application/json')
-        self.send_header('Content-Length', len(content))
-        self.end_headers()
-        self.wfile.write(content)
+    def serve_rov_data(self, data_type):
+        values = ''
+        if data_type == 'sensor':
+            values = json.dumps(self.rov.sensor)
+        elif data_type == 'actuator':
+            values = json.dumps(self.rov.actuator)
+        else:
+            warning('Unable to process data_type {}'.format(data_type))
+        content = values.encode('utf-8')
+        self.serve_content(content, 'application/json')
 
     def serve_stream(self):
         self.send_response(200)
@@ -145,7 +154,8 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
     daemon_threads = True
 
     def __init__(self, server_address, RequestHandlerClass, stream_output,
-                 rov_proxy, keys_proxy, index_file=None, debug=False):
+                 rov_proxy, keys_proxy, index_file=None, debug=False,
+                 response_dict=None):
         self.start = time.time()
         self.debug = debug
         RequestHandlerClass.output = stream_output
@@ -154,6 +164,7 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
         RequestHandlerClass.base_folder = os.path.abspath(
             os.path.dirname(index_file))
         RequestHandlerClass.index_file = index_file
+        RequestHandlerClass.response_dict = response_dict
         super(WebpageServer, self).__init__(server_address,
                                             RequestHandlerClass)
 
@@ -172,7 +183,7 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 
 def start_http_server(video_resolution, fps, server_port, index_file,
-                      debug=False):
+                      debug=False, response_dict=None):
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
 
@@ -189,7 +200,8 @@ def start_http_server(video_resolution, fps, server_port, index_file,
                                debug=debug,
                                rov_proxy=rov,
                                keys_proxy=keys,
-                               index_file=index_file) as server:
+                               index_file=index_file,
+                               response_dict=response_dict) as server:
                 print('Visit the webpage at {}'.format(server_ip(server_port)))
                 server.serve_forever()
         finally:
