@@ -65,7 +65,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
                 self.serve_path(path)
             else:
                 warning(message='Bad response. Got: GET: {}. Could not find {}'
-                        .format(self.path, path), category='default')
+                        .format(self.path, path), filter='default')
                 self.send_404()
 
     def do_POST(self):
