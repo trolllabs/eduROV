@@ -13,7 +13,8 @@ from threading import Condition
 
 import Pyro4
 
-from edurov.utils import server_ip, detect_pi
+from edurov.utils import server_ip, detect_pi, warning
+
 
 if detect_pi():
     import picamera
@@ -63,6 +64,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             if os.path.isfile(path):
                 self.serve_path(path)
             else:
+                warning(message='Bad response. Got: GET: {}. Could not find {}'
+                        .format(self.path, path), category='default')
                 self.send_404()
 
     def do_POST(self):
