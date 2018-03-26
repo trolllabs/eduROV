@@ -48,7 +48,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     rov = None
     base_folder = None
     index_file = None
-    response_dict = None
+    custom_response = None
 
     def do_GET(self):
         if self.path == '/':
@@ -63,10 +63,15 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             path = os.path.join(self.base_folder, self.path[1:])
             if os.path.isfile(path):
                 self.serve_path(path)
-            elif self.response_dict:
-                if self.path in self.response_dict:
-                    content = self.response_dict[self.path]().encode('utf-8')
-                    self.serve_content(content)
+            elif self.custom_response:
+                response_content = self.custom_response(self.path)
+                if response_content:
+                    self.serve_content(response_content.encode('utf-8'))
+                else:
+                    warning(message='Bad response. Got: GET: {}. custom '
+                                    'response function returned nothing'
+                            .format(self.path), filter='default')
+                    self.send_404()
             else:
                 warning(message='Bad response. Got: GET: {}. Could not find {}'
                         .format(self.path, path), filter='default')
@@ -155,7 +160,7 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
     def __init__(self, server_address, RequestHandlerClass, stream_output,
                  rov_proxy, keys_proxy, index_file=None, debug=False,
-                 response_dict=None):
+                 custom_response=None):
         self.start = time.time()
         self.debug = debug
         RequestHandlerClass.output = stream_output
@@ -164,7 +169,7 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
         RequestHandlerClass.base_folder = os.path.abspath(
             os.path.dirname(index_file))
         RequestHandlerClass.index_file = index_file
-        RequestHandlerClass.response_dict = response_dict
+        RequestHandlerClass.custom_response = custom_response
         super(WebpageServer, self).__init__(server_address,
                                             RequestHandlerClass)
 
@@ -183,7 +188,7 @@ class WebpageServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 
 def start_http_server(video_resolution, fps, server_port, index_file,
-                      debug=False, response_dict=None):
+                      debug=False, custom_response=None):
     if debug:
         print('Using {} @ {} fps'.format(video_resolution, fps))
 
@@ -201,9 +206,9 @@ def start_http_server(video_resolution, fps, server_port, index_file,
                                rov_proxy=rov,
                                keys_proxy=keys,
                                index_file=index_file,
-                               response_dict=response_dict) as server:
+                               custom_response=custom_response) as s:
                 print('Visit the webpage at {}'.format(server_ip(server_port)))
-                server.serve_forever()
+                s.serve_forever()
         finally:
             print('closing web server')
             camera.stop_recording()

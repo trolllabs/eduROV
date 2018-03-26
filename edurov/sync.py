@@ -99,22 +99,22 @@ class KeyManager(object):
     @property
     def qweasd_dict(self):
         state = {
-            'q':self.get('q').state,
-            'w':self.get('w').state,
-            'e':self.get('e').state,
-            'a':self.get('a').state,
-            's':self.get('s').state,
-            'd':self.get('d').state,
+            'q': self.get('q').state,
+            'w': self.get('w').state,
+            'e': self.get('e').state,
+            'a': self.get('a').state,
+            's': self.get('s').state,
+            'd': self.get('d').state,
         }
         return state
 
     @property
     def arrow_dict(self):
         state = {
-            'up arrow':self.get('up arrow').state,
-            'down arrow':self.get('down arrow').state,
-            'left arrow':self.get('left arrow').state,
-            'right arrow':self.get('right arrow').state,
+            'up arrow': self.get('up arrow').state,
+            'down arrow': self.get('down arrow').state,
+            'left arrow': self.get('left arrow').state,
+            'right arrow': self.get('right arrow').state,
         }
         return state
 
