@@ -59,6 +59,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.serve_stream()
         elif self.path.startswith('/sensor.json'):
             self.serve_rov_data('sensor')
+        elif self.path.startswith('/actuator.json'):
+            self.serve_rov_data('actuator')
         else:
             path = os.path.join(self.base_folder, self.path[1:])
             if os.path.isfile(path):
@@ -89,6 +91,14 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
             self.rov.run = False
+        elif self.path.startswith('/armed'):
+            value = self.path[self.path.find('=') + 1:]
+            armed = False
+            if value == 'True':
+                armed = True
+            self.send_response(200)
+            self.end_headers()
+            self.rov.armed = armed
         else:
             self.send_404()
 

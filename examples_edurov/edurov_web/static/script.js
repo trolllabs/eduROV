@@ -4,6 +4,7 @@ var video_rotation = 0;
 var getsensorID = setInterval(get_sensor, 80);
 var MINIMUM_PANEL_WIDTH = 250;
 var light = false;
+var armed = false;
 var KEYCODE_L = 76;
 
 function sleep(ms) {
@@ -50,6 +51,24 @@ function toggle_light(){
         btn.className += " active";
     }
     send_keys(JSON.stringify({event:'KEYDOWN', keycode:KEYCODE_L}));
+}
+
+function toggle_armed(){
+    var btn = document.getElementById("armBtn");
+    var command = "";
+    if(armed){
+        armed = false;
+        command = "armed=False"
+        btn.className = btn.className.replace(" active", "");
+    }else{
+        armed = true;
+        command = "armed=True"
+        btn.className += " active";
+    }
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", command, true);
+    xhttp.setRequestHeader("Content-Type", "application/text");
+    xhttp.send();
 }
 
 function stop_rov(){

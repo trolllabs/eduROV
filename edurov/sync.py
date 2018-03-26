@@ -124,10 +124,10 @@ class ROVSyncer(object):
     """Holds all variables for ROV related to control and sensors"""
 
     def __init__(self):
-        self._sensor = {'temp': 0.0,
-                        'pressure': 0.0,
-                        'time': time.time()}
+        self._sensor = {'time': time.time()}
+        self._actuator = {}
         self._run = True
+        self._armed = True
 
     @property
     def sensor(self):
@@ -139,12 +139,29 @@ class ROVSyncer(object):
         self._sensor['time'] = time.time()
 
     @property
+    def actuator(self):
+        return self._actuator
+
+    @actuator.setter
+    def actuator(self, values):
+        self._actuator.update(values)
+        self._actuator['time'] = time.time()
+
+    @property
     def run(self):
         return self._run
 
     @run.setter
-    def run(self, bool):
-        self._run = bool
+    def run(self, bool_):
+        self._run = bool_
+
+    @property
+    def armed(self):
+        return self._armed
+
+    @armed.setter
+    def armed(self, bool_):
+        self._armed = bool_
 
 
 def start_sync_classes():

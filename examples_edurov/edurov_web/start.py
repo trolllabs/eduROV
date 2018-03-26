@@ -45,7 +45,10 @@ def arduino():
                 if state != lastState:
                     lastState = state
                     if ser:
-                        send_arduino(msg=state, serial_connection=ser)
+                        if rov.armed:
+                            send_arduino(msg=state, serial_connection=ser)
+                        else:
+                            send_arduino(msg='0000', serial_connection=ser)
                     else:
                         print(state)
                 if ser:
