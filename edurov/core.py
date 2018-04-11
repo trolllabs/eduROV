@@ -52,7 +52,7 @@ class WebMethod(object):
         if not 'index.html' in file_path:
             warning('The index files must be called "index.html')
         if os.path.isfile(file_path):
-            return os.path.abspath(self.index_file)
+            return os.path.abspath(file_path)
         else:
             warning('could not find "{}", needs absolute path'
                     .format(file_path))
