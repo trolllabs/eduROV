@@ -17,3 +17,7 @@ and this project adheres to [Semantic Versioning]
 ## [0.0.3] - 2018-03-20
 ### Added
 - New GUI in browser based on bootstrap
+
+
+[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/0.0.3...HEAD
+[0.0.3]: https://github.com/olivierlacan/keep-a-changelog/compare/0.0.1rc1...0.0.3
