@@ -20,10 +20,10 @@
                 </table>
             </div>
         </div>
-        <div id="roll"><b>ROLL</b></div>
     </div>
     <div class="center-panel">
         <img id="image" src="stream.mjpg">
+        <img class="rollOverlay" id="rollOverlay" src="./static/roll.png">
     </div>
     <div class="d-none d-md-block side-panel">
         <div class="card bg-light">
@@ -33,11 +33,18 @@
                         class="btn btn-outline-primary btn-sm btn-block">Flip
                     video
                 </button>
+                <button type="button" onclick="toggle_roll()"
+                        class="btn btn-outline-primary btn-sm btn-block">Roll
+                </button>
                 <button type="button" onclick="toggle_armed()" id="armBtn"
                         class="btn btn-outline-primary btn-sm btn-block">Arm
                 </button>
                 <button type="button" onclick="toggle_light()" id="lightBtn"
                         class="btn btn-outline-warning btn-sm btn-block">Light
+                </button>
+                <button type="button" onclick="calculate_latency()"
+                        class="btn btn-outline-primary btn-sm btn-block">
+                    Latency
                 </button>
                 <button type="button" onclick="stop_rov()"
                         class="btn btn-outline-danger btn-sm btn-block">

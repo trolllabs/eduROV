@@ -12,16 +12,15 @@ body {
     transform: rotate(0deg);
 }
 
-#roll {
-    background-color: white;
-    border-radius: 4px;
-    width: 100%;
-    height: 24px;
-    margin: 150 auto;
-    text-align: center;
-    transform: rotate(0deg);
+.rollOverlay {
+    position: absolute;
+    color: white;
 }
 
+.center-panel{
+    display: inline;
+    position: relative;
+}
 
 .grid-container > div {
   padding: 10px 10px 0px 10px;

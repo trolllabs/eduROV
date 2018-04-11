@@ -87,6 +87,9 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.keys.set_from_js_dict(json_obj)
             self.send_response(200)
             self.end_headers()
+        elif self.path.startswith('/echo'):
+            text = self.path[self.path.find('=') + 1:]
+            self.serve_content(text.encode('utf-8'))
         elif self.path.startswith('/stop'):
             self.send_response(200)
             self.end_headers()
