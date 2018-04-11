@@ -65,11 +65,11 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             text = self.path[self.path.find('=') + 1:]
             self.serve_content(text.encode('utf-8'))
         else:
-            path = os.path.join(self.base_folder, self.path[1])
+            path = os.path.join(self.base_folder, self.path[1:])
             if os.path.isfile(path):
                 self.serve_path(path)
             elif self.custom_response:
-                response_content = self.custom_response(self.path)
+                response_content = self.custom_response(self.path[1])
                 if response_content:
                     self.serve_content(response_content.encode('utf-8'))
                 else:
