@@ -19,5 +19,5 @@ and this project adheres to [Semantic Versioning]
 - New GUI in browser based on bootstrap
 
 
-[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/0.0.3...HEAD
-[0.0.3]: https://github.com/olivierlacan/keep-a-changelog/compare/0.0.1rc1...0.0.3
+[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/bfecda5...HEAD
+[0.0.3]: https://github.com/olivierlacan/keep-a-changelog/compare/d56b6d8...bfecda5
