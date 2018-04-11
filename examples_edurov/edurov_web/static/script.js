@@ -106,7 +106,7 @@ function get_sensor(){
     xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var sensor = JSON.parse(this.responseText);
-                sensor['latency'] = calculate_latency().toFixed(1);
+//                sensor['latency'] = calculate_latency().toFixed(1);
                 var left_text = "";
                 for (var key in sensor) {
                     left_text += "<tr>"
