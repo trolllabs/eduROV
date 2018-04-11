@@ -82,12 +82,6 @@ def SD_card_monitor():
             rov.sensor = {'free_space': free_drive_space()}
             time.sleep(10)
 
-def my_custom(not_used, path):
-    if path.startswith('/hello'):
-        return 'say whaaaat'
-    else:
-        return None
-
 
 def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
     web_method = WebMethod(
@@ -96,8 +90,7 @@ def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
         server_port=server_port,
         debug=debug,
         runtime_functions=[arduino, senser, SD_card_monitor],
-        index_file=os.path.join(os.path.dirname(__file__), 'index.html',),
-        custom_response=my_custom
+        index_file=os.path.join(os.path.dirname(__file__), 'index.html', )
     )
     web_method.serve()
 
