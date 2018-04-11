@@ -167,14 +167,6 @@ class ROVSyncer(object):
     def armed(self, bool_):
         self._armed = bool_
 
-    def start_recording(self, width=1640, height=1232):
-        with picamera.PiCamera() as camera:
-            camera.start_recording('~/recording.h264',
-                                   splitter_port=2,
-                                   resize=(width, height))
-            camera.wait_recording(10)
-            camera.stop_recording(splitter_port=2)
-
 
 def start_sync_classes():
     """Registers pyro classes in name server and starts request loop"""
