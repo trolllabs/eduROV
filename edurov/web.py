@@ -69,15 +69,13 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             if os.path.isfile(path):
                 self.serve_path(path)
             elif self.custom_response:
-                print(self.requestline)
-                print(self.path[:])
-                response_content = self.custom_response(self.path[:])
+                response_content = self.custom_response(self.path)
                 if response_content:
                     self.serve_content(response_content.encode('utf-8'))
                 else:
-                    warning(message='Bad response. Got: GET: {}. custom '
+                    warning(message='Bad response. {}. custom '
                                     'response function returned nothing'
-                            .format(self.path), filter='default')
+                            .format(self.requestline), filter='default')
                     self.send_404()
             else:
                 warning(message='Bad response. Got: GET: {}. Could not find {}'

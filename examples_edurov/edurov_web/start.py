@@ -82,13 +82,11 @@ def SD_card_monitor():
             rov.sensor = {'free_space': free_drive_space()}
             time.sleep(10)
 
-def my_custom(*args):
-    for arg in args:
-        print(arg)
-    # if path.startswith('/hello'):
-    #     return 'say whaaaat'
-    # else:
-    return None
+def my_custom(not_used, path):
+    if path.startswith('/hello'):
+        return 'say whaaaat'
+    else:
+        return None
 
 
 def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
