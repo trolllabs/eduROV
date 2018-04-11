@@ -69,7 +69,9 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             if os.path.isfile(path):
                 self.serve_path(path)
             elif self.custom_response:
-                response_content = self.custom_response(self.path)
+                print(self.requestline)
+                print(self.path[:])
+                response_content = self.custom_response(self.path[:])
                 if response_content:
                     self.serve_content(response_content.encode('utf-8'))
                 else:
