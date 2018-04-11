@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning]
 - Favicon to webpage
 - Version check under installation, will abort and warn user if the setup is
   runned with python 2
+- New roll indicator that can be toggled
+- New sensor value that displays free disk space on memory card
 
 ## [0.0.3] - 2018-03-20
 ### Added

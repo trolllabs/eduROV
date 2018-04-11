@@ -2,6 +2,8 @@
 Different utility functions
 """
 
+import ctypes
+import os
 import platform
 import signal
 import socket
@@ -154,3 +156,21 @@ def warning_format(message, category, filename, lineno,
                    file=None, line=None):
     return 'WARNING:\n  {}: {}\n  File: {}:{}\n'.format(
         category.__name__, message, filename, lineno)
+
+
+def free_drive_space():
+    """Return folder/drive free space (in megabytes)."""
+    if platform.system() == 'Windows':
+        free_bytes = ctypes.c_ulonglong(0)
+        ctypes.windll.kernel32.GetDiskFreeSpaceExW(ctypes.c_wchar_p('/'),
+                                                   None, None,
+                                                   ctypes.pointer(free_bytes))
+        mb = free_bytes.value / 1024 / 1024
+    else:
+        st = os.statvfs('/')
+        mb = st.f_bavail * st.f_frsize / 1024 / 1024
+
+    if mb >= 1000:
+        return '{:.2f} GB'.format(mb / 1000)
+    else:
+        return '{:.0f} MB'.format(mb)
