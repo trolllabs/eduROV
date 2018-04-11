@@ -113,9 +113,9 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         self.wfile.write(content)
 
     def serve_path(self, path):
-        if 'style.css' in path:
+        if '.css' in path:
             content_type = 'text/css'
-        elif 'script.js' in path:
+        elif '.js' in path:
             content_type = 'text/javascript'
         else:
             content_type = 'text/html'

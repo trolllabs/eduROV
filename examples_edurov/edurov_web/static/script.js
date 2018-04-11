@@ -114,7 +114,11 @@ function get_sensor(){
                     left_text += key
                     left_text += "</b></td>"
                     left_text += "<td>"
-                    left_text += sensor[key].toFixed(1)
+                    if (isNaN(sensor[key])){
+                        left_text += sensor[key]
+                    } else{
+                        left_text += sensor[key].toFixed(1)
+                    }
                     left_text += "</td>"
                     left_text += "</tr>"
                 }
