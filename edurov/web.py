@@ -61,6 +61,9 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.serve_rov_data('sensor')
         elif self.path.startswith('/actuator.json'):
             self.serve_rov_data('actuator')
+        elif self.path.startswith('/echo'):
+            text = self.path[self.path.find('=') + 1:]
+            self.serve_content(text.encode('utf-8'))
         else:
             path = os.path.join(self.base_folder, self.path[1:])
             if os.path.isfile(path):
@@ -87,9 +90,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.keys.set_from_js_dict(json_obj)
             self.send_response(200)
             self.end_headers()
-        elif self.path.startswith('/echo'):
-            text = self.path[self.path.find('=') + 1:]
-            self.serve_content(text.encode('utf-8'))
         elif self.path.startswith('/stop'):
             self.send_response(200)
             self.end_headers()
