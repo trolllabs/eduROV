@@ -26,7 +26,7 @@ def read(fname):
 
 setup(
     name='edurov',
-    version='0.0.3',
+    version='0.0.4',
     description='A educational project for remotely operated vehicles',
     long_description=read('README.rst'),
     license='GPLv3',
