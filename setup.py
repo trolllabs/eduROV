@@ -58,6 +58,7 @@ setup(
         'console_scripts': [
             'edurov-web = examples_edurov.entry_points:edurov_web',
             'edurov-duo = examples_edurov.entry_points:edurov_duo'
+            'edurov-min = examples_edurov.entry_points:edurov_min'
         ],
     },
     project_urls={
