@@ -73,11 +73,12 @@ class WebMethod(object):
         web_server.daemon = True
         web_server.start()
         processes = []
-        for f in self.run_funcs:
-            p = Process(target=f)
-            p.daemon = True
-            p.start()
-            processes.append(p)
+        if self.run_funcs:
+            for f in self.run_funcs:
+                p = Process(target=f)
+                p.daemon = True
+                p.start()
+                processes.append(p)
 
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             try:
@@ -91,7 +92,8 @@ class WebMethod(object):
                 print('Shutting down')
                 web_server.terminate()
                 rov.run = False
-                for p in processes:
-                    p.join(3)
+                if self.run_funcs:
+                    for p in processes:
+                        p.join(3)
                 pyro_classes.terminate()
                 name_server.terminate()
