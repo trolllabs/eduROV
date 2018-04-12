@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning]
 (https://www.python.org/dev/peps/pep-0440/).
 
 ## [Unreleased]
+### Changed
+- Moved "arm" and "stop" from POST to GET method
+
+### Removed
+- Pygame dependency
 
 ## [0.0.4] - 2018-03-20
 ### Added

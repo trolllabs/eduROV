@@ -47,8 +47,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     keywords='video education ROV picamera',
-    install_requires=[
-                         'Pyro4'] +
+    install_requires=['Pyro4'] +
                      (['picamera==1.13' if detect_pi() else []]),
     python_requires='>=3',
     packages=find_packages(),
@@ -56,8 +55,7 @@ setup(
     entry_points={
         'console_scripts': [
             'edurov-web = examples_edurov.entry_points:edurov_web',
-            'edurov-duo = examples_edurov.entry_points:edurov_duo',
-            'edurov-min = examples_edurov.entry_points:edurov_min'
+            'edurov-duo = examples_edurov.entry_points:edurov_duo'
         ],
     },
     project_urls={

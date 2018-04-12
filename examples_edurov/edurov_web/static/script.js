@@ -73,14 +73,14 @@ function toggle_armed(){
         btn.className += " active";
     }
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", command, true);
+    xhttp.open("GET", command, true);
     xhttp.setRequestHeader("Content-Type", "application/text");
     xhttp.send();
 }
 
 function stop_rov(){
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "stop", true);
+    xhttp.open("GET", "stop", true);
     xhttp.setRequestHeader("Content-Type", "application/text");
     xhttp.send();
 }

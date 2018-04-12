@@ -68,6 +68,14 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
             self.rov.run = False
+        elif self.path.startswith('/armed'):
+            value = self.path[self.path.find('=') + 1:]
+            armed = False
+            if value == 'True':
+                armed = True
+            self.send_response(200)
+            self.end_headers()
+            self.rov.armed = armed
         else:
             path = os.path.join(self.base_folder, self.path[1:])
             if os.path.isfile(path):
@@ -82,8 +90,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
                             .format(self.requestline), filter='default')
                     self.send_404()
             else:
-                warning(message='Bad response. Got: GET: {}. Could not find {}'
-                        .format(self.path, path), filter='default')
+                warning(message='Bad response. {}. Could not find {}'
+                        .format(self.requestline, path), filter='default')
                 self.send_404()
 
     def do_POST(self):
@@ -94,18 +102,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.keys.set_from_js_dict(json_obj)
             self.send_response(200)
             self.end_headers()
-        elif self.path.startswith('/stop'):
-            self.send_response(200)
-            self.end_headers()
-            self.rov.run = False
-        elif self.path.startswith('/armed'):
-            value = self.path[self.path.find('=') + 1:]
-            armed = False
-            if value == 'True':
-                armed = True
-            self.send_response(200)
-            self.end_headers()
-            self.rov.armed = armed
         else:
             self.send_404()
 
