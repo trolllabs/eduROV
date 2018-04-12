@@ -64,6 +64,10 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         elif self.path.startswith('/echo'):
             text = self.path[self.path.find('=') + 1:]
             self.serve_content(text.encode('utf-8'))
+        elif self.path.startswith('/stop'):
+            self.send_response(200)
+            self.end_headers()
+            self.rov.run = False
         else:
             path = os.path.join(self.base_folder, self.path[1:])
             if os.path.isfile(path):
