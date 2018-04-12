@@ -48,7 +48,6 @@ setup(
     ],
     keywords='video education ROV picamera',
     install_requires=[
-                         'pygame',
                          'Pyro4'] +
                      (['picamera==1.13' if detect_pi() else []]),
     python_requires='>=3',
