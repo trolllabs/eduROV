@@ -69,6 +69,10 @@ to 192.168.0.190``. Then on the raspberry pi, run the following command::
 
 Remember to change the ip to the one printed on your controlling computer.
 
+Performance
+====
+.. image:: docs/latency.png
+
 Help
 ====
 
