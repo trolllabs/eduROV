@@ -203,16 +203,17 @@ function set_size(){
         var img = document.getElementsByClassName("center-panel")[0];
         var roll = document.getElementsByClassName("rollOverlay")[0];
         if (bodR > imgR){
-            var new_width = bodH*imgR
+            var new_width = bodH*imgR;
             var margin = (bodW-new_width)/2;
             img.style.width = new_width.toString();
             img.style.marginLeft = margin.toString();
             roll.style.width = new_width.toString();
         } else {
-            img.style.width = bodW.toString();
-            roll.style.width = bodW.toString();
+            var new_width = bodW;
+            img.style.width = new_width.toString();
+            roll.style.width = new_width.toString();
         }
-        var top = bodH/2*0.9;
+        var top = new_width/imgR/2*0.9;
         roll.style.top = top.toString();
     }
     else if (bodW<768){
