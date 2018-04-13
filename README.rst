@@ -71,6 +71,10 @@ Remember to change the ip to the one printed on your controlling computer.
 
 Performance
 ====
+The eduROV package were created with a strong focus on keeping the latency at
+a minimum. When deploying on a wireless network the actual performance will
+vary depending on factors such as distance, interference and hardware.
+
 .. image:: docs/latency.png
 
 Help
