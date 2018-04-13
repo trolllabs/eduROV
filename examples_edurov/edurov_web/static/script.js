@@ -154,30 +154,25 @@ function calculate_latency(){
 
 function toggle_cinema(){
     if (cinema){
-        window.location.href = "index.html";
-//        cinema = false;
-//        var panels = document.getElementsByClassName("side-panel");
-//        panels[0].style.visibility = "visible";
-//        panels[1].style.visibility = "visible";
-//        var img = document.getElementsByClassName("center-panel")[0];
-//        img.style.position = "relative";
-//        img.style.width = "100%";
-//        img.style.marginLeft = "0";
-//        set_size();
+        cinema = false;
+//        window.location.href = "index.html";
+        var panels = document.getElementsByClassName("side-panel");
+        panels[0].style.visibility = "visible";
+        panels[1].style.visibility = "visible";
+        var img = document.getElementsByClassName("center-panel")[0];
+        img.style.position = "relative";
+        img.style.width = "100%";
+        img.style.marginLeft = "0";
+        set_size();
     } else {
-        window.location.href = "cinema.html";
-//    var text  = read_file('cinema.html')
-//    document.body.innerHTML = text;
-//    document.open();
-//    document.write('hey');
-//    document.close();
-//        cinema = true;
-//        var panels = document.getElementsByClassName("side-panel");
-//        panels[0].style.visibility = "hidden";
-//        panels[1].style.visibility = "hidden";
-//        var img = document.getElementsByClassName("center-panel")[0];
-//        img.style.position = "absolute";
-//        set_size();
+        cinema = true;
+//        window.location.href = "cinema.html";
+        var panels = document.getElementsByClassName("side-panel");
+        panels[0].style.visibility = "hidden";
+        panels[1].style.visibility = "hidden";
+        var img = document.getElementsByClassName("center-panel")[0];
+        img.style.position = "absolute";
+        set_size();
     }
 }
 
