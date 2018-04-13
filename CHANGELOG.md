@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning]
 (https://www.python.org/dev/peps/pep-0440/).
 
 ## [Unreleased]
+### Added
+- Minimal code example
+
 ### Changed
 - Moved "arm" and "stop" from POST to GET method
 
