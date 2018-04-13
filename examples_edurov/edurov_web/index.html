@@ -10,8 +10,8 @@
 <body onload="set_size()">
 
 <div class="grid-container">
-    <div class="d-none d-md-block side-panel ">
-        <div class="card bg-light">
+    <div class="d-none d-md-block side-panel " style="display:none;">
+        <div class="card bg-light cinema">
             <h5 class="card-header">Sensors</h5>
             <div class="card-body">
                 <table class="table table-sm">
@@ -26,7 +26,7 @@
         <img class="rollOverlay" id="rollOverlay" src="./static/roll.png">
     </div>
     <div class="d-none d-md-block side-panel">
-        <div class="card bg-light">
+        <div class="card bg-light cinema">
             <h5 class="card-header">Options</h5>
             <div class="card-body">
                 <button type="button" onclick="rotate_image()"
@@ -46,13 +46,17 @@
                         class="btn btn-outline-primary btn-sm btn-block">
                     Latency
                 </button>
+                <button type="button" onclick="toggle_cinema()"
+                        class="btn btn-outline-primary btn-sm btn-block">
+                    Cinema
+                </button>
                 <button type="button" onclick="stop_rov()"
                         class="btn btn-outline-danger btn-sm btn-block">
                     Shutdown
                 </button>
             </div>
         </div>
-        <div class="card bg-light">
+        <div class="card bg-light cinema">
             <h5 class="card-header">Hotkeys</h5>
             <div class="card-body">
                 <table class="table table-sm">
@@ -64,6 +68,10 @@
                     <tr>
                         <td><b>L</b></td>
                         <td>Lights</td>
+                    </tr>
+                    <tr>
+                        <td><b>C</b></td>
+                        <td>Cinema</td>
                     </tr>
                     </tbody>
                 </table>

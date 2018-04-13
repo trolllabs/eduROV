@@ -1,35 +1,42 @@
 var last_key;
 var key_dict = {event:'', keycode:0};
 var video_rotation = 0;
-var getsensorID = setInterval(get_sensor, 80);
+//var getsensorID = setInterval(get_sensor, 80);
 var MINIMUM_PANEL_WIDTH = 250;
 var light = false;
 var armed = false;
 var KEYCODE_L = 76;
+var KEYCODE_C = 67;
 var rollView = true;
+var cinema = false;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 document.onkeydown = function(evt) {
-    if (armed){
+//    if (armed){
         evt = evt || window.event;
         if (evt.keyCode != last_key){
             if (evt.keyCode == KEYCODE_L){
                 toggle_light();
-            }else{
+            } else if (evt.keyCode == KEYCODE_C){
+                toggle_cinema();
+            }
+
+            else{
             key_dict['event'] = 'KEYDOWN';
             key_dict['keycode'] = evt.keyCode;
             send_keys(JSON.stringify(key_dict))
             last_key = evt.keyCode;
             }
         }
-    }else{
-        if (confirm("The ROV is not armed, do you want to arm it?")) {
-            toggle_armed();
-        }
-    }
+//    }
+//    else{
+//        if (confirm("The ROV is not armed, do you want to arm it?")) {
+//            toggle_armed();
+//        }
+//    }
 }
 
 document.onkeyup = function(evt) {
@@ -145,6 +152,45 @@ function calculate_latency(){
     xhttp.send();
 }
 
+function toggle_cinema(){
+    if (cinema){
+        window.location.href = "index.html";
+//        cinema = false;
+//        var panels = document.getElementsByClassName("side-panel");
+//        panels[0].style.visibility = "visible";
+//        panels[1].style.visibility = "visible";
+//        var img = document.getElementsByClassName("center-panel")[0];
+//        img.style.position = "relative";
+//        img.style.width = "100%";
+//        img.style.marginLeft = "0";
+//        set_size();
+    } else {
+        window.location.href = "cinema.html";
+//    var text  = read_file('cinema.html')
+//    document.body.innerHTML = text;
+//    document.open();
+//    document.write('hey');
+//    document.close();
+//        cinema = true;
+//        var panels = document.getElementsByClassName("side-panel");
+//        panels[0].style.visibility = "hidden";
+//        panels[1].style.visibility = "hidden";
+//        var img = document.getElementsByClassName("center-panel")[0];
+//        img.style.position = "absolute";
+//        set_size();
+    }
+}
+
+function read_file(filename){
+    var file = new File(filename);
+    file.open("r");
+    var str = "";
+    while (!file.eof) {
+        str += file.readln() + "\n";
+    }
+    return str
+}
+
 function set_size(){
     var myImage = new Image();
     var img = document.getElementById("image");
@@ -158,12 +204,25 @@ function set_size(){
     var imgR = imgW / imgH;
     var bodR = bodW / bodH;
 
-
-    if (bodW<768){
-
+    if (cinema){
+        var img = document.getElementsByClassName("center-panel")[0];
+        var roll = document.getElementsByClassName("rollOverlay")[0];
+        if (bodR > imgR){
+            var new_width = bodH*imgR
+            var margin = (bodW-new_width)/2;
+            img.style.width = new_width.toString();
+            img.style.marginLeft = margin.toString();
+            roll.style.width = new_width.toString();
+        } else {
+            img.style.width = bodW.toString();
+            roll.style.width = bodW.toString();
+        }
+        var top = bodH/2*0.9;
+        roll.style.top = top.toString();
+    }
+    else if (bodW<768){
         document.getElementsByClassName("grid-container")[0].setAttribute("style",
         `grid-template-columns: auto`);
-
     }else{
         var imgDispW = (bodH - 2*pad)*imgR;
         var imgDispH = imgDispW / imgR;
@@ -174,9 +233,11 @@ function set_size(){
         var realImgW = bodW - 2*panelW - 2*pad;
         var realImhH = realImgW / imgR;
 
-        document.getElementsByClassName("rollOverlay")[0].setAttribute("style",
-        `width: ${(bodW - 2*panelW - 2*pad)}px;
-        top: ${realImhH/2}px`);
+        if (rollView){
+            document.getElementsByClassName("rollOverlay")[0].setAttribute("style",
+            `width: ${(bodW - 2*panelW - 2*pad)}px;
+            top: ${realImhH/2}px`);
+        }
     }
 }
 
