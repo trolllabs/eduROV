@@ -29,18 +29,17 @@
         <div class="card bg-light cinema">
             <h5 class="card-header">Options</h5>
             <div class="card-body">
-                <button type="button" onclick="rotate_image()"
-                        class="btn btn-outline-primary btn-sm btn-block">Flip
-                    video
-                </button>
-                <button type="button" onclick="toggle_roll()"
-                        class="btn btn-outline-primary btn-sm btn-block">Roll
-                </button>
                 <button type="button" onclick="toggle_armed()" id="armBtn"
-                        class="btn btn-outline-primary btn-sm btn-block">Arm
+                        class="btn btn-outline-success btn-sm btn-block">
+                    Arm
                 </button>
-                <button type="button" onclick="toggle_light()" id="lightBtn"
-                        class="btn btn-outline-warning btn-sm btn-block">Light
+                <button type="button" onclick="rotate_image()"
+                        class="btn btn-outline-primary btn-sm btn-block">
+                    Flip video
+                </button>
+                <button type="button" onclick="toggle_roll()" id="rollBtn"
+                        class="btn btn-outline-primary btn-sm btn-block active">
+                    Roll
                 </button>
                 <button type="button" onclick="calculate_latency()"
                         class="btn btn-outline-primary btn-sm btn-block">
@@ -49,6 +48,9 @@
                 <button type="button" onclick="toggle_cinema()"
                         class="btn btn-outline-primary btn-sm btn-block">
                     Cinema
+                </button>
+                <button type="button" onclick="toggle_light()" id="lightBtn"
+                        class="btn btn-outline-warning btn-sm btn-block">Light
                 </button>
                 <button type="button" onclick="stop_rov()"
                         class="btn btn-outline-danger btn-sm btn-block">

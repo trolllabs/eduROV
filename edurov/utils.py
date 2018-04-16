@@ -158,7 +158,7 @@ def warning_format(message, category, filename, lineno,
         category.__name__, message, filename, lineno)
 
 
-def free_drive_space():
+def free_drive_space(as_string=False):
     """Return folder/drive free space (in megabytes)."""
     if platform.system() == 'Windows':
         free_bytes = ctypes.c_ulonglong(0)
@@ -170,7 +170,10 @@ def free_drive_space():
         st = os.statvfs('/')
         mb = st.f_bavail * st.f_frsize / 1024 / 1024
 
-    if mb >= 1000:
-        return '{:.2f} GB'.format(mb / 1000)
+    if as_string:
+        if mb >= 1000:
+            return '{:.2f} GB'.format(mb / 1000)
+        else:
+            return '{:.0f} MB'.format(mb)
     else:
-        return '{:.0f} MB'.format(mb)
+        return mb
