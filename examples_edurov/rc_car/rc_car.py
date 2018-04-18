@@ -1,13 +1,14 @@
 import argparse
 import os
-import RPi.GPIO as GPIO
+
 import Pyro4
+import RPi.GPIO as GPIO
 
 from edurov import WebMethod
 
 
 class Motor(object):
-    def __init__(self, a_pin, b_pin, reverse=False, pwd=False):
+    def __init__(self, a_pin, b_pin, reverse=False, pwm=False):
         self.reverse = reverse
         if not reverse:
             self.a_pin = a_pin
@@ -15,7 +16,6 @@ class Motor(object):
         else:
             self.a_pin = b_pin
             self.b_pin = a_pin
-        GPIO.setmode(GPIO.BCM)
         for pin in [a_pin, b_pin]:
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, GPIO.LOW)
@@ -34,11 +34,9 @@ class Motor(object):
         GPIO.output(self.a_pin, GPIO.LOW)
         GPIO.output(self.b_pin, GPIO.LOW)
 
-    def cleanup(self):
-        GPIO.cleanup()
-
 
 def control_motors():
+    GPIO.setmode(GPIO.BCM)
     m1 = Motor(4, 18)
     m2 = Motor(12, 19)
 
@@ -55,8 +53,7 @@ def control_motors():
                 else:
                     m1.stop()
                     m2.stop()
-            m1.cleanup()
-            m2.cleanup()
+    GPIO.cleanup()
 
 
 def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
@@ -98,4 +95,4 @@ if __name__ == '__main__':
         fps=args.fps,
         server_port=8000,
         debug=args.debug
-        )
+    )
