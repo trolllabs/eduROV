@@ -1,42 +1,43 @@
 var last_key;
 var key_dict = {event:'', keycode:0};
-var video_rotation = 0;
 //var getsensorID = setInterval(get_sensor, 80);
-var MINIMUM_PANEL_WIDTH = 250;
+
 var light = false;
 var armed = false;
-var KEYCODE_L = 76;
-var KEYCODE_C = 67;
 var rollView = true;
 var cinema = false;
+var video_rotation = 0;
+
+var MOTOR_KEYS = [81, 87, 69, 65, 83, 68];
+var KEYCODE_L = 76;
+var KEYCODE_C = 67;
+var KEYCODE_ESC = 27;
+var MINIMUM_PANEL_WIDTH = 250;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 document.onkeydown = function(evt) {
-//    if (armed){
-        evt = evt || window.event;
-        if (evt.keyCode != last_key){
-            if (evt.keyCode == KEYCODE_L){
-                toggle_light();
-            } else if (evt.keyCode == KEYCODE_C){
-                toggle_cinema();
+    evt = evt || window.event;
+    if (evt.keyCode != last_key){
+        if (MOTOR_KEYS.indexOf(evt.keyCode) > -1 && !armed){
+            if (confirm("The ROV is not armed, do you want to arm it?")) {
+                toggle_armed()
             }
-
-            else{
+        } else if (evt.keyCode == KEYCODE_L){
+            toggle_light();
+        } else if (evt.keyCode == KEYCODE_ESC && cinema){
+            toggle_cinema();
+        } else if (evt.keyCode == KEYCODE_C){
+            toggle_cinema();
+        } else {
             key_dict['event'] = 'KEYDOWN';
             key_dict['keycode'] = evt.keyCode;
             send_keys(JSON.stringify(key_dict))
             last_key = evt.keyCode;
-            }
         }
-//    }
-//    else{
-//        if (confirm("The ROV is not armed, do you want to arm it?")) {
-//            toggle_armed();
-//        }
-//    }
+    }
 }
 
 document.onkeyup = function(evt) {
@@ -99,12 +100,15 @@ function rotate_image(){
 }
 
 function toggle_roll(){
+    var btn = document.getElementById("rollBtn");
     if(rollView){
         rollView = false;
         document.getElementById("rollOverlay").style.visibility = "hidden";
+        btn.className = btn.className.replace(" active", "");
     }else{
         rollView = true;
         document.getElementById("rollOverlay").style.visibility = "visible";
+        btn.className += " active";
     }
 }
 
@@ -155,7 +159,6 @@ function calculate_latency(){
 function toggle_cinema(){
     if (cinema){
         cinema = false;
-//        window.location.href = "index.html";
         var panels = document.getElementsByClassName("side-panel");
         panels[0].style.visibility = "visible";
         panels[1].style.visibility = "visible";
@@ -166,7 +169,6 @@ function toggle_cinema(){
         set_size();
     } else {
         cinema = true;
-//        window.location.href = "cinema.html";
         var panels = document.getElementsByClassName("side-panel");
         panels[0].style.visibility = "hidden";
         panels[1].style.visibility = "hidden";
@@ -174,16 +176,6 @@ function toggle_cinema(){
         img.style.position = "absolute";
         set_size();
     }
-}
-
-function read_file(filename){
-    var file = new File(filename);
-    file.open("r");
-    var str = "";
-    while (!file.eof) {
-        str += file.readln() + "\n";
-    }
-    return str
 }
 
 function set_size(){
@@ -215,11 +207,7 @@ function set_size(){
         }
         var top = new_width/imgR/2*0.9;
         roll.style.top = top.toString();
-    }
-    else if (bodW<768){
-        document.getElementsByClassName("grid-container")[0].setAttribute("style",
-        `grid-template-columns: auto`);
-    }else{
+    } else {
         var imgDispW = (bodH - 2*pad)*imgR;
         var imgDispH = imgDispW / imgR;
         var panelW = Math.max(parseInt((bodW-2*pad-imgDispW)/2), MINIMUM_PANEL_WIDTH);
