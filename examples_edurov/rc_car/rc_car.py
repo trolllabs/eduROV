@@ -45,7 +45,7 @@ def control_motors():
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             while rov.run:
-                keys_dict = keys.arrow_dict()
+                keys_dict = keys.arrow_dict
                 if keys_dict['up arrow']:
                     m1.forward()
                     m2.forward()
