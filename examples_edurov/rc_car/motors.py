@@ -27,6 +27,18 @@ class Motor(object):
             for pin in [a_pin, b_pin]:
                 GPIO.output(pin, GPIO.LOW)
 
+    def speed(self, speed):
+        if speed > 100:
+            speed = 100
+        elif speed < -100:
+            speed = -100
+        if speed > 0:
+            self.forward(speed)
+        elif speed < 0:
+            self.backward(speed*-1)
+        else:
+            self.stop()
+
     def forward(self, speed=100.0):
         if self.pwm:
             self.a_pwm.ChangeDutyCycle(speed)
