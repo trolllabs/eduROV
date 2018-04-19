@@ -133,8 +133,8 @@ def control_motors():
                         motor1_speed -= r.value*turn
                         motor2_speed += r.value*turn
                 elif keys_dict['down arrow']:
-                    motor1_speed -= u.value*normal
-                    motor2_speed -= u.value*normal
+                    motor1_speed -= d.value*normal
+                    motor2_speed -= d.value*normal
                     if keys_dict['left arrow']:
                         motor1_speed -= l.value*turn
                         motor2_speed += l.value*turn
@@ -147,7 +147,7 @@ def control_motors():
                 elif keys_dict['right arrow']:
                     motor1_speed -= r.value*turn
                     motor2_speed += r.value*turn
-                    
+
 
                 m1.speed(motor1_speed)
                 m2.speed(motor2_speed)
