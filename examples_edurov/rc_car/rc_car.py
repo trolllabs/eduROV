@@ -1,5 +1,6 @@
 import argparse
 import os
+import time
 
 import Pyro4
 import RPi.GPIO as GPIO
@@ -73,31 +74,81 @@ class Motor(object):
             self.b_pwm.stop()
 
 
+class Button():
+    """Imitates joystick behavior by gradually increasing the value"""
+    max = 100
+    ramp_time = 0.5
+
+    def __init__(self):
+        self.current = False
+        self.last = False
+        self.value = 0
+
+    def update(self, now):
+        if now is not self.last:
+            self.last = now
+            self.value = 0
+            if now:
+                self.start_press = time.time()
+        else:
+            if not now:
+                self.value = 0
+            else:
+                if time.time() - self.start_press > self.ramp_time:
+                    self.value = self.max
+                else:
+                    factor = (time.time() - self.start_press) / self.ramp_time
+                    self.value = self.max * factor
+
+
 def control_motors():
     GPIO.setmode(GPIO.BCM)
     m1 = Motor(4, 18, pwm=True)
     m2 = Motor(12, 19, pwm=True)
-    normal = 50
-    turn = 30
+    normal = 1.0
+    turn = 0.3
+    u = Button()
+    d = Button()
+    l = Button()
+    r = Button()
 
     with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
         with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
             while rov.run:
                 keys_dict = keys.arrow_dict
+                u.update(keys_dict['up arrow'])
+                d.update(keys_dict['down arrow'])
+                l.update(keys_dict['left arrow'])
+                r.update(keys_dict['right arrow'])
+
                 motor1_speed = 0
                 motor2_speed = 0
                 if keys_dict['up arrow']:
-                    motor1_speed += normal
-                    motor2_speed += normal
+                    motor1_speed += u.value*normal
+                    motor2_speed += u.value*normal
+                    if keys_dict['left arrow']:
+                        motor1_speed += l.value*turn
+                        motor2_speed -= l.value*turn
+                    elif keys_dict['right arrow']:
+                        motor1_speed -= r.value*turn
+                        motor2_speed += r.value*turn
                 elif keys_dict['down arrow']:
-                    motor1_speed -= normal
-                    motor2_speed -= normal
-                if keys_dict['left arrow']:
-                    motor1_speed += turn
-                    motor2_speed -= turn
+                    motor1_speed -= u.value*normal
+                    motor2_speed -= u.value*normal
+                    if keys_dict['left arrow']:
+                        motor1_speed -= l.value*turn
+                        motor2_speed += l.value*turn
+                    elif keys_dict['right arrow']:
+                        motor1_speed += r.value*turn
+                        motor2_speed -= r.value*turn
+                elif keys_dict['left arrow']:
+                    motor1_speed += l.value*turn
+                    motor2_speed -= l.value*turn
                 elif keys_dict['right arrow']:
-                    motor1_speed -= turn
-                    motor2_speed += turn
+                    motor1_speed -= r.value*turn
+                    motor2_speed += r.value*turn
+                    
+
                 m1.speed(motor1_speed)
                 m2.speed(motor2_speed)
     m1.close()
