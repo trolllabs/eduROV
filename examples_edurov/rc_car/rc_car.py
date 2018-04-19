@@ -105,8 +105,8 @@ def control_motors():
     GPIO.setmode(GPIO.BCM)
     m1 = Motor(4, 18, pwm=True)
     m2 = Motor(12, 19, pwm=True)
-    normal = 1.0
-    turn = 0.7
+    normal = 0.8
+    turn = 0.8
     u = Button()
     d = Button()
     l = Button()
