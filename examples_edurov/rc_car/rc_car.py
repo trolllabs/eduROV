@@ -106,7 +106,7 @@ def control_motors():
     m1 = Motor(4, 18, pwm=True)
     m2 = Motor(12, 19, pwm=True)
     normal = 1.0
-    turn = 0.3
+    turn = 0.7
     u = Button()
     d = Button()
     l = Button()
