@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New participant</title>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        form {
+            width: 500px;
+            display: block;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+<form action="/new_participant.php" method="get">
+    <h2>New participant</h2>
+    <div class="form-group">
+        <label>Age</label>
+        <input class="form-control" name="age">
+    </div>
+    <div class="form-group">
+        <label>Gender</label>
+        <select class="form-control" name="gender">
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Video game consumption</label>
+        <select class="form-control" name="game">
+            <option value="1">Every day</option>
+            <option value="2">1-3 times per week</option>
+            <option value="3">A few times per month</option>
+            <option value="4">A few times per year</option>
+            <option value="5">Never</option>
+        </select>
+        <small id="emailHelp" class="form-text text-muted">How often do you
+            play video games (computer and console)?
+        </small>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+</html>
