@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning]
 ## [Unreleased]
 ### Added
 - Minimal code example
+- Sphinx docs
 
 ### Changed
 - Moved "arm" and "stop" from POST to GET method
