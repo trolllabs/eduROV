@@ -29,3 +29,8 @@ In addition you will need a swivel wheel, M3/M2.5 bolts and nuts, cables and
 connectors, 12V battery and a car frame. The car frame used in the picture
 above was cut from 3mm MDF with a laser cutter and can be found in the *docs/parts*
 folder.
+
+CAD files
+---------
+
+Visit https://grabcad.com/library/772279
