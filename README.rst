@@ -1,6 +1,5 @@
-======
-eduROV
-======
+eduROV - Educational Remotely Operated Vehicle
+================================================
 
 The eduROV project is all about spreading the joy of technology and learning.
 The eduROV is being developed as a DIY ROV kit meant to be affordable and
@@ -15,7 +14,7 @@ Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
 :PyPI: https://pypi.org/project/edurov/
 
 Preparation
-===========
+***********
 - eduROV requires python 3, if you don't have python installed, you can
   download it here: https://www.python.org/downloads/
 - if python 3 is not your default python interpreter, pip3 should be used for
@@ -24,7 +23,7 @@ Preparation
   https://www.raspberrypi.org/documentation/configuration/camera.md
 
 Installation
-============
+**************
 Run the following command in a terminal window on your raspberry pi
 (sudo rights are needed to enable console scripts)::
 
@@ -34,18 +33,7 @@ If you are planning on using the *duo* method as described below, you will also
 need to perform this installation on your controlling computer.
 
 Usage
-=====
-
-Methods
--------
-
-:Web: The raspberry pi will serve a web page that can be viewed in a web
-  browser on any computer on the same network
-:Duo: Requires that the eduROV packaged is installed on a second computer and
-  the video is viewed using pygame
-
-Web method
-----------
+***********
 
 On the raspberry pi, run the following command::
 
@@ -54,33 +42,18 @@ On the raspberry pi, run the following command::
 This will start the web server and print the ip where the web page can be
 viewed, e.g. ``Visit the webpage at 192.168.0.197:8000``.
 
-Duo method
-----------
-
-The controlling computer needs to be started first::
-
-  edurov-duo control " "
-
-This will start the duo method in control mode at all ip's. This command will
-print the ip address the ROV should connect to, e.g. ``ROV should connect
-to 192.168.0.190``. Then on the raspberry pi, run the following command::
-
-  edurov-duo rov 192.168.0.190
-
-Remember to change the ip to the one printed on your controlling computer.
 
 Performance
-====
+***********
 The eduROV package were created with a strong focus on keeping the latency at
 a minimum. When deploying on a wireless network the actual performance will
 vary depending on factors such as distance, interference and hardware.
 
-.. image:: docs/latency.png
+.. image:: ./docs/latency.png
 
 Help
-====
+***********
 
 For additional parameters and information, the following commands can be used::
 
     edurov-web -h
-    edurov-duo -h

@@ -3,6 +3,7 @@
 .. toctree::
    :maxdepth: 2
    :hidden:
-   
-.. automodule:: edurov
-   :members:
+
+   started.rst
+   examples.rst
+   api.rst

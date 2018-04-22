@@ -20,7 +20,7 @@ class WebMethod(object):
     ----------
     index_file : str
         absolute path to the frontpage of the webpage, must be called
-        ´index.html´
+        ``index.html``
     video_resolution : str, optional
         a string representation of the wanted video resolution in the format
         WIDTHxHEIGHT
@@ -35,10 +35,10 @@ class WebMethod(object):
     runtime_functions : callable or list, optional
         should be a callable function or a list of callable functions, will be
         started as independent processes automatically
-    custom_response : callable
+    custom_response : callable, optional
         if set, this function will be called if default web server is not able
         to handle a GET request, should return a str or None. If returned value
-        starts with ´redirect=´ followed by a path, the browser wil redirect
+        starts with ``redirect=`` followed by a path, the browser wil redirect
         the user to this path
     """
     def __init__(self, index_file, video_resolution='1024x768', fps=30,

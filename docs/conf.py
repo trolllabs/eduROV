@@ -33,6 +33,7 @@ import pkg_resources
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.viewcode',
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
@@ -65,7 +66,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'eduROV'
+project = u'edurov'
 copyright = u'{}, Trolllabs'.format(datetime.datetime.now().year)
 author = u'Trolllabs'
 
