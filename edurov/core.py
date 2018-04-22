@@ -12,19 +12,48 @@ from edurov.web import start_http_server
 
 
 class WebMethod(object):
-    def __init__(self, video_resolution='1024x768', fps=30, server_port=8000,
-                 debug=False, runtime_functions=None, index_file=None,
+    """
+    Starts a video streaming from the rasparry pi and a webserver that can
+    handle user input and other requests.
+
+    Parameters
+    ----------
+    index_file : str
+        absolute path to the frontpage of the webpage, must be called
+        ´index.html´
+    video_resolution : str, optional
+        a string representation of the wanted video resolution in the format
+        WIDTHxHEIGHT
+    fps : int, optional
+        wanted framerate, may not be achieved depending on available resources
+        and network
+    server_port : int, optional
+        the web page will be served at this port
+    debug : bool, optional
+        if set True, additional information will be printed for debug
+        purposes
+    runtime_functions : callable or list, optional
+        should be a callable function or a list of callable functions, will be
+        started as independent processes automatically
+    custom_response : callable
+        if set, this function will be called if default web server is not able
+        to handle a GET request, should return a str or None. If returned value
+        starts with ´redirect=´ followed by a path, the browser wil redirect
+        the user to this path
+    """
+    def __init__(self, index_file, video_resolution='1024x768', fps=30,
+                 server_port=8000, debug=False, runtime_functions=None,
                  custom_response=None):
 
         self.res = video_resolution
         self.fps = fps
         self.server_port = server_port
         self.debug = debug
-        self.run_funcs = self.valid_runtime_functions(runtime_functions)
-        self.cust_resp = self.valid_custom_response(custom_response)
-        self.index_file = self.valid_index_file(index_file)
+        self.run_funcs = self._valid_runtime_functions(runtime_functions)
+        self.cust_resp = self._valid_custom_response(custom_response)
+        self.index_file = self._valid_index_file(index_file)
 
-    def valid_custom_response(self, custom_response):
+    def _valid_custom_response(self, custom_response):
         if custom_response:
             if not callable(custom_response):
                 warning('custom_response parameter has to be a callable '
@@ -32,7 +61,7 @@ class WebMethod(object):
                 return None
         return custom_response
 
-    def valid_runtime_functions(self, runtime_functions):
+    def _valid_runtime_functions(self, runtime_functions):
         if runtime_functions:
             if callable(runtime_functions):
                 runtime_functions = [runtime_functions]
@@ -48,7 +77,7 @@ class WebMethod(object):
                         .format(type(runtime_functions)))
         return runtime_functions
 
-    def valid_index_file(self, file_path):
+    def _valid_index_file(self, file_path):
         if not 'index.html' in file_path:
             warning('The index files must be called "index.html')
         if os.path.isfile(file_path):
@@ -59,6 +88,15 @@ class WebMethod(object):
         return None
 
     def serve(self, timeout=None):
+        """
+        Will start serving the web page defined by the index_file parameter
+
+        Parameters
+        ----------
+        timeout : int, optional
+            if set, the web page will only be served for that many seconds
+            before it automatically shuts down
+        """
         start = time.time()
         name_server = subprocess.Popen('pyro4-ns', shell=False,
                                        preexec_fn=preexec_function)
