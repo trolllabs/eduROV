@@ -1,2 +1,3 @@
 Pyro4
 picamera
+pygame
