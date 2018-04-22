@@ -52,9 +52,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == '/':
-            self.send_response(301)
-            self.send_header('Location', '/index.html')
-            self.end_headers()
+            self.redirect('/index.html')
         elif self.path == '/stream.mjpg':
             self.serve_stream()
         elif self.path.startswith('/sensor.json'):
@@ -83,7 +81,11 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             elif self.custom_response:
                 response_content = self.custom_response(self.path)
                 if response_content:
-                    self.serve_content(response_content.encode('utf-8'))
+                    if response_content.startswith('redirect='):
+                        new_path = response_content[self.path.find('=') + 1:]
+                        self.redirect(new_path)
+                    else:
+                        self.serve_content(response_content.encode('utf-8'))
                 else:
                     warning(message='Bad response. {}. custom '
                                     'response function returned nothing'
@@ -122,6 +124,11 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         with open(path, 'rb') as f:
             content = f.read()
         self.serve_content(content, content_type)
+
+    def redirect(self, path):
+        self.send_response(301)
+        self.send_header('Location', path)
+        self.end_headers()
 
     def send_404(self):
         self.send_error(404)
