@@ -58,5 +58,3 @@ a minimum. When deploying on a wireless network the actual performance will
 vary depending on factors such as distance, interference and hardware.
 
 .. image:: ./docs/latency.png
-
-`Python <http://www.python.org/>`_.
