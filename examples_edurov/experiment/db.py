@@ -7,7 +7,7 @@ import time
 class DB:
     db_name = 'data.db'
 
-    def __init__(self, db=None):
+    def __init__(self, db='data.db'):
         if db:
             self.db = db
             self.conn = sqlite3.connect(self.db)
