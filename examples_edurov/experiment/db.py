@@ -28,17 +28,17 @@ class DB:
                 start real,
                 end real,
                 order integer,
-                start_exp1 real,
-                start_exp2 real,
-                end_exp1 real,
-                end_exp2 real,
-                tot_hits_exp1 integer,
-                tot_hits_exp2 integer
+                startexp1 real,
+                startexp2 real,
+                endexp1 real,
+                endexp2 real,
+                tothitsexp1 integer,
+                tothitsexp2 integer,
                 )""")
             self.c.execute("""CREATE TABLE hits (
                 actor integer,
                 button integer,
-                time integer
+                time integer,
                 )""")
             self.conn.commit()
             print('Database created')
