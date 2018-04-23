@@ -70,7 +70,7 @@ def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
         server_port=server_port,
         debug=debug,
         runtime_functions=control_motors,
-        index_file=os.path.join(os.path.dirname(__file__), 'index.html', )
+        index_file=os.path.join(os.path.dirname(__file__), 'index.html')
     )
     web_method.serve()
 

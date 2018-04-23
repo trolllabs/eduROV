@@ -12,6 +12,7 @@ Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
 
 :GitHub: https://github.com/trolllabs/eduROV
 :PyPI: https://pypi.org/project/edurov/
+:ReadTheDocs: http://edurov.readthedocs.io
 
 Preparation
 ***********
