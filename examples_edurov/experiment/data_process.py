@@ -6,4 +6,4 @@ def response_parser(not_used, path):
             pair = field.split('=')
             form_data.update({pair[0]:pair[1]})
         print(form_data)
-    return 'redirect=/'
+    return 'redirect=/index.html'

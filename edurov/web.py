@@ -126,6 +126,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         self.serve_content(content, content_type)
 
     def redirect(self, path):
+        print('redirect to ' + path)
         self.send_response(301)
         self.send_header('Location', path)
         self.end_headers()
