@@ -80,7 +80,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
                 self.serve_path(path)
             elif self.custom_response:
                 response = self.custom_response(self.path)
-                print(response)
                 if response:
                     if response.startswith('redirect='):
                         new_path = response[response.find('=') + 1:]
