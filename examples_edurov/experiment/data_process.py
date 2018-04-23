@@ -1,8 +1,8 @@
 from db import DB
 
-db = DB()
 
 def response_parser(not_used, path):
+    db = DB()
     if path.startswith('/new_participant'):
         form_raw = path[path.find('?') + 1:].split('&')
         form_data = {}
