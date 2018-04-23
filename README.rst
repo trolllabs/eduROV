@@ -8,14 +8,13 @@ We are committed to be fully open-source, both software and hardware-wise,
 everything we develop will be available to you. Using other open-source and or
 open-acces tools and platforms.
 
-Builds on this repo of previous work: https://github.com/Slattsveen/eduROV_v2
-
 :GitHub: https://github.com/trolllabs/eduROV
 :PyPI: https://pypi.org/project/edurov/
-:ReadTheDocs: http://edurov.readthedocs.io
+:Documentation: http://edurov.readthedocs.io
+:Engage eduROV: https://www.edurov.no/
 
-Preparation
-***********
+Prerequisites
+**************
 - eduROV requires python 3, if you don't have python installed, you can
   download it here: https://www.python.org/downloads/
 - if python 3 is not your default python interpreter, pip3 should be used for
@@ -33,6 +32,9 @@ Run the following command in a terminal window on your raspberry pi
 Usage
 ***********
 
+Engage eduROV submersible
+-------------------------
+
 On the raspberry pi, run the following command::
 
   edurov-web
@@ -40,6 +42,14 @@ On the raspberry pi, run the following command::
 This will start the web server and print the ip where the web page can be
 viewed, e.g. ``Visit the webpage at 192.168.0.197:8000``.
 
+Create your own
+---------------
+
+The eduROV package includes multiple classes and functions to facilitate
+easy robot communication with video feed. It will get you up and running in a
+matter of minutes. Visit
+`the official documentation<http://edurov.readthedocs.io>`_ for examples and
+API.
 
 Performance
 ***********
@@ -48,10 +58,3 @@ a minimum. When deploying on a wireless network the actual performance will
 vary depending on factors such as distance, interference and hardware.
 
 .. image:: ./docs/latency.png
-
-Help
-***********
-
-For additional parameters and information, the following commands can be used::
-
-    edurov-web -h
