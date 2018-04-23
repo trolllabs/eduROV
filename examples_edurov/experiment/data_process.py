@@ -1,5 +1,4 @@
-def response_parser(not_used, path):
-    print('not ' + not_used)
+def response_parser(path):
     print('path ' + path)
     if path.startswith('new_participant'):
         print('yep')
