@@ -79,14 +79,14 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             if os.path.isfile(path):
                 self.serve_path(path)
             elif self.custom_response:
-                response_content = self.custom_response(self.path)
-                if response_content:
-                    if response_content.startswith('redirect='):
-                        new_path = response_content[self.path.find('=') + 1:]
-                        print('new: {}'.format(new_path))
+                response = self.custom_response(self.path)
+                print(response)
+                if response:
+                    if response.startswith('redirect='):
+                        new_path = response[response.find('=') + 1:]
                         self.redirect(new_path)
                     else:
-                        self.serve_content(response_content.encode('utf-8'))
+                        self.serve_content(response.encode('utf-8'))
                 else:
                     warning(message='Bad response. {}. custom '
                                     'response function returned nothing'
@@ -127,8 +127,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         self.serve_content(content, content_type)
 
     def redirect(self, path):
-        print(path)
-        print('redirect to ' + path)
         self.send_response(301)
         self.send_header('Location', path)
         self.end_headers()
