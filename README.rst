@@ -29,9 +29,6 @@ Run the following command in a terminal window on your raspberry pi
 
   sudo pip3 install edurov
 
-If you are planning on using the *duo* method as described below, you will also
-need to perform this installation on your controlling computer.
-
 Usage
 ***********
 

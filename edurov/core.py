@@ -3,13 +3,12 @@ import subprocess
 import time
 from multiprocessing import Process
 
-import Pyro4
-
 from edurov.sync import start_sync_classes
-from edurov.utils import warning, preexec_function
+from edurov.utils import warning, preexec_function, detect_pi
 from edurov.web import start_http_server
 
-
+if detect_pi():
+    import Pyro4
 
 class WebMethod(object):
     """

@@ -13,10 +13,8 @@ import warnings
 
 
 def detect_pi():
-    if 'Linux' in platform.platform():
-        return True
-    else:
-        return False
+    """Returns True if debian is the running operating system"""
+    return platform.linux_distribution()[0].lower() == 'debian'
 
 
 if detect_pi():

@@ -7,10 +7,6 @@ import time
 
 import Pyro4
 import pygame
-from edurov.utils import detect_pi
-
-if detect_pi():
-    import picamera
 
 
 class Key(object):
