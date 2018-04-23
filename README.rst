@@ -48,7 +48,7 @@ Create your own
 The eduROV package includes multiple classes and functions to facilitate
 easy robot communication with video feed. It will get you up and running in a
 matter of minutes. Visit
-`the official documentation<http://edurov.readthedocs.io>`_ for examples and
+`the official documentation <http://edurov.readthedocs.io/>`_ for examples and
 API.
 
 Performance
@@ -58,3 +58,5 @@ a minimum. When deploying on a wireless network the actual performance will
 vary depending on factors such as distance, interference and hardware.
 
 .. image:: ./docs/latency.png
+
+`Python <http://www.python.org/>`_.
