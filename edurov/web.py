@@ -83,6 +83,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
                 if response_content:
                     if response_content.startswith('redirect='):
                         new_path = response_content[self.path.find('=') + 1:]
+                        print('new: {}'.format(new_path))
                         self.redirect(new_path)
                     else:
                         self.serve_content(response_content.encode('utf-8'))
@@ -126,6 +127,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         self.serve_content(content, content_type)
 
     def redirect(self, path):
+        print(path)
         print('redirect to ' + path)
         self.send_response(301)
         self.send_header('Location', path)
