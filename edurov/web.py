@@ -79,7 +79,7 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             if os.path.isfile(path):
                 self.serve_path(path)
             elif self.custom_response:
-                response_content = self.call_custom_response(self.path)
+                response_content = self.custom_response(self.path)
                 if response_content:
                     if response_content.startswith('redirect='):
                         new_path = response_content[self.path.find('=') + 1:]
@@ -95,9 +95,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
                 warning(message='Bad response. {}. Could not find {}'
                         .format(self.requestline, path), filter='default')
                 self.send_404()
-
-    def call_custom_response(self, not_used, path):
-        return self.custom_response(path)
 
     def do_POST(self):
         if self.path.startswith('/keys.json'):
