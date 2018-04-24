@@ -20,6 +20,7 @@ def response_parser(not_used, path):
         return 'redirect=/index.html'
     elif path.startswith('/last_actor'):
         last_id = db.last_id()
+        print(last_id)
         return db.actor(last_id)
     elif path.startswith('/n_actors'):
         return db.n_actors()

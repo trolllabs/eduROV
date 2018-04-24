@@ -87,7 +87,9 @@ class DB:
     def actor(self, actor_id):
         self.c.execute(
             """SELECT * FROM actors WHERE rowid='{}'""".format(actor_id))
-        return str(self.c.fetchone())
+        text = str(self.c.fetchone())
+        print(text)
+        return text
 
     def get_hits(self, actor_id):
         self.c.execute(
