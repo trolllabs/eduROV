@@ -55,18 +55,19 @@ class DB:
         else:
             raise FileExistsError('{} already exist'.format(cls.db_path))
 
-    @classmethod
-    def load(cls, db):
-        return cls(db=db)
+    def last_id(self):
+        self.c.execute(
+            """SELECT rowid FROM 'actors' ORDER BY rowid DESC""")
+        return str(self.c.fetchone())
 
     def new_actor(self, age, gender, game_consumption):
         with self.conn:
             self.c.execute(
                 """INSERT INTO actors (age, gender, game, start) 
                 VALUES (:age, :gender, :game, :start)""",
-                {'age': age,
-                 'gender': gender,
-                 'game': game_consumption,
+                {'age': int(age),
+                 'gender': int(gender),
+                 'game': int(game_consumption),
                  'start': time.time()})
         print('db: new actor created')
 
@@ -81,17 +82,12 @@ class DB:
 
     def n_actors(self):
         self.c.execute("""SELECT rowid FROM actors""")
-        print('{} participants in the experiment so far'
-              .format(self.c.fetchall()))
+        return str(len(self.c.fetchall()))
 
-    def clear_table(self, table):
-        with self.conn:
-            self.c.execute("DELETE FROM {}".format(table))
-
-    def print_actor(self, actor_id):
+    def actor(self, actor_id):
         self.c.execute(
             """SELECT * FROM actors WHERE rowid='{}'""".format(actor_id))
-        print(self.c.fetchone())
+        return str(self.c.fetchone())
 
     def get_hits(self, actor_id):
         self.c.execute(
@@ -102,6 +98,10 @@ class DB:
         with self.conn:
             self.c.execute("ALTER TABLE {} ADD COLUMN '{}' '{}' DEFAULT {}"
                            .format(table, column, type_, default))
+
+    def clear_table(self, table):
+        with self.conn:
+            self.c.execute("DELETE FROM {}".format(table))
 
 
 if __name__ == '__main__':
