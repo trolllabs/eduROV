@@ -83,15 +83,16 @@ class DB:
                  'time': time.time()})
         print('db: new hit registered')
 
-    def all_actors_readable(self):
+    def all_actors_html(self):
         self.c.execute("""SELECT rowid, age, game, start FROM actors""")
-        text = '{:5} {:5} {:18} {:20}\n' \
+        text = '<tr><td>{:5}</td> <td>{:5}</td> <td>{:18}</td> <td>{:20}</td><tr>' \
             .format('ID', 'Age', 'Game consumption', 'Start')
         for row in self.c.fetchall():
             id, age, game, timestamp = row
             start = dt.datetime.fromtimestamp(
                 int(timestamp)).strftime('%Y-%m-%d %H:%M')
-            text += '{:5} {:5} {:18} {:20}\n'.format(id, age, game, start)
+            text += '<tr><td>{:5}</td> <td>{:5}</td> <td>{:18}</td> <td>{:20}</td><tr>'\
+                .format(id, age, game, start)
         return text
 
     def n_actors(self):
