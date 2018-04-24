@@ -88,8 +88,9 @@ class DB:
         cols = ['rowid', 'age', 'game', 'start', 'end']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
-        header = '<tr><tr>'.format('<td>{}</td>'*len(cols))
+        header = '<tr>{}</tr>'.format('<td>{}</td>'*len(cols))
         header.format(*cols_head,)
+        table += header
         for row in self.c.fetchall():
             id, age, game, start_stamp, end_stamp = row
             start = dt.datetime.fromtimestamp(
@@ -99,7 +100,7 @@ class DB:
                     int(end_stamp)).strftime('%Y-%m-%d %H:%M')
             else:
                 end = 'None'
-            table += ('<td>{}</td>'*len(cols)).format(id, age, game, start, end)
+            table += '<tr>{}</tr>'.format(('<td>{}</td>'*len(cols)).format(id, age, game, start, end))
         table += '</tbody></table>'
         return table
 
