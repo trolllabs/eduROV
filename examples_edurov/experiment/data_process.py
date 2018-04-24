@@ -29,7 +29,12 @@ def response_parser(not_used, path):
         form_data = form_to_dict(path)
         actor_id = db.last_id()
         db.new_hit(actor_id=actor_id,
+                   experiment=form_data['exp'],
                    button=form_data['button'])
         return 'Hit registered'
+    elif path.startswith('/participant_finished'):
+        actor_id = db.last_id()
+        db.actor_finished(actor_id)
+
     else:
         return None

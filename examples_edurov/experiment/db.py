@@ -50,6 +50,7 @@ class DB:
                 )""")
             c.execute("""CREATE TABLE hits (
                 actor integer,
+                experiment integer,
                 button integer,
                 time integer
                 )""")
@@ -76,7 +77,6 @@ class DB:
         else:
             return 0
 
-
     def new_actor(self, nickname, age, gender, game_consumption):
         timestamp = time.time()
         with self.conn:
@@ -90,21 +90,48 @@ class DB:
                  'start': timestamp,
                  'starttxt': dt.datetime.fromtimestamp(timestamp).strftime(
                      '%Y-%m-%d %H:%M'),
-                 'crowd':self.next_crowd()})
+                 'crowd': self.next_crowd()})
         print('db: new actor created')
 
-    def new_hit(self, actor_id, button):
+    def actor_finished(self, actor_id):
+        timestamp = time.time()
         with self.conn:
             self.c.execute(
-                """INSERT INTO hits VALUES (:actor_id, :button, :time)""",
+                """SELECT rowid FROM hits WHERE actor='{}' AND experiment='1'"""
+                .format(actor_id))
+            hits_exp_1 = len(self.c.fetchall())
+            self.c.execute(
+                """SELECT rowid FROM hits WHERE actor='{}' AND experiment='2'"""
+                .format(actor_id))
+            hits_exp_2 = len(self.c.fetchall())
+            tot_hits = hits_exp_1 + hits_exp_2
+        with self.conn:
+            self.c.execute(
+                """INSERT INTO actors (end, endtxt, tothitsexp1, tothitsexp2, tothit) 
+                VALUES (:end, :endtxt, :tothitsexp1, :tothitsexp2, :tothit)""",
+                {'end': timestamp,
+                 'endtxt': dt.datetime.fromtimestamp(timestamp).strftime(
+                     '%Y-%m-%d %H:%M'),
+                 'tothitsexp1': hits_exp_1,
+                 'tothitsexp2': hits_exp_2,
+                 'tothits': tot_hits,
+                 'crowd': self.next_crowd()})
+
+    def new_hit(self, actor_id, button, experiment):
+        with self.conn:
+            self.c.execute(
+                """INSERT INTO hits VALUES (:actor_id, :experiment, :button, :time)""",
                 {'actor_id': actor_id,
+                 'experiment': experiment,
                  'button': button,
                  'time': time.time()})
         print('db: new hit registered')
 
     def all_actors_html(self):
-        cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Game consumption', 'Start', 'End']
-        cols = ['rowid', 'nickname', 'crowd', 'age', 'game', 'starttxt', 'endtxt']
+        cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Game consumption',
+                     'Start', 'End']
+        cols = ['rowid', 'nickname', 'crowd', 'age', 'game', 'starttxt',
+                'endtxt']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))
