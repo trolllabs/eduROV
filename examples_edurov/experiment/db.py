@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import argparse
-import os.path
 import sqlite3
 import time
 from os import path
@@ -11,12 +10,12 @@ class DB:
     db_path = path.join(path.dirname(__file__), db_name)
 
     def __init__(self):
+        if not path.isfile(self.db_path):
+            self.createdb()
+
         self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
-
-        if not path.isfile(self.db_path):
-            pass
 
     @classmethod
     def check(cls):
@@ -36,7 +35,14 @@ class DB:
                 gender integer,
                 game integer,
                 start real,
-                end real
+                end real,
+                group integer,
+                startexp1 real,
+                startexp2 real,
+                endexp1 real,
+                endexp2 real,
+                tothitsexp1 integer,
+                tothitsexp2 integer
                 )""")
             c.execute("""CREATE TABLE hits (
                 actor integer,
@@ -94,8 +100,6 @@ class DB:
         with self.conn:
             self.c.execute("ALTER TABLE {} ADD COLUMN '{}' '{}' DEFAULT {}"
                            .format(table, column, type_, default))
-
-
 
 
 if __name__ == '__main__':
