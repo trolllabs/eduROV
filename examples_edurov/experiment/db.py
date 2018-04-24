@@ -2,6 +2,7 @@
 import os.path
 import sqlite3
 import time
+import argparse
 from os import path
 
 
@@ -10,19 +11,14 @@ class DB:
     db_path = path.join(path.dirname(__file__), db_name)
 
     def __init__(self):
-        print('in init')
         self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
 
         if not path.isfile(self.db_path):
             self.new_database()
-        else:
-            print('found file at {}'.format(self.db_path))
-            print(path.abspath(self.db_path))
 
     def new_database(self):
-        print('creating new db at {}'.format(self.db_path))
         if not os.path.isfile(self.db_path):
             self.c.execute("""CREATE TABLE actors (
                 age integer,
@@ -44,9 +40,10 @@ class DB:
                 time integer,
                 )""")
             self.conn.commit()
-            print('Database created')
+            self.conn.close()
+            print('Database created at {}'.format(self.db_path))
         else:
-            raise FileExistsError('{} already exist'.format(self.db_name))
+            raise FileExistsError('{} already exist'.format(self.db_path))
 
     @classmethod
     def load(cls, db):
@@ -94,3 +91,20 @@ class DB:
         with self.conn:
             self.c.execute("ALTER TABLE {} ADD COLUMN '{}' '{}' DEFAULT {}"
                            .format(table, column, type_, default))
+
+def new_db():
+    pass
+
+if __name__ == '__main__':
+    choices = {'newdb': new_db}
+    parser = argparse.ArgumentParser(
+        description='Start a streaming video server on raspberry pi')
+    parser.add_argument(
+        'command',
+        choices=choices,
+        help='''the command you want to perform''')
+
+    args = parser.parse_args()
+
+    command = choices[args.command]
+    command()
