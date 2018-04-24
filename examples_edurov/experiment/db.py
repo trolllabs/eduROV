@@ -94,8 +94,11 @@ class DB:
             id, age, game, start_stamp, end_stamp = row
             start = dt.datetime.fromtimestamp(
                 int(start_stamp)).strftime('%Y-%m-%d %H:%M')
-            end = dt.datetime.fromtimestamp(
-                int(end_stamp)).strftime('%Y-%m-%d %H:%M')
+            if end_stamp:
+                end = dt.datetime.fromtimestamp(
+                    int(end_stamp)).strftime('%Y-%m-%d %H:%M')
+            else:
+                end = 'None'
             table += ('<td>{}</td>'*len(cols)).format(id, age, game, start, end)
         table += '</tbody></table>'
         return table
