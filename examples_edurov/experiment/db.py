@@ -2,23 +2,25 @@
 import os.path
 import sqlite3
 import time
+from os import path
 
 
 class DB:
     db_name = 'data.db'
+    db_path = path.join(path.dirname(__file__), db_name)
 
-    def __init__(self, db='data.db'):
-        if db:
-            self.db = db
-            self.conn = sqlite3.connect(self.db)
+    def __init__(self):
+
+        if path.isfile(self.db_path):
+            self.conn = sqlite3.connect(self.db_path)
             self.conn.row_factory = sqlite3.Row
             self.c = self.conn.cursor()
         else:
             self.new_database()
 
     def new_database(self):
-        if not os.path.isfile(self.db_name):
-            self.conn = sqlite3.connect(self.db_name)
+        if not os.path.isfile(self.db_path):
+            self.conn = sqlite3.connect(self.db_path)
             self.conn.row_factory = sqlite3.Row
             self.c = self.conn.cursor()
             self.c.execute("""CREATE TABLE actors (
