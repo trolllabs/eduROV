@@ -89,7 +89,7 @@ class DB:
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>'*len(cols))
-        header.format(*cols_head,)
+        header.format(*cols_head)
         table += header
         for row in self.c.fetchall():
             id, age, game, start_stamp, end_stamp = row
