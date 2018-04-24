@@ -90,6 +90,7 @@ class DB:
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>'*len(cols))
         header.format(*cols_head)
+        print(header)
         table += header
         for row in self.c.fetchall():
             id, age, game, start_stamp, end_stamp = row
