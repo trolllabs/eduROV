@@ -30,6 +30,7 @@ class DB:
             conn = sqlite3.connect(cls.db_path)
             c = conn.cursor()
             c.execute("""CREATE TABLE actors (
+                nickname text, 
                 age integer,
                 gender integer,
                 game integer,
@@ -44,6 +45,7 @@ class DB:
                 endexp2 real,
                 tothitsexp1 integer,
                 tothitsexp2 integer,
+                tothits integer,
                 valid integer
                 )""")
             c.execute("""CREATE TABLE hits (
@@ -75,13 +77,14 @@ class DB:
             return 0
 
 
-    def new_actor(self, age, gender, game_consumption):
+    def new_actor(self, nickname, age, gender, game_consumption):
         timestamp = time.time()
         with self.conn:
             self.c.execute(
-                """INSERT INTO actors (age, gender, game, start, starttxt, crowd) 
-                VALUES (:age, :gender, :game, :start, :starttxt, :crowd)""",
-                {'age': int(age),
+                """INSERT INTO actors (nickname, age, gender, game, start, starttxt, crowd) 
+                VALUES (:nickname, :age, :gender, :game, :start, :starttxt, :crowd)""",
+                {'nickname': nickname,
+                 'age': int(age),
                  'gender': int(gender),
                  'game': int(game_consumption),
                  'start': timestamp,
@@ -100,8 +103,8 @@ class DB:
         print('db: new hit registered')
 
     def all_actors_html(self):
-        cols_head = ['ID', 'Group', 'Age', 'Game consumption', 'Start', 'End']
-        cols = ['rowid', 'crowd', 'age', 'game', 'starttxt', 'endtxt']
+        cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Game consumption', 'Start', 'End']
+        cols = ['rowid', 'nickname', 'crowd', 'age', 'game', 'starttxt', 'endtxt']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))
@@ -127,6 +130,21 @@ class DB:
     def clear_table(self, table):
         with self.conn:
             self.c.execute("DELETE FROM {}".format(table))
+
+    def highscore_html(self):
+        cols_head = ['Nickname', 'Group', 'Total hits']
+        cols = ['nickname', 'crowd', 'tothits']
+        self.c.execute("""SELECT {} FROM actors ORDER BY tothits DESC"""
+                       .format(', '.join(cols)))
+        table = '<table><tbody>'
+        header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))
+        header = header.format(*cols_head)
+        table += header
+        for row in self.c.fetchall():
+            table += '<tr>{}</tr>'.format(
+                ('<td>{}</td>' * len(cols)).format(*row))
+        table += '</tbody></table>'
+        return table
 
 
 if __name__ == '__main__':

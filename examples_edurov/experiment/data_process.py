@@ -20,5 +20,7 @@ def response_parser(not_used, path):
         return 'redirect=/index.html'
     elif path.startswith('/actors'):
         return db.all_actors_html()
+    elif path.startswith('/highscore'):
+        return db.highscore_html()
     else:
         return None
