@@ -51,6 +51,7 @@ class DB:
                 )""")
             conn.commit()
             conn.close()
+            print('Created DB at {}'.format(cls.db_path))
         else:
             raise FileExistsError('{} already exist'.format(cls.db_path))
 
