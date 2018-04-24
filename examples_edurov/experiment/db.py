@@ -96,7 +96,7 @@ class DB:
         table += header
         for row in self.c.fetchall():
             table += '<tr>{}</tr>'.format(
-                ('<td>{}</td>' * len(cols)).format(row))
+                ('<td>{}</td>' * len(cols)).format(*row))
         table += '</tbody></table>'
         return table
 
