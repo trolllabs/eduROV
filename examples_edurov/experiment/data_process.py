@@ -18,11 +18,6 @@ def response_parser(not_used, path):
                      gender=form_data['gender'],
                      game_consumption=form_data['game'])
         return 'redirect=/index.html'
-    elif path.startswith('/last_actor'):
-        last_id = db.last_id()
-        return db.actor(last_id)
-    elif path.startswith('/n_actors'):
-        return db.n_actors()
     elif path.startswith('/actors'):
         return db.all_actors_html()
     else:
