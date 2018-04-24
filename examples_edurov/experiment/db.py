@@ -43,7 +43,8 @@ class DB:
                 endexp1 real,
                 endexp2 real,
                 tothitsexp1 integer,
-                tothitsexp2 integer
+                tothitsexp2 integer,
+                valid integer
                 )""")
             c.execute("""CREATE TABLE hits (
                 actor integer,
@@ -57,24 +58,36 @@ class DB:
             raise FileExistsError('{} already exist'.format(cls.db_path))
 
     def last_id(self):
-        self.c.execute(
-            """SELECT rowid FROM actors ORDER BY rowid DESC""")
+        self.c.execute("""SELECT rowid FROM actors ORDER BY rowid DESC""")
         id_ = self.c.fetchone()[0]
         print('found id {}'.format(id_))
         return id_
+
+    def next_crowd(self):
+        with self.conn:
+            self.c.execute("""SELECT rowid FROM actors WHERE crowd='0'""")
+            crowd_0 = len(self.c.fetchall())
+            self.c.execute("""SELECT rowid FROM actors WHERE crowd='1'""")
+            crowd_1 = len(self.c.fetchall())
+        if crowd_0 > crowd_1:
+            return 1
+        else:
+            return 0
+
 
     def new_actor(self, age, gender, game_consumption):
         timestamp = time.time()
         with self.conn:
             self.c.execute(
-                """INSERT INTO actors (age, gender, game, start, starttxt) 
-                VALUES (:age, :gender, :game, :start, :starttxt)""",
+                """INSERT INTO actors (age, gender, game, start, starttxt, crowd) 
+                VALUES (:age, :gender, :game, :start, :starttxt, :crowd)""",
                 {'age': int(age),
                  'gender': int(gender),
                  'game': int(game_consumption),
                  'start': timestamp,
                  'starttxt': dt.datetime.fromtimestamp(timestamp).strftime(
-                     '%Y-%m-%d %H:%M')})
+                     '%Y-%m-%d %H:%M'),
+                 'crowd':self.next_crowd()})
         print('db: new actor created')
 
     def new_hit(self, actor_id, button):
@@ -87,8 +100,8 @@ class DB:
         print('db: new hit registered')
 
     def all_actors_html(self):
-        cols_head = ['ID', 'Age', 'Game consumption', 'Start', 'End']
-        cols = ['rowid', 'age', 'game', 'starttxt', 'endtxt']
+        cols_head = ['ID', 'Group', 'Age', 'Game consumption', 'Start', 'End']
+        cols = ['rowid', 'crowd', 'age', 'game', 'starttxt', 'endtxt']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))
