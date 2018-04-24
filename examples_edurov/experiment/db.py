@@ -18,7 +18,8 @@ class DB:
         if not path.isfile(self.db_path):
             self.new_database()
         else:
-            print('found file')
+            print('found file at {}'.format(self.db_path))
+            print(path.abspath(self.db_path))
 
     def new_database(self):
         print('creating new db at {}'.format(self.db_path))
