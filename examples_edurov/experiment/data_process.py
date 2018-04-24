@@ -14,9 +14,12 @@ def response_parser(not_used, path):
     db = DB()
     if path.startswith('/new_participant'):
         form_data = form_to_dict(path)
-        db.new_actor(age=form_data['age'],
-                     gender=form_data['gender'],
-                     game_consumption=form_data['game'])
+        db.new_actor(
+            nickname=form_data['nickname'],
+            age=form_data['age'],
+            gender=form_data['gender'],
+            game_consumption=form_data['game']
+        )
         return 'redirect=/index.html'
     elif path.startswith('/actors'):
         return db.all_actors_html()
