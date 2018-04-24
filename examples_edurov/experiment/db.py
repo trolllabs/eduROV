@@ -14,7 +14,7 @@ class DB:
             self.createdb()
 
         self.conn = sqlite3.connect(self.db_path)
-        self.conn.row_factory = sqlite3.Row
+        # self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
 
     @classmethod
@@ -28,7 +28,7 @@ class DB:
     def createdb(cls):
         if not path.isfile(cls.db_path):
             conn = sqlite3.connect(cls.db_path)
-            conn.row_factory = sqlite3.Row
+            # conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute("""CREATE TABLE actors (
                 age integer,
