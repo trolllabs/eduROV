@@ -57,8 +57,10 @@ class DB:
 
     def last_id(self):
         self.c.execute(
-            """SELECT rowid FROM 'actors' ORDER BY rowid DESC""")
-        return str(self.c.fetchone())
+            """SELECT rowid FROM actors ORDER BY rowid DESC""")
+        id_ = self.c.fetchone()[0]
+        print('found id {}'.format(id_))
+        return id_
 
     def new_actor(self, age, gender, game_consumption):
         with self.conn:
