@@ -35,14 +35,14 @@ class DB:
                 gender integer,
                 game integer,
                 start real,
-                end real,
-                crowd integer,
-                startexp1 real,
-                startexp2 real,
-                endexp1 real,
-                endexp2 real,
-                tothitsexp1 integer,
-                tothitsexp2 integer
+                end real DEFAULT 0,
+                crowd integer DEFAULT 0,
+                startexp1 real DEFAULT 0,
+                startexp2 real DEFAULT 0,
+                endexp1 real DEFAULT 0,
+                endexp2 real DEFAULT 0,
+                tothitsexp1 integer DEFAULT 0,
+                tothitsexp2 integer DEFAULT 0
                 )""")
             c.execute("""CREATE TABLE hits (
                 actor integer,
