@@ -37,13 +37,6 @@ class DB:
                 game integer,
                 start real,
                 end real,
-                group integer,
-                startexp1 real,
-                startexp2 real,
-                endexp1 real,
-                endexp2 real,
-                tothitsexp1 integer,
-                tothitsexp2 integer,
                 )""")
             c.execute("""CREATE TABLE hits (
                 actor integer,
