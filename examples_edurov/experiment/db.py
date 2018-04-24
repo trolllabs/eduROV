@@ -16,7 +16,7 @@ class DB:
         self.c = self.conn.cursor()
 
         if not path.isfile(self.db_path):
-            self.new_database()
+            pass
 
     @classmethod
     def check(cls):
@@ -37,7 +37,7 @@ class DB:
                 game integer,
                 start real,
                 end real,
-                order integer,
+                group integer,
                 startexp1 real,
                 startexp2 real,
                 endexp1 real,
@@ -54,33 +54,6 @@ class DB:
             conn.close()
         else:
             raise FileExistsError('{} already exist'.format(cls.db_path))
-
-    def new_database(self):
-        if not os.path.isfile(self.db_path):
-            self.c.execute("""CREATE TABLE actors (
-                age integer,
-                gender integer,
-                game integer,
-                start real,
-                end real,
-                group integer,
-                startexp1 real,
-                startexp2 real,
-                endexp1 real,
-                endexp2 real,
-                tothitsexp1 integer,
-                tothitsexp2 integer
-                )""")
-            self.c.execute("""CREATE TABLE hits (
-                actor integer,
-                button integer,
-                time integer
-                )""")
-            self.conn.commit()
-            self.conn.close()
-            print('Database created at {}'.format(self.db_path))
-        else:
-            raise FileExistsError('{} already exist'.format(self.db_path))
 
     @classmethod
     def load(cls, db):
