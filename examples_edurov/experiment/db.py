@@ -63,7 +63,13 @@ class DB:
                 game integer,
                 start real,
                 end real,
-                order integer
+                group integer,
+                startexp1 real,
+                startexp2 real,
+                endexp1 real,
+                endexp2 real,
+                tothitsexp1 integer,
+                tothitsexp2 integer
                 )""")
             self.c.execute("""CREATE TABLE hits (
                 actor integer,
