@@ -10,14 +10,18 @@ class DB:
     db_path = path.join(path.dirname(__file__), db_name)
 
     def __init__(self):
+        print('in init')
         self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
 
         if not path.isfile(self.db_path):
             self.new_database()
+        else:
+            print('found file')
 
     def new_database(self):
+        print('creating new db at {}'.format(self.db_path))
         if not os.path.isfile(self.db_path):
             self.c.execute("""CREATE TABLE actors (
                 age integer,
