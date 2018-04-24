@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+import argparse
 import os.path
 import sqlite3
 import time
-import argparse
 from os import path
 
 
@@ -17,6 +17,43 @@ class DB:
 
         if not path.isfile(self.db_path):
             self.new_database()
+
+    @classmethod
+    def check(cls):
+        if path.isfile(cls.db_path):
+            print('found file')
+        else:
+            print('did not find file')
+
+    @classmethod
+    def createdb(cls):
+        if not path.isfile(cls.db_path):
+            conn = sqlite3.connect(cls.db_path)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute("""CREATE TABLE actors (
+                age integer,
+                gender integer,
+                game integer,
+                start real,
+                end real,
+                order integer,
+                startexp1 real,
+                startexp2 real,
+                endexp1 real,
+                endexp2 real,
+                tothitsexp1 integer,
+                tothitsexp2 integer,
+                )""")
+            c.execute("""CREATE TABLE hits (
+                actor integer,
+                button integer,
+                time integer,
+                )""")
+            conn.commit()
+            conn.close()
+        else:
+            raise FileExistsError('{} already exist'.format(cls.db_path))
 
     def new_database(self):
         if not os.path.isfile(self.db_path):
@@ -92,11 +129,11 @@ class DB:
             self.c.execute("ALTER TABLE {} ADD COLUMN '{}' '{}' DEFAULT {}"
                            .format(table, column, type_, default))
 
-def new_db():
-    pass
+
+
 
 if __name__ == '__main__':
-    choices = {'newdb': new_db}
+    choices = {'createdb': DB.createdb, 'check': DB.check}
     parser = argparse.ArgumentParser(
         description='Start a streaming video server on raspberry pi')
     parser.add_argument(
