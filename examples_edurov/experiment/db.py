@@ -3,6 +3,7 @@ import argparse
 import sqlite3
 import time
 from os import path
+import datetime as dt
 
 
 class DB:
@@ -81,6 +82,17 @@ class DB:
                  'button': button,
                  'time': time.time()})
         print('db: new hit registered')
+
+    def all_actors_readable(self):
+        self.c.execute("""SELECT rowid, age, game, start FROM actors""")
+        text = '{:5} {:5} {:18} {:20}\n' \
+            .format('ID', 'Age', 'Game consumption', 'Start')
+        for row in self.c.fetchall():
+            id, age, game, timestamp = row
+            start = dt.datetime.fromtimestamp(
+                int(timestamp)).strftime('%Y-%m-%d %H:%M')
+            text += '{:5} {:5} {:18} {:20}\n'.format(id, age, game, start)
+        return text
 
     def n_actors(self):
         self.c.execute("""SELECT rowid FROM actors""")

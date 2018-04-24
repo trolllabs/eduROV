@@ -23,5 +23,7 @@ def response_parser(not_used, path):
         return db.actor(last_id)
     elif path.startswith('/n_actors'):
         return db.n_actors()
+    elif path.startswith('/actors'):
+        return db.all_actors_readable()
     else:
         return None
