@@ -25,5 +25,11 @@ def response_parser(not_used, path):
         return db.all_actors_html()
     elif path.startswith('/highscore'):
         return db.highscore_html()
+    elif path.startswith('/new_hit'):
+        form_data = form_to_dict(path)
+        actor_id = db.last_id()
+        db.new_hit(actor_id=actor_id,
+                   button=form_data['button'])
+        return 'Hit registered'
     else:
         return None
