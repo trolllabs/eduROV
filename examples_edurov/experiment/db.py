@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import argparse
+import datetime as dt
 import sqlite3
 import time
 from os import path
-import datetime as dt
 
 
 class DB:
@@ -15,7 +15,6 @@ class DB:
             self.createdb()
 
         self.conn = sqlite3.connect(self.db_path)
-        # self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
 
     @classmethod
@@ -29,14 +28,15 @@ class DB:
     def createdb(cls):
         if not path.isfile(cls.db_path):
             conn = sqlite3.connect(cls.db_path)
-            # conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute("""CREATE TABLE actors (
                 age integer,
                 gender integer,
                 game integer,
                 start real,
+                starttxt text,
                 end real,
+                endtxt text,
                 crowd integer,
                 startexp1 real,
                 startexp2 real,
@@ -64,43 +64,39 @@ class DB:
         return id_
 
     def new_actor(self, age, gender, game_consumption):
+        timestamp = time.time()
         with self.conn:
             self.c.execute(
-                """INSERT INTO actors (age, gender, game, start) 
-                VALUES (:age, :gender, :game, :start)""",
+                """INSERT INTO actors (age, gender, game, start, starttxt) 
+                VALUES (:age, :gender, :game, :start, :starttxt)""",
                 {'age': int(age),
                  'gender': int(gender),
                  'game': int(game_consumption),
-                 'start': time.time()})
+                 'start': timestamp,
+                 'starttxt': dt.datetime.fromtimestamp(timestamp).strftime(
+                     '%Y-%m-%d %H:%M')})
         print('db: new actor created')
 
-    def new_hit(self, actor, button):
+    def new_hit(self, actor_id, button):
         with self.conn:
             self.c.execute(
-                """INSERT INTO hits VALUES (:actor, :button, :time)""",
-                {'actor': actor,
+                """INSERT INTO hits VALUES (:actor_id, :button, :time)""",
+                {'actor_id': actor_id,
                  'button': button,
                  'time': time.time()})
         print('db: new hit registered')
 
     def all_actors_html(self):
         cols_head = ['ID', 'Age', 'Game consumption', 'Start', 'End']
-        cols = ['rowid', 'age', 'game', 'start', 'end']
+        cols = ['rowid', 'age', 'game', 'starttxt', 'endtxt']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
-        header = '<tr>{}</tr>'.format('<td>{}</td>'*len(cols))
+        header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))
         header = header.format(*cols_head)
         table += header
         for row in self.c.fetchall():
-            id, age, game, start_stamp, end_stamp = row
-            start = dt.datetime.fromtimestamp(
-                int(start_stamp)).strftime('%Y-%m-%d %H:%M')
-            if end_stamp:
-                end = dt.datetime.fromtimestamp(
-                    int(end_stamp)).strftime('%Y-%m-%d %H:%M')
-            else:
-                end = 'None'
-            table += '<tr>{}</tr>'.format(('<td>{}</td>'*len(cols)).format(id, age, game, start, end))
+            table += '<tr>{}</tr>'.format(
+                ('<td>{}</td>' * len(cols)).format(row))
         table += '</tbody></table>'
         return table
 
@@ -114,16 +110,6 @@ class DB:
         text = str(self.c.fetchone())
         print(text)
         return text
-
-    def get_hits(self, actor_id):
-        self.c.execute(
-            """SELECT * FROM hits WHERE actor='{}'""".format(actor_id))
-        return self.c.fetchall()
-
-    def add_column(self, table, column, type_, default):
-        with self.conn:
-            self.c.execute("ALTER TABLE {} ADD COLUMN '{}' '{}' DEFAULT {}"
-                           .format(table, column, type_, default))
 
     def clear_table(self, table):
         with self.conn:
