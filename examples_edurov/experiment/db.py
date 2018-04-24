@@ -35,14 +35,14 @@ class DB:
                 gender integer,
                 game integer,
                 start real,
-                end real DEFAULT 0,
-                crowd integer DEFAULT 0,
-                startexp1 real DEFAULT 0,
-                startexp2 real DEFAULT 0,
-                endexp1 real DEFAULT 0,
-                endexp2 real DEFAULT 0,
-                tothitsexp1 integer DEFAULT 0,
-                tothitsexp2 integer DEFAULT 0
+                end real,
+                crowd integer,
+                startexp1 real,
+                startexp2 real,
+                endexp1 real,
+                endexp2 real,
+                tothitsexp1 integer,
+                tothitsexp2 integer
                 )""")
             c.execute("""CREATE TABLE hits (
                 actor integer,
@@ -62,7 +62,8 @@ class DB:
     def new_actor(self, age, gender, game_consumption):
         with self.conn:
             self.c.execute(
-                """INSERT INTO actors VALUES (:age, :gender, :game, :start)""",
+                """INSERT INTO actors (age, gender, game, start) 
+                VALUES (:age, :gender, :game, :start)""",
                 {'age': age,
                  'gender': gender,
                  'game': game_consumption,
