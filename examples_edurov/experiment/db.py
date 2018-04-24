@@ -36,6 +36,7 @@ class DB:
                 game integer,
                 start real,
                 end real,
+                crowd integer,
                 startexp1 real,
                 startexp2 real,
                 endexp1 real,
