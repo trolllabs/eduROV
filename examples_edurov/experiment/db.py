@@ -36,12 +36,12 @@ class DB:
                 gender integer,
                 game integer,
                 start real,
-                end real,
+                end real
                 )""")
             c.execute("""CREATE TABLE hits (
                 actor integer,
                 button integer,
-                time integer,
+                time integer
                 )""")
             conn.commit()
             conn.close()
