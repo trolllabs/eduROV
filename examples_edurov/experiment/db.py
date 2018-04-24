@@ -85,15 +85,17 @@ class DB:
 
     def all_actors_html(self):
         self.c.execute("""SELECT rowid, age, game, start FROM actors""")
-        text = '<tr><td>{:5}</td> <td>{:5}</td> <td>{:18}</td> <td>{:20}</td><tr>' \
+        table = '<table><tbody>'
+        table += '<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><tr>' \
             .format('ID', 'Age', 'Game consumption', 'Start')
         for row in self.c.fetchall():
             id, age, game, timestamp = row
             start = dt.datetime.fromtimestamp(
                 int(timestamp)).strftime('%Y-%m-%d %H:%M')
-            text += '<tr><td>{:5}</td> <td>{:5}</td> <td>{:18}</td> <td>{:20}</td><tr>'\
+            table += '<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><tr>'\
                 .format(id, age, game, start)
-        return text
+        table += '</tbody></table>'
+        return table
 
     def n_actors(self):
         self.c.execute("""SELECT rowid FROM actors""")
