@@ -84,16 +84,19 @@ class DB:
         print('db: new hit registered')
 
     def all_actors_html(self):
-        self.c.execute("""SELECT rowid, age, game, start FROM actors""")
+        cols_head = ['ID', 'Age', 'Game consumption', 'Start', 'End']
+        cols = ['rowid', 'age', 'game', 'start', 'end']
+        self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
-        table += '<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><tr>' \
-            .format('ID', 'Age', 'Game consumption', 'Start')
+        header = '<tr><tr>'.format('<td>{}</td>'*len(cols))
+        header.format(*cols_head,)
         for row in self.c.fetchall():
-            id, age, game, timestamp = row
+            id, age, game, start_stamp, end_stamp = row
             start = dt.datetime.fromtimestamp(
-                int(timestamp)).strftime('%Y-%m-%d %H:%M')
-            table += '<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><tr>'\
-                .format(id, age, game, start)
+                int(start_stamp)).strftime('%Y-%m-%d %H:%M')
+            end = dt.datetime.fromtimestamp(
+                int(end_stamp)).strftime('%Y-%m-%d %H:%M')
+            table += ('<td>{}</td>'*len(cols)).format(id, age, game, start, end)
         table += '</tbody></table>'
         return table
 
