@@ -77,10 +77,11 @@ class DB:
     def last_experiment(self):
         self.c.execute("""SELECT startexp1, endexp1, startexp2, endexp2 
         FROM actors ORDER BY rowid DESC LIMIT 1""")
-        start1 = self.c.fetchone()[0]
-        end1 = self.c.fetchone()[1]
-        start2 = self.c.fetchone()[2]
-        end2 = self.c.fetchone()[3]
+        result = self.c.fetchone()
+        start1 = result[0]
+        end1 = result[1]
+        start2 = result[2]
+        end2 = result[3]
         str = '{}-{}, {}-{}'.format(start1, end1, start2, end2)
         print(str)
         return str
