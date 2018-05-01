@@ -103,8 +103,8 @@ class DB:
         tot_hits = hits_exp_1 + hits_exp_2
         with self.conn:
             data = {'end': timestamp,
-                    'endtxt': dt.datetime.fromtimestamp(timestamp).strftime(
-                        '%Y-%m-%d %H:%M'),
+                    'endtxt': dt.datetime.fromtimestamp(timestamp)
+                        .strftime('%Y-%m-%d %H:%M'),
                     'tothitsexp1': hits_exp_1,
                     'tothitsexp2': hits_exp_2,
                     'tothits': tot_hits,
@@ -113,7 +113,7 @@ class DB:
                 """UPDATE actors SET end={end},endtxt={endtxt},
                 tothitsexp1={tothitsexp1},tothitsexp2={tothitsexp2},
                 tothits={tothits} WHERE rowid={actor_id} LIMIT 1"""
-                    .format(**data),
+                    .format(**data)
             )
         print('db: actor finished')
 

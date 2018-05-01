@@ -35,6 +35,7 @@ def response_parser(not_used, path):
         return 'Hit registered'
     elif path.startswith('/participant_finished'):
         db.actor_finished(actor_id=db.last_id())
+        return 'Finished participant registered'
     elif path.startswith('/experiment_change'):
         # /experiment_change?exp=1&change=start
         form_data = form_to_dict(path)
@@ -42,5 +43,6 @@ def response_parser(not_used, path):
             actor_id=db.last_id(),
             experiment=form_data['exp'],
             change=form_data['change'])
+        return 'Experiment change registered'
     else:
         return None
