@@ -34,7 +34,7 @@ def response_parser(not_used, path):
                 actor_id=db.last_id(),
                 experiment=exp,
                 button=form_data['button'])
-            return 'Hit registered for experiment '+exp
+            return 'Hit registered for experiment {}'.format(exp)
         else:
             return 'No active experiment'
     elif path.startswith('/participant_finished'):
