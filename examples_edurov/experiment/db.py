@@ -16,7 +16,7 @@ class DB:
 
         self.conn = sqlite3.connect(self.db_path)
         self.c = self.conn.cursor()
-        with open('table.html', 'r') as f:
+        with open(path.join(path.dirname(__file__), 'table.html'), 'r') as f:
             self.table_base = f.read()
 
     @classmethod
