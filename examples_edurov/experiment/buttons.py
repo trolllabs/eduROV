@@ -19,8 +19,8 @@ def main(server_ip, server_port, serial_port):
                     print('Successly sent button {}'.format(button))
                 else:
                     print('error sending')
-            except ConnectionRefusedError:
-                print('Connection refused')
+            except Exception as e:
+                print('Connection refused: {}'.format(e))
 
 
 if __name__ == '__main__':
