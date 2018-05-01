@@ -33,17 +33,16 @@ void setup() {
 void loop() {
   if (success(newButton)) {
     lastButton = newButton;
-    while (newButton != lastButton) {
-      newButton = random(0, 2);
+    while (newButton == lastButton) {
+      newButton = random(0, 3);
     }
-    Serial.print("New button: ");
-    Serial.println(newButton);
   }
   light_leds(newButton);
-  delay(100);
+  delay(50);
 }
 
 int success(int button) {
+  int result = false;
   if (button == 0) {
     analog = analogRead(R1pin);
   } else if (button == 1) {
@@ -52,12 +51,10 @@ int success(int button) {
     analog = analogRead(R3pin);
   }
   if (analog >= threshold) {
-    Serial.print("Hit: ");
-    Serial.print(button);
-    return 1;
-  } else {
-    return 0;
-  }
+    result = true;
+    Serial.println("hit="+(String)button);
+  } 
+  return result;
 }
 
 void light_leds(int button) {
