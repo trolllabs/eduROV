@@ -13,12 +13,14 @@ def main(server_ip, server_port, serial_port):
             button = msg.split('=')[1]
             link = 'http://{ip}:{port}/new_hit?button={btn}' \
                 .format(ip=server_ip, port=server_port, btn=button)
-            r = requests.get(link)
-
-            if r.status_code is 200:
-                print('Successly sent button {}'.format(button))
-            else:
-                print('error sending')
+            try:
+                r = requests.get(link)
+                if r.status_code is 200:
+                    print('Successly sent button {}'.format(button))
+                else:
+                    print('error sending')
+            except ConnectionRefusedError:
+                print('Connection refused')
 
 
 if __name__ == '__main__':
