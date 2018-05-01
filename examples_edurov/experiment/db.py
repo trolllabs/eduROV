@@ -16,6 +16,8 @@ class DB:
 
         self.conn = sqlite3.connect(self.db_path)
         self.c = self.conn.cursor()
+        with open('table.html', 'r') as f:
+            self.table_base = f.read()
 
     @classmethod
     def check(cls):
@@ -118,7 +120,7 @@ class DB:
     def experiment_change(self, actor_id, experiment, change):
         experiment = int(experiment)
         timestamp = time.time()
-        data = {'actor_id': actor_id, 'time':timestamp}
+        data = {'actor_id': actor_id, 'time': timestamp}
         if change == 'start':
             with self.conn:
                 if experiment == 1:
@@ -160,10 +162,12 @@ class DB:
         print('db: new hit registered')
 
     def all_actors_html(self):
-        cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Game consumption',
-                     'Start', 'End']
-        cols = ['rowid', 'nickname', 'crowd', 'age', 'game', 'starttxt',
-                'endtxt']
+        cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Start', 'End',
+                     'Start 1', 'End 1', 'Start 2', 'End 2', 'Hits 1',
+                     'Hits 2']
+        cols = ['rowid', 'nickname', 'crowd', 'age', 'starttxt', 'endtxt',
+                'startexp1', 'endexp1', 'startexp2', 'endexp2', 'tothitsexp1',
+                'tothitsexp2']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))
@@ -173,7 +177,7 @@ class DB:
             table += '<tr>{}</tr>'.format(
                 ('<td>{}</td>' * len(cols)).format(*row))
         table += '</tbody></table>'
-        return table
+        return self.table_base.format({'table':table})
 
     def n_actors(self):
         self.c.execute("""SELECT * FROM actors""")
@@ -202,7 +206,7 @@ class DB:
             table += '<tr>{}</tr>'.format(
                 ('<td>{}</td>' * len(cols)).format(*row))
         table += '</tbody></table>'
-        return table
+        return self.table_base.format({'table':table})
 
 
 if __name__ == '__main__':
