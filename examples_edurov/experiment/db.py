@@ -84,7 +84,17 @@ class DB:
         end2 = result[3]
         str = '{}-{}, {}-{}'.format(start1, end1, start2, end2)
         print(str)
-        return str
+        if start1 and start2:
+            if start1 > start2:
+                return 1
+            else:
+                return 2
+        elif start1:
+            return 1
+        elif start2:
+            return 2
+        else:
+            return None
 
     def next_crowd(self):
         self.c.execute("""SELECT * FROM actors WHERE crowd='0'""")
