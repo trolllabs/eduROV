@@ -135,7 +135,8 @@ class DB:
         with self.conn:
             data = {'tothitsexp1': hits_exp_1,
                     'tothitsexp2': hits_exp_2,
-                    'tothits': tot_hits}
+                    'tothits': tot_hits,
+                    'actor_id': actor_id}
             query = """UPDATE actors SET tothitsexp1 = :tothitsexp1, 
             tothitsexp2 = :tothitsexp2, tothits = :tothits 
             WHERE rowid = :actor_id LIMIT 1"""
