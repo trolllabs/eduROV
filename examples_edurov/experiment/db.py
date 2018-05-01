@@ -76,7 +76,7 @@ class DB:
 
     def last_experiment(self):
         self.c.execute("""SELECT startexp1, endexp1, startexp2, endexp2 
-        FROM actors ORDER BY rowid DESC""")
+        FROM actors ORDER BY rowid DESC LIMIT 1""")
         start1 = self.c.fetchone()[0]
         end1 = self.c.fetchone()[1]
         start2 = self.c.fetchone()[2]
