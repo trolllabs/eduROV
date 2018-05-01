@@ -112,8 +112,7 @@ class DB:
             self.c.execute(
                 """UPDATE actors SET end={end},endtxt={endtxt},
                 tothitsexp1={tothitsexp1},tothitsexp2={tothitsexp2},
-                tothits={tothits} WHERE rowid={actor_id} LIMIT 1"""
-                    .format(**data)
+                tothits={tothits} WHERE rowid={actor_id} LIMIT 1""".format(**data)
             )
         print('db: actor finished')
 
