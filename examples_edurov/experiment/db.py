@@ -9,7 +9,7 @@ from os import path
 class DB:
     db_name = 'data.db'
     db_path = path.join(path.dirname(__file__), db_name)
-    table_style='''
+    table_style = '''
         table, th, td {
             border: 1px solid black;
         }
@@ -82,19 +82,18 @@ class DB:
         end1 = result[1]
         start2 = result[2]
         end2 = result[3]
-        str = '{}-{}, {}-{}'.format(start1, end1, start2, end2)
-        print(str)
         if start1 and start2:
             if start1 > start2:
-                return 1
+                if not end1:
+                    return 1
             else:
-                return 2
-        elif start1:
+                if not end2:
+                    return 2
+        elif start1 and not end1:
             return 1
-        elif start2:
+        elif start2 and not end2:
             return 2
-        else:
-            return None
+        return None
 
     def next_crowd(self):
         self.c.execute("""SELECT * FROM actors WHERE crowd='0'""")
@@ -145,26 +144,13 @@ class DB:
 
     def actor_finished(self, actor_id):
         timestamp = time.time()
-        self.c.execute(
-            """SELECT * FROM hits WHERE actor='{}' AND experiment='1'"""
-                .format(actor_id))
-        hits_exp_1 = len(self.c.fetchall())
-        self.c.execute(
-            """SELECT * FROM hits WHERE actor='{}' AND experiment='2'"""
-                .format(actor_id))
-        hits_exp_2 = len(self.c.fetchall())
-        tot_hits = hits_exp_1 + hits_exp_2
         with self.conn:
             data = {'end': timestamp,
                     'endtxt': dt.datetime.fromtimestamp(timestamp)
                         .strftime('%Y-%m-%d %H:%M'),
-                    'tothitsexp1': hits_exp_1,
-                    'tothitsexp2': hits_exp_2,
-                    'tothits': tot_hits,
                     'actor_id': actor_id}
             query = """UPDATE actors SET end = :end, endtxt = :endtxt,
-            tothitsexp1 = :tothitsexp1, tothitsexp2 = :tothitsexp2,
-            tothits = :tothits WHERE rowid = :actor_id LIMIT 1"""
+            WHERE rowid = :actor_id LIMIT 1"""
             self.c.execute(query, data)
         print('db: actor finished')
 
