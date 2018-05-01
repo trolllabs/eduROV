@@ -74,6 +74,13 @@ class DB:
         self.c.execute("""SELECT rowid FROM actors ORDER BY rowid DESC""")
         return self.c.fetchone()[0]
 
+    def last_experiment(self):
+        self.c.execute("""SELECT startexp1, endexp1, startexp2, endexp2 
+        FROM actors ORDER BY rowid DESC""")
+        res = self.c.fetchone()[0]
+        print(res)
+        return res
+
     def next_crowd(self):
         self.c.execute("""SELECT * FROM actors WHERE crowd='0'""")
         crowd_0 = len(self.c.fetchall())

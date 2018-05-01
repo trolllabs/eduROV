@@ -127,6 +127,21 @@ def receive_arduino(serial_connection):
     return None
 
 
+def send_arduino_simple(msg, serial_connection):
+    if not isinstance(msg, bytes):
+        msg = str(msg).encode()
+    serial_connection.write(msg)
+
+
+def receive_arduino_simple(serial_connection, min_length=1):
+    if serial_connection.inWaiting():
+        msg = serial_connection.readline().decode().rstrip()
+        if len(msg) >= min_length:
+            return msg
+        else:
+            return None
+
+
 def serial_connection(port='/dev/ttyACM0', baudrate=115200, timeout=0.05):
     try:
         ser = serial.Serial(port, baudrate, timeout=timeout)

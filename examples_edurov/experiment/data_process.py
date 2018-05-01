@@ -25,6 +25,8 @@ def response_parser(not_used, path):
         return db.all_actors_html()
     elif path.startswith('/highscore'):
         return db.highscore_html()
+    elif path.startswith('/last_exp'):
+        return db.last_experiment()
     elif path.startswith('/new_hit'):
         # /new_hit?exp=1&button=2
         form_data = form_to_dict(path)
