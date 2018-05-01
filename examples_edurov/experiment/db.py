@@ -122,6 +122,26 @@ class DB:
                  'crowd': self.next_crowd()})
         print('db: new actor created')
 
+    def update_total_hits(self, actor_id):
+        self.c.execute(
+            """SELECT * FROM hits WHERE actor='{}' AND experiment='1'"""
+                .format(actor_id))
+        hits_exp_1 = len(self.c.fetchall())
+        self.c.execute(
+            """SELECT * FROM hits WHERE actor='{}' AND experiment='2'"""
+                .format(actor_id))
+        hits_exp_2 = len(self.c.fetchall())
+        tot_hits = hits_exp_1 + hits_exp_2
+        with self.conn:
+            data = {'tothitsexp1': hits_exp_1,
+                    'tothitsexp2': hits_exp_2,
+                    'tothits': tot_hits}
+            query = """UPDATE actors SET tothitsexp1 = :tothitsexp1, 
+            tothitsexp2 = :tothitsexp2, tothits = :tothits 
+            WHERE rowid = :actor_id LIMIT 1"""
+            self.c.execute(query, data)
+        print('db: updated total hits')
+
     def actor_finished(self, actor_id):
         timestamp = time.time()
         self.c.execute(
@@ -189,6 +209,7 @@ class DB:
                  'experiment': int(experiment),
                  'button': int(button),
                  'time': time.time()})
+            self.update_total_hits(actor_id)
         print('db: new hit registered')
 
     def n_actors(self):
