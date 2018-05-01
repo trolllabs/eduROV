@@ -9,8 +9,14 @@ from os import path
 class DB:
     db_name = 'data.db'
     db_path = path.join(path.dirname(__file__), db_name)
-    css1 = 'border: 1px solid black;'
-    css2 = 'padding: 5px; text-align: left;'
+    table_style='''
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;    
+        }'''
 
     def __init__(self):
         if not path.isfile(self.db_path):
@@ -193,8 +199,7 @@ class DB:
             table += '<tr>{}</tr>'.format(
                 ('<td>{}</td>' * len(cols)).format(*row))
         table += '</tbody></table>'
-        return self.table_base.format(
-            css1=self.css1, css2=self.css1, table_html=table)
+        return self.table_base.format(style=self.table_style, table_html=table)
 
     def highscore_html(self):
         cols_head = ['Nickname', 'Group', 'Total hits']
@@ -209,8 +214,7 @@ class DB:
             table += '<tr>{}</tr>'.format(
                 ('<td>{}</td>' * len(cols)).format(*row))
         table += '</tbody></table>'
-        return self.table_base.format(
-            css1=self.css1, css2=self.css1, table_html=table)
+        return self.table_base.format(style=self.table_style, table_html=table)
 
 
 if __name__ == '__main__':
