@@ -77,9 +77,13 @@ class DB:
     def last_experiment(self):
         self.c.execute("""SELECT startexp1, endexp1, startexp2, endexp2 
         FROM actors ORDER BY rowid DESC""")
-        res = self.c.fetchone()
-        print(res)
-        return res
+        start1 = self.c.fetchone()[0]
+        end1 = self.c.fetchone()[1]
+        start2 = self.c.fetchone()[2]
+        end2 = self.c.fetchone()[3]
+        str = '{}-{}, {}-{}'.format(start1, end1, start2, end2)
+        print(str)
+        return str
 
     def next_crowd(self):
         self.c.execute("""SELECT * FROM actors WHERE crowd='0'""")
