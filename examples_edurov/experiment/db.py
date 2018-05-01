@@ -62,9 +62,7 @@ class DB:
 
     def last_id(self):
         self.c.execute("""SELECT rowid FROM actors ORDER BY rowid DESC""")
-        id_ = self.c.fetchone()[0]
-        print('found id {}'.format(id_))
-        return id_
+        return self.c.fetchone()[0]
 
     def next_crowd(self):
         with self.conn:
@@ -151,7 +149,6 @@ class DB:
         self.c.execute(
             """SELECT * FROM actors WHERE rowid='{}'""".format(actor_id))
         text = str(self.c.fetchone())
-        print(text)
         return text
 
     def clear_table(self, table):
@@ -175,9 +172,9 @@ class DB:
 
 
 if __name__ == '__main__':
-    choices = {'createdb': DB.createdb, 'check': DB.check}
+    choices = {'create': DB.createdb, 'check': DB.check}
     parser = argparse.ArgumentParser(
-        description='Start a streaming video server on raspberry pi')
+        description='Manage the database')
     parser.add_argument(
         'command',
         choices=choices,

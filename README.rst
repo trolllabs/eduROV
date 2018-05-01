@@ -1,5 +1,5 @@
 eduROV - Educational Remotely Operated Vehicle
-================================================
+==============================================
 
 The eduROV project is all about spreading the joy of technology and learning.
 The eduROV is being developed as a DIY ROV kit meant to be affordable and
@@ -14,28 +14,34 @@ open-acces tools and platforms.
 :Engage eduROV: https://www.edurov.no/
 
 Prerequisites
-**************
+*************
 - eduROV requires python 3, if you don't have python installed, you can
   download it here: https://www.python.org/downloads/
-- if python 3 is not your default python interpreter, pip3 should be used for
-  installation as in this instruction
+- if python 3 is not your default python interpreter, pip3 and python3 should
+  be used as in this instruction
 - the camera on the raspberry pi has to be enabled, see
   https://www.raspberrypi.org/documentation/configuration/camera.md
 
 Installation
-**************
-Run the following command in a terminal window on your raspberry pi
-(sudo rights are needed to enable console scripts)::
+************
+Run the following commands in a terminal on the Raspberry Pi
+
+First, make sure that your Raspberry Pi is up to date::
+
+    sudo apt-get update
+    sudo apt-get dist-upgrade
+
+Install edurov, sudo rights are needed to enable console scripts::
 
   sudo pip3 install edurov
 
 Usage
-***********
+*****
 
 Engage eduROV submersible
 -------------------------
 
-On the raspberry pi, run the following command::
+On the Raspberry Pi, run the following command::
 
   edurov-web
 
