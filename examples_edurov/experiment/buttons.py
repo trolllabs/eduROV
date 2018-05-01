@@ -36,7 +36,7 @@ if __name__ == '__main__':
         type=str)
     parser.add_argument(
         '-ser',
-        default='ttyAMA0',
+        default='ttyUSB0',
         help='serial port',
         type=str)
 
