@@ -8,16 +8,17 @@ from edurov.utils import serial_connection, receive_arduino_simple
 def main(server_ip, server_port, serial_port):
     ser = serial_connection(baudrate=9600, port='/dev/{}'.format(serial_port))
     msg = receive_arduino_simple(serial_connection=ser, min_length=5)
-    if msg:
-        button = msg.split('=')[1]
-        link = 'http://{ip}:{port}/new_hit?button={btn}' \
-            .format(ip=server_ip, port=server_port, btn=button)
-        r = requests.get(link)
+    while True:
+        if msg:
+            button = msg.split('=')[1]
+            link = 'http://{ip}:{port}/new_hit?button={btn}' \
+                .format(ip=server_ip, port=server_port, btn=button)
+            r = requests.get(link)
 
-        if r.status_code is 200:
-            print('Successly sent button {}'.format(button))
-        else:
-            print('error sending')
+            if r.status_code is 200:
+                print('Successly sent button {}'.format(button))
+            else:
+                print('error sending')
 
 
 if __name__ == '__main__':
