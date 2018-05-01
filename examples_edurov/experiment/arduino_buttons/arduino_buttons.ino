@@ -28,8 +28,10 @@ void loop() {
   R2 = analogRead(R2pin);
   R3 = analogRead(R3pin);
 
-  Serial.print(R1 + "  ");
-  Serial.print(R2 + "  ");
+  Serial.print(R1);
+  Serial.print("  ");
+  Serial.print(R2);
+  Serial.print("  ");
   Serial.println(R3);
   delay(1000);
 
