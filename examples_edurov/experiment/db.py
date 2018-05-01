@@ -163,6 +163,20 @@ class DB:
                  'time': time.time()})
         print('db: new hit registered')
 
+    def n_actors(self):
+        self.c.execute("""SELECT * FROM actors""")
+        return str(len(self.c.fetchall()))
+
+    def actor(self, actor_id):
+        self.c.execute(
+            """SELECT * FROM actors WHERE rowid='{}'""".format(actor_id))
+        text = str(self.c.fetchone())
+        return text
+
+    def clear_table(self, table):
+        with self.conn:
+            self.c.execute("DELETE FROM {}".format(table))
+
     def all_actors_html(self):
         cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Start', 'End',
                      'Start 1', 'End 1', 'Start 2', 'End 2', 'Hits 1',
@@ -180,21 +194,7 @@ class DB:
                 ('<td>{}</td>' * len(cols)).format(*row))
         table += '</tbody></table>'
         return self.table_base.format(
-            {'css1': self.css1, 'css2': self.css1, 'table': table})
-
-    def n_actors(self):
-        self.c.execute("""SELECT * FROM actors""")
-        return str(len(self.c.fetchall()))
-
-    def actor(self, actor_id):
-        self.c.execute(
-            """SELECT * FROM actors WHERE rowid='{}'""".format(actor_id))
-        text = str(self.c.fetchone())
-        return text
-
-    def clear_table(self, table):
-        with self.conn:
-            self.c.execute("DELETE FROM {}".format(table))
+            css1=self.css1, css2=self.css1, table_html=table)
 
     def highscore_html(self):
         cols_head = ['Nickname', 'Group', 'Total hits']
@@ -210,7 +210,7 @@ class DB:
                 ('<td>{}</td>' * len(cols)).format(*row))
         table += '</tbody></table>'
         return self.table_base.format(
-            {'css1': self.css1, 'css2': self.css1, 'table': table})
+            css1=self.css1, css2=self.css1, table_html=table)
 
 
 if __name__ == '__main__':
