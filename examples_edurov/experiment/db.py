@@ -109,11 +109,10 @@ class DB:
                     'tothitsexp2': hits_exp_2,
                     'tothits': tot_hits,
                     'actor_id': actor_id}
-            self.c.execute(
-                """UPDATE actors SET end={end}, endtxt={endtxt},
-                tothitsexp1={tothitsexp1}, tothitsexp2={tothitsexp2},
-                tothits={tothits} WHERE rowid={actor_id} LIMIT 1""".format(**data)
-            )
+            query = """UPDATE actors SET end = :end, endtxt = :endtxt,
+            tothitsexp1 = :tothitsexp1, tothitsexp2 = :tothitsexp2,
+            tothits = :tothits WHERE rowid = :actor_id LIMIT 1"""
+            self.c.execute(query, data)
         print('db: actor finished')
 
     def experiment_change(self, actor_id, experiment, change):
