@@ -26,15 +26,21 @@ def response_parser(not_used, path):
     elif path.startswith('/highscore'):
         return db.highscore_html()
     elif path.startswith('/new_hit'):
+        # /new_hit?exp=1&button=2
         form_data = form_to_dict(path)
-        actor_id = db.last_id()
-        db.new_hit(actor_id=actor_id,
-                   experiment=form_data['exp'],
-                   button=form_data['button'])
+        db.new_hit(
+            actor_id=db.last_id(),
+            experiment=form_data['exp'],
+            button=form_data['button'])
         return 'Hit registered'
     elif path.startswith('/participant_finished'):
-        actor_id = db.last_id()
-        db.actor_finished(actor_id)
-
+        db.actor_finished(actor_id=db.last_id())
+    elif path.startswith('/experiment_change'):
+        # /experiment_change?exp=1&change=start
+        form_data = form_to_dict(path)
+        db.experiment_change(
+            actor_id=db.last_id(),
+            experiment=form_data['exp'],
+            change=form_data['change'])
     else:
         return None

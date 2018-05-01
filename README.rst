@@ -24,7 +24,7 @@ Prerequisites
 
 Installation
 ************
-Run the following commands in a terminal on the Raspberry Pi
+Run the following commands in a terminal on the Raspberry Pi.
 
 First, make sure that your Raspberry Pi is up to date::
 

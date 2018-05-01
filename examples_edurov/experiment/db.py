@@ -65,11 +65,10 @@ class DB:
         return self.c.fetchone()[0]
 
     def next_crowd(self):
-        with self.conn:
-            self.c.execute("""SELECT rowid FROM actors WHERE crowd='0'""")
-            crowd_0 = len(self.c.fetchall())
-            self.c.execute("""SELECT rowid FROM actors WHERE crowd='1'""")
-            crowd_1 = len(self.c.fetchall())
+        self.c.execute("""SELECT * FROM actors WHERE crowd='0'""")
+        crowd_0 = len(self.c.fetchall())
+        self.c.execute("""SELECT * FROM actors WHERE crowd='1'""")
+        crowd_1 = len(self.c.fetchall())
         if crowd_0 > crowd_1:
             return 1
         else:
@@ -93,35 +92,72 @@ class DB:
 
     def actor_finished(self, actor_id):
         timestamp = time.time()
-        with self.conn:
-            self.c.execute(
-                """SELECT rowid FROM hits WHERE actor='{}' AND experiment='1'"""
+        self.c.execute(
+            """SELECT * FROM hits WHERE actor='{}' AND experiment='1'"""
                 .format(actor_id))
-            hits_exp_1 = len(self.c.fetchall())
-            self.c.execute(
-                """SELECT rowid FROM hits WHERE actor='{}' AND experiment='2'"""
+        hits_exp_1 = len(self.c.fetchall())
+        self.c.execute(
+            """SELECT * FROM hits WHERE actor='{}' AND experiment='2'"""
                 .format(actor_id))
-            hits_exp_2 = len(self.c.fetchall())
-            tot_hits = hits_exp_1 + hits_exp_2
+        hits_exp_2 = len(self.c.fetchall())
+        tot_hits = hits_exp_1 + hits_exp_2
         with self.conn:
+            data = {'end': timestamp,
+                    'endtxt': dt.datetime.fromtimestamp(timestamp).strftime(
+                        '%Y-%m-%d %H:%M'),
+                    'tothitsexp1': hits_exp_1,
+                    'tothitsexp2': hits_exp_2,
+                    'tothits': tot_hits,
+                    'actor_id': actor_id}
             self.c.execute(
-                """INSERT INTO actors (end, endtxt, tothitsexp1, tothitsexp2, tothit) 
-                VALUES (:end, :endtxt, :tothitsexp1, :tothitsexp2, :tothit)""",
-                {'end': timestamp,
-                 'endtxt': dt.datetime.fromtimestamp(timestamp).strftime(
-                     '%Y-%m-%d %H:%M'),
-                 'tothitsexp1': hits_exp_1,
-                 'tothitsexp2': hits_exp_2,
-                 'tothits': tot_hits,
-                 'crowd': self.next_crowd()})
+                """UPDATE actors SET end={end},endtxt={endtxt},
+                tothitsexp1={tothitsexp1},tothitsexp2={tothitsexp2},
+                tothits={tothits} WHERE rowid={actor_id} LIMIT 1"""
+                    .format(**data),
+            )
+        print('db: actor finished')
+
+    def experiment_change(self, actor_id, experiment, change):
+        experiment = int(experiment)
+        timestamp = time.time()
+        data = {'actor_id': actor_id, 'time':timestamp}
+        if change == 'start':
+            with self.conn:
+                if experiment == 1:
+                    self.c.execute(
+                        """UPDATE actors SET startexp1={time} 
+                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
+                    )
+                if experiment == 2:
+                    self.c.execute(
+                        """UPDATE actors SET startexp2={time} 
+                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
+                    )
+            print('db: experiment started')
+        elif change == 'end':
+            with self.conn:
+                if experiment == 1:
+                    self.c.execute(
+                        """UPDATE actors SET endexp1={time} 
+                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
+                    )
+                if experiment == 2:
+                    self.c.execute(
+                        """UPDATE actors SET endexp2={time} 
+                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
+                    )
+            print('db: experiment ended')
+        else:
+            print('db: not able to process experiment change')
 
     def new_hit(self, actor_id, button, experiment):
         with self.conn:
             self.c.execute(
-                """INSERT INTO hits VALUES (:actor_id, :experiment, :button, :time)""",
+                """INSERT INTO hits VALUES (:actor_id, :experiment, :button, 
+                :time)""",
                 {'actor_id': actor_id,
-                 'experiment': experiment,
-                 'button': button,
+                 'experiment': int(experiment),
+                 'button': int(button),
                  'time': time.time()})
         print('db: new hit registered')
 
@@ -142,7 +178,7 @@ class DB:
         return table
 
     def n_actors(self):
-        self.c.execute("""SELECT rowid FROM actors""")
+        self.c.execute("""SELECT * FROM actors""")
         return str(len(self.c.fetchall()))
 
     def actor(self, actor_id):
