@@ -109,8 +109,10 @@ class DB:
         timestamp = time.time()
         with self.conn:
             self.c.execute(
-                """INSERT INTO actors (nickname, age, gender, game, start, starttxt, crowd) 
-                VALUES (:nickname, :age, :gender, :game, :start, :starttxt, :crowd)""",
+                """INSERT INTO actors (nickname, age, gender, game, start, 
+                starttxt, crowd) 
+                VALUES (:nickname, :age, :gender, :game, :start, :starttxt, 
+                :crowd)""",
                 {'nickname': nickname,
                  'age': int(age),
                  'gender': int(gender),

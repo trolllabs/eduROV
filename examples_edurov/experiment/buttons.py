@@ -6,7 +6,7 @@ from edurov.utils import serial_connection, receive_arduino_simple
 
 
 def main(server_ip, server_port):
-    ser = serial_connection(baudrate=9600)
+    ser = serial_connection(baudrate=9600, port='/dev/ttyUSB0')
     msg = receive_arduino_simple(serial_connection=ser, min_length=5)
     if msg:
         button = msg.split('=')[1]

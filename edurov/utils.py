@@ -154,7 +154,8 @@ def serial_connection(port='/dev/ttyACM0', baudrate=115200, timeout=0.05):
         pass
     except ValueError:
         pass
-    warning(message='Could not establish serial connection at {}'
+    warning(message="""Could not establish serial connection at {}\n
+    Try running 'ls /dev/*tty*' to find correct port"""
             .format(port), filter='default')
     return None
 
