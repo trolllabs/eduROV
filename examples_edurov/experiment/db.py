@@ -9,6 +9,8 @@ from os import path
 class DB:
     db_name = 'data.db'
     db_path = path.join(path.dirname(__file__), db_name)
+    css1 = 'border: 1px solid black;'
+    css2 = 'padding: 5px; text-align: left;'
 
     def __init__(self):
         if not path.isfile(self.db_path):
@@ -177,7 +179,8 @@ class DB:
             table += '<tr>{}</tr>'.format(
                 ('<td>{}</td>' * len(cols)).format(*row))
         table += '</tbody></table>'
-        return self.table_base.format({'table':table})
+        return self.table_base.format(
+            {'css1': self.css1, 'css2': self.css1, 'table': table})
 
     def n_actors(self):
         self.c.execute("""SELECT * FROM actors""")
@@ -206,7 +209,8 @@ class DB:
             table += '<tr>{}</tr>'.format(
                 ('<td>{}</td>' * len(cols)).format(*row))
         table += '</tbody></table>'
-        return self.table_base.format({'table':table})
+        return self.table_base.format(
+            {'css1': self.css1, 'css2': self.css1, 'table': table})
 
 
 if __name__ == '__main__':
