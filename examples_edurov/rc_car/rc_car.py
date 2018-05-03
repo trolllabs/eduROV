@@ -3,7 +3,7 @@ import os
 
 import Pyro4
 import RPi.GPIO as GPIO
-from .classes import Motor, Button
+from electronics import Motor, Button
 
 from edurov import WebMethod
 

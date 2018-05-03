@@ -10,8 +10,8 @@ from edurov import WebMethod
 
 
 def control_motors():
-    normal_speed = 0.7
-    turn_speed = 0.5
+    normal_speed = 0.2
+    turn_speed = 0.2
 
     GPIO.setmode(GPIO.BCM)
     m1 = Motor(4, 18, pwm=True)

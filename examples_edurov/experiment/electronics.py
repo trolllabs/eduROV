@@ -78,7 +78,7 @@ class Motor(object):
 class Button():
     """Imitates joystick behavior by gradually increasing the value"""
     max = 100
-    ramp_time = 0.5
+    ramp_time = 0.0
 
     def __init__(self):
         self.last = False
