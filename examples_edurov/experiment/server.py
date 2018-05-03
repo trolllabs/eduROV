@@ -12,6 +12,7 @@ from edurov import WebMethod
 def control_motors():
     normal_speed = 0.2
     turn_speed = 0.2
+    decrease_factor = 0.5
 
     GPIO.setmode(GPIO.BCM)
     m1 = Motor(4, 18, pwm=True)
@@ -36,20 +37,20 @@ def control_motors():
                     motor1_speed += u.value * normal_speed
                     motor2_speed += u.value * normal_speed
                     if keys_dict['left arrow']:
-                        motor1_speed += l.value * turn_speed
-                        motor2_speed -= l.value * turn_speed
+                        motor1_speed += l.value * turn_speed * decrease_factor
+                        motor2_speed -= l.value * turn_speed * decrease_factor
                     elif keys_dict['right arrow']:
-                        motor1_speed -= r.value * turn_speed
-                        motor2_speed += r.value * turn_speed
+                        motor1_speed -= r.value * turn_speed * decrease_factor
+                        motor2_speed += r.value * turn_speed * decrease_factor
                 elif keys_dict['down arrow']:
                     motor1_speed -= d.value * normal_speed
                     motor2_speed -= d.value * normal_speed
                     if keys_dict['left arrow']:
-                        motor1_speed -= l.value * turn_speed
-                        motor2_speed += l.value * turn_speed
+                        motor1_speed -= l.value * turn_speed * decrease_factor
+                        motor2_speed += l.value * turn_speed * decrease_factor
                     elif keys_dict['right arrow']:
-                        motor1_speed += r.value * turn_speed
-                        motor2_speed -= r.value * turn_speed
+                        motor1_speed += r.value * turn_speed * decrease_factor
+                        motor2_speed -= r.value * turn_speed * decrease_factor
                 elif keys_dict['left arrow']:
                     motor1_speed += l.value * turn_speed
                     motor2_speed -= l.value * turn_speed
