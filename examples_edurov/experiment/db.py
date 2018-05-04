@@ -18,9 +18,11 @@ class DB:
             text-align: left;    
         }'''
     crowd0_order = ['/displays/experiment0.html', '/forms/survey.html',
-                    '/displays/experiment1.html', '/forms/survey.html']
+                    '/displays/experiment1.html', '/forms/survey.html',
+                    '/finish.html']
     crowd1_order = ['/displays/experiment1.html', '/forms/survey.html',
-                    '/displays/experiment0.html', '/forms/survey.html']
+                    '/displays/experiment0.html', '/forms/survey.html',
+                    '/finish.html']
 
     def __init__(self):
         if not path.isfile(self.db_path):
@@ -150,7 +152,7 @@ class DB:
                  'starttxt': dt.datetime.fromtimestamp(timestamp).strftime(
                      '%Y-%m-%d %H:%M'),
                  'crowd': self.next_crowd(),
-                 'position':-1})
+                 'position': -1})
         print('db: new actor created')
 
     def update_total_hits(self, actor_id):
