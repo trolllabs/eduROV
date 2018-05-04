@@ -64,7 +64,7 @@ class DB:
                 """UPDATE actors SET position={} 
                 WHERE rowid={} LIMIT 1""".format(current + 1, actor_id))
         # return 'redirect={}'.format(newpage)
-        return newpage
+        return 'page={}'.format(newpage)
 
     @classmethod
     def createdb(cls):

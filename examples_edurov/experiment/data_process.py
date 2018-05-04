@@ -12,7 +12,6 @@ def form_to_dict(path):
 
 def response_parser(not_used, path):
     db = DB()
-    print('response parser')
     if path.startswith('/new_participant'):
         form_data = form_to_dict(path)
         db.new_actor(
@@ -22,18 +21,10 @@ def response_parser(not_used, path):
             game_consumption=form_data['game']
         )
         return db.next_page()
-    if path.startswith('/survey'):
-        form_data = form_to_dict(path)
-        # process survey data
-        print('Would now process survey...')
-        return db.next_page()
     elif path.startswith('/actors'):
         return db.all_actors_html()
     elif path.startswith('/highscore'):
         return db.highscore_html()
-    elif path.startswith('/next'):
-        print('i am in next parser')
-        return db.next_page()
     elif path.startswith('/new_hit'):
         # /new_hit?button=2
         form_data = form_to_dict(path)
@@ -59,5 +50,13 @@ def response_parser(not_used, path):
             experiment=form_data['exp'],
             change=form_data['change'])
         return 'Experiment change registered'
+    elif path.startswith('/survey'):
+        form_data = form_to_dict(path)
+        # process survey data
+        print('Would now process survey...')
+        return db.next_page()
+    elif path.startswith('/next'):
+        print('i am in next parser')
+        return db.next_page()
     else:
         return None
