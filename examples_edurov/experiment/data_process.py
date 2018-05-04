@@ -30,6 +30,8 @@ def response_parser(not_used, path):
         return db.all_actors_html()
     elif path.startswith('/highscore'):
         return db.highscore_html()
+    elif path.startswith('/next'):
+        return db.next_page()
     elif path.startswith('/new_hit'):
         # /new_hit?button=2
         form_data = form_to_dict(path)
