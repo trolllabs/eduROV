@@ -6,7 +6,7 @@ function sleep(ms) {
 
 function next_page(){
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "./next", true);
+    xhttp.open("GET", "/next", true);
     xhttp.setRequestHeader("Content-Type", "text/html");
     xhttp.send();
 }
