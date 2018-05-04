@@ -12,6 +12,7 @@ def form_to_dict(path):
 
 def response_parser(not_used, path):
     db = DB()
+    print('response parser')
     if path.startswith('/new_participant'):
         form_data = form_to_dict(path)
         db.new_actor(
@@ -31,6 +32,7 @@ def response_parser(not_used, path):
     elif path.startswith('/highscore'):
         return db.highscore_html()
     elif path.startswith('/next'):
+        print('i am in next parser')
         return db.next_page()
     elif path.startswith('/new_hit'):
         # /new_hit?button=2
