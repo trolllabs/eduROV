@@ -17,6 +17,10 @@ class DB:
             padding: 5px;
             text-align: left;    
         }'''
+    crowd0_order = ['/displays/experiment0.html', '/forms/survey.html',
+                    '/displays/experiment1.html', '/forms/survey.html']
+    crowd1_order = ['/displays/experiment1.html', '/forms/survey.html',
+                    '/displays/experiment0.html', '/forms/survey.html']
 
     def __init__(self):
         if not path.isfile(self.db_path):
@@ -34,6 +38,30 @@ class DB:
         else:
             print('did not find file')
 
+    def actor_dict(self, actor_id):
+        self.c.execute(
+            """SELECT position, crowd FROM actors WHERE rowid='{}'"""
+                .format(actor_id))
+        position, crowd = self.c.fetchone()
+        return {'position': position,
+                'crowd': crowd}
+
+    def next_page(self):
+        actor_id = self.last_id()
+        dic = self.actor_dict(actor_id)
+        current = dic['position']
+        crowd = dic['crowd']
+        if crowd == 0:
+            newpage = self.crowd0_order[current + 1]
+        else:
+            newpage = self.crowd1_order[current + 1]
+
+        with self.conn:
+            self.c.execute(
+                """UPDATE actors SET position={} 
+                WHERE rowid={} LIMIT 1""".format(current + 1, actor_id))
+        return 'redirect={}'.format(newpage)
+
     @classmethod
     def createdb(cls):
         if not path.isfile(cls.db_path):
@@ -44,6 +72,7 @@ class DB:
                 age integer,
                 gender integer,
                 game integer,
+                position integer,
                 start real,
                 starttxt text,
                 end real,
@@ -110,9 +139,9 @@ class DB:
         with self.conn:
             self.c.execute(
                 """INSERT INTO actors (nickname, age, gender, game, start, 
-                starttxt, crowd) 
+                starttxt, crowd, position) 
                 VALUES (:nickname, :age, :gender, :game, :start, :starttxt, 
-                :crowd)""",
+                :crowd, :position)""",
                 {'nickname': nickname,
                  'age': int(age),
                  'gender': int(gender),
@@ -120,7 +149,8 @@ class DB:
                  'start': timestamp,
                  'starttxt': dt.datetime.fromtimestamp(timestamp).strftime(
                      '%Y-%m-%d %H:%M'),
-                 'crowd': self.next_crowd()})
+                 'crowd': self.next_crowd(),
+                 'position':-1})
         print('db: new actor created')
 
     def update_total_hits(self, actor_id):

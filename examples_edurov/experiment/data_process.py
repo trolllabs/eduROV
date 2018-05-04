@@ -20,6 +20,11 @@ def response_parser(not_used, path):
             gender=form_data['gender'],
             game_consumption=form_data['game']
         )
+        return db.next_page()
+    if path.startswith('/survey'):
+        form_data = form_to_dict(path)
+        # process survey data
+        print('Would now process survey...')
         return 'redirect=/index.html'
     elif path.startswith('/actors'):
         return db.all_actors_html()
