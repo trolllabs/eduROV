@@ -8,7 +8,7 @@ function next_page(){
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "next", true);
     xhttp.setRequestHeader("Content-Type", "text/html");
-    xhttp.send(json_string);
+    xhttp.send();
 }
 
 sleep(4000)
