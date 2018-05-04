@@ -53,6 +53,7 @@ class DB:
         dic = self.actor_dict(actor_id)
         current = dic['position']
         crowd = dic['crowd']
+        print('Crowd: {}, current: {}'.format(crowd, current))
         if crowd == 0:
             newpage = self.crowd0_order[current + 1]
         else:
