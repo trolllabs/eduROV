@@ -22,7 +22,7 @@ class DB:
                     '/finish.html']
     crowd1_order = ['/displays/experiment1.html', '/forms/survey.html',
                     '/displays/experiment0.html', '/forms/survey.html',
-                    '/finish.html']
+                    '/displays/finish.html']
 
     def __init__(self):
         if not path.isfile(self.db_path):
