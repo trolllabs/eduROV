@@ -25,7 +25,7 @@ def response_parser(not_used, path):
         form_data = form_to_dict(path)
         # process survey data
         print('Would now process survey...')
-        return 'redirect=/index.html'
+        return db.next_page()
     elif path.startswith('/actors'):
         return db.all_actors_html()
     elif path.startswith('/highscore'):
