@@ -11,6 +11,8 @@ function sleep(ms) {
 //    xhttp.send();
 //}
 
+//window.location.replace("http://stackoverflow.com");
+
 function next_page(){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
