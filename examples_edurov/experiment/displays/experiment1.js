@@ -4,13 +4,12 @@
 //  return new Promise(resolve => setTimeout(resolve, ms));
 //}
 //
-//function next_page(){
-//    var xhttp = new XMLHttpRequest();
-//    xhttp.open("GET", "/next", true);
-//    xhttp.setRequestHeader("Content-Type", "text/html");
-//    xhttp.send();
-//}
-//
-//sleep(4000)
-//
-//next_page()
+function next_page(){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/next", true);
+    xhttp.onload = function() {
+                console.log(this.responseURL)
+                window.location.replace(this.responseURL);
+        };
+    xhttp.send();
+}
