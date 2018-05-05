@@ -24,14 +24,16 @@
     </div>
     <div class="form-group">
         <label>Gender</label>
-        <select class="form-control" name="gender">
+        <select class="form-control" name="gender" required>
+            <option disabled selected value> -- select an option -- </option>
             <option value="1">Male</option>
             <option value="2">Female</option>
         </select>
     </div>
     <div class="form-group">
         <label>Video game consumption</label>
-        <select class="form-control" name="game">
+        <select class="form-control" name="game" required>
+            <option disabled selected value> -- select an option -- </option>
             <option value="1">Every day</option>
             <option value="2">1-3 times per week</option>
             <option value="3">A few times per month</option>
@@ -39,7 +41,7 @@
             <option value="5">Never</option>
         </select>
         <small class="form-text text-muted">How often do you
-            play video games (computer and console)?
+            play video games (computer or console)?
         </small>
     </div>
     <div class="form-group">

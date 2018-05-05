@@ -3,13 +3,3 @@
 //function sleep(ms) {
 //  return new Promise(resolve => setTimeout(resolve, ms));
 //}
-//
-function next_page(){
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/next012", true);
-    xhttp.onload = function() {
-                console.log(this.responseURL)
-                window.location.replace(this.responseURL);
-        };
-    xhttp.send();
-}
