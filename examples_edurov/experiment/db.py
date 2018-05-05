@@ -17,12 +17,12 @@ class DB:
             padding: 5px;
             text-align: left;    
         }'''
-    crowd0_order = ['/displays/experiment0.html', '/forms/survey.html',
-                    '/displays/experiment1.html', '/forms/survey.html',
-                    '/displays/finish.html']
-    crowd1_order = ['/displays/experiment1.html', '/forms/survey.html',
-                    '/displays/experiment0.html', '/forms/survey.html',
-                    '/displays/finish.html']
+    crowd0_order = ['/displays/info.html', '/displays/experiment0.html',
+                    '/forms/survey.html', '/displays/experiment1.html',
+                    '/forms/survey.html', '/displays/finish.html']
+    crowd1_order = ['/displays/info.html', '/displays/experiment1.html',
+                    '/forms/survey.html', '/displays/experiment0.html',
+                    '/forms/survey.html', '/displays/finish.html']
 
     def __init__(self):
         if not path.isfile(self.db_path):
@@ -207,7 +207,8 @@ class DB:
                     'endtxt': dt.datetime.fromtimestamp(timestamp)
                         .strftime('%Y-%m-%d %H:%M'),
                     'actor_id': actor_id}
-            query = """UPDATE actors SET end={end},endtxt='{endtxt}' WHERE rowid={actor_id}""".format(**data)
+            query = """UPDATE actors SET end={end},endtxt='{endtxt}' WHERE rowid={actor_id}""".format(
+                **data)
             self.c.execute(query)
         print('db: actor finished')
 
