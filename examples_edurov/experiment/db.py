@@ -209,9 +209,9 @@ class DB:
                     'endtxt': dt.datetime.fromtimestamp(timestamp)
                         .strftime('%Y-%m-%d %H:%M'),
                     'actor_id': actor_id}
-            query = """UPDATE actors SET end = :end, endtxt = :endtxt,
-            WHERE rowid = :actor_id LIMIT 1"""
-            self.c.execute(query, data)
+            query = """UPDATE actors SET end={end}, endtxt={endtxt}
+            WHERE rowid={actor_id}""".format(**data)
+            self.c.execute(query)
         print('db: actor finished')
 
     def experiment_change(self, actor_id, experiment, change):
