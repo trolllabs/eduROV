@@ -50,13 +50,15 @@ def response_parser(not_used, path):
             experiment=form_data['exp'],
             change=form_data['change'])
         return 'Experiment change registered'
+
+
     elif path.startswith('/survey_post'):
+        print('/survey_post')
         form_data = form_to_dict(path)
         # process survey data
-        print('Would now process survey...')
         return db.next_page()
     elif path.startswith('/next'):
-        print('i am in next parser')
+        print('/next')
         return db.next_page()
     else:
         return None
