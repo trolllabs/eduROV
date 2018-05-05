@@ -19,7 +19,7 @@ class DB:
         }'''
     crowd0_order = ['/displays/experiment0.html', '/forms/survey.html',
                     '/displays/experiment1.html', '/forms/survey.html',
-                    '/finish.html']
+                    '/displays/finish.html']
     crowd1_order = ['/displays/experiment1.html', '/forms/survey.html',
                     '/displays/experiment0.html', '/forms/survey.html',
                     '/displays/finish.html']
