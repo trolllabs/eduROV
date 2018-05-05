@@ -40,9 +40,6 @@ var x = setInterval(function() {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open( "GET", "/experiment_change?change=end", false);
             xmlHttp.send( null );
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open( "GET", "/participant_finished", false);
-            xmlHttp.send( null );
             window.alert("Reposition the robot");
             window.location.replace("/next");
         }

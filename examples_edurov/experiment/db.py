@@ -64,6 +64,11 @@ class DB:
                 """UPDATE actors SET position={} 
                 WHERE rowid={} LIMIT 1""".format(next, actor_id))
 
+        if next == 3:
+            print('It is now 3')
+        if next == 4:
+            print('Should now be finished')
+
         return 'redirect={}'.format(newpage)
 
     @classmethod
