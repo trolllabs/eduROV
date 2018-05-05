@@ -3,10 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Experiment 1</title>
-    <script src="experiment1.js"></script>
+    <script src="common.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #timer {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            z-index: 5;
+            padding: 10px;
+            font-size: 40px;
+            color: red;
+            font-family: Arial;
+        }
+    </style>
 </head>
 <body>
     This is experiment 1
     <a href="/next">Next</a>
+    <div id="timer"></div>
 </body>
 </html>

@@ -17,8 +17,7 @@ var x = setInterval(function() {
             elapsed += 1;
             document.getElementById("timer").innerHTML = training_time-elapsed;
         } else {
-            window.alert("Reposition robot. The real experiment will now last
-            for 60seconds.");
+            window.alert("Reposition robot. The real experiment will now last for 60seconds.");
             training = false;
             elapsed = 0;
         }
