@@ -24,8 +24,6 @@ class DB:
                     '/displays/experiment0.html', '/forms/survey.html',
                     '/displays/finish.html']
 
-    finish_idx = 4
-
     def __init__(self):
         if not path.isfile(self.db_path):
             self.createdb()
@@ -65,9 +63,6 @@ class DB:
             self.c.execute(
                 """UPDATE actors SET position={} 
                 WHERE rowid={} LIMIT 1""".format(next, actor_id))
-        if next == self.finish_idx:
-            self.actor_finished(self.last_id())
-        print(next)
 
         return 'redirect={}'.format(newpage)
 
@@ -131,7 +126,6 @@ class DB:
                 return 0
             else:
                 return 1
-
 
     def current_experiment(self):
         self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1 
