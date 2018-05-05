@@ -63,6 +63,7 @@ class DB:
             self.c.execute(
                 """UPDATE actors SET position={} 
                 WHERE rowid={} LIMIT 1""".format(current + 1, actor_id))
+        print('Returning {}'.format(newpage))
         return 'redirect={}'.format(newpage)
         # return 'page={}'.format(newpage)
 

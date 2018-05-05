@@ -9,7 +9,7 @@ function next_page(){
     xhttp.open("GET", "/next", true);
     xhttp.onload = function() {
                 console.log(this.responseURL)
-//                window.location.replace(this.responseURL);
+                window.location.replace(this.responseURL);
         };
     xhttp.send();
 }
