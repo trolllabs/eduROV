@@ -32,6 +32,9 @@
     </div>
     <div class="form-group">
         <label>Video game consumption</label>
+        <small class="form-text text-muted">How often do you
+            play video games (computer or console)?
+        </small>
         <select class="form-control" name="game" required>
             <option disabled selected value> -- select an option -- </option>
             <option value="1">Every day</option>
@@ -40,16 +43,13 @@
             <option value="4">A few times per year</option>
             <option value="5">Never</option>
         </select>
-        <small class="form-text text-muted">How often do you
-            play video games (computer or console)?
-        </small>
     </div>
     <div class="form-group">
         <label>Nickname</label>
-        <input class="form-control" name="nickname">
         <small class="form-text text-muted">
             If you want to compare highscore
         </small>
+        <input class="form-control" name="nickname">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

@@ -36,9 +36,7 @@ def response_parser(not_used, path):
                 button=form_data['button'])
             return 'Hit registered for experiment {}'.format(exp)
         else:
-            msg ='No active experiment'
-            print(msg)
-            return msg
+            return 'No active experiment'
     elif path.startswith('/participant_finished'):
         db.actor_finished(actor_id=db.last_id())
         return 'Finished participant registered'
@@ -54,12 +52,10 @@ def response_parser(not_used, path):
 
 
     elif path.startswith('/survey_post'):
-        print('/survey_post')
         form_data = form_to_dict(path)
         # process survey data
         return db.next_page()
     elif path.startswith('/next'):
-        print('/next')
         return db.next_page()
     else:
         return None

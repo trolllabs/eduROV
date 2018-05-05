@@ -53,7 +53,6 @@ class DB:
         dic = self.actor_dict(actor_id)
         next = dic['position'] + 1
         crowd = dic['crowd']
-        print('Crowd: {}, now: {}'.format(crowd, next))
         if crowd == 0:
             newpage = self.crowd0_order[next]
         else:
@@ -102,7 +101,7 @@ class DB:
                 )""")
             conn.commit()
             conn.close()
-            print('Created DB at {}'.format(cls.db_path))
+            print('db: created DB at {}'.format(cls.db_path))
         else:
             raise FileExistsError('{} already exist'.format(cls.db_path))
 
@@ -138,7 +137,6 @@ class DB:
         end0 = result[1]
         start1 = result[2]
         end1 = result[3]
-        print([start0, end0, start1, end1])
         if start0 and start1:
             if start0 > start1:
                 if not end0:
@@ -210,7 +208,6 @@ class DB:
                         .strftime('%Y-%m-%d %H:%M'),
                     'actor_id': actor_id}
             query = """UPDATE actors SET end={end},endtxt='{endtxt}' WHERE rowid={actor_id}""".format(**data)
-            print('trying: {}'.format(query))
             self.c.execute(query)
         print('db: actor finished')
 
