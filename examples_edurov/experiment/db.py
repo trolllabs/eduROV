@@ -51,21 +51,19 @@ class DB:
     def next_page(self):
         actor_id = self.last_id()
         dic = self.actor_dict(actor_id)
-        current = dic['position']
+        next = dic['position'] + 1
         crowd = dic['crowd']
-        print('Crowd: {}, current: {}'.format(crowd, current))
+        print('Crowd: {}, now: {}'.format(crowd, next))
         if crowd == 0:
-            newpage = self.crowd0_order[current + 1]
+            newpage = self.crowd0_order[next]
         else:
-            newpage = self.crowd1_order[current + 1]
+            newpage = self.crowd1_order[next]
 
         with self.conn:
             self.c.execute(
                 """UPDATE actors SET position={} 
-                WHERE rowid={} LIMIT 1""".format(current + 1, actor_id))
-        print('Returning {}'.format(newpage))
+                WHERE rowid={} LIMIT 1""".format(next, actor_id))
         return 'redirect={}'.format(newpage)
-        # return 'page={}'.format(newpage)
 
     @classmethod
     def createdb(cls):
