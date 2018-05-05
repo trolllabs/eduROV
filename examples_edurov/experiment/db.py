@@ -64,10 +64,8 @@ class DB:
                 """UPDATE actors SET position={} 
                 WHERE rowid={} LIMIT 1""".format(next, actor_id))
 
-        if next == 3:
-            print('It is now 3')
         if next == 4:
-            print('Should now be finished')
+            self.actor_finished(actor_id=self.last_id())
 
         return 'redirect={}'.format(newpage)
 
@@ -185,17 +183,17 @@ class DB:
 
     def update_total_hits(self, actor_id):
         self.c.execute(
+            """SELECT * FROM hits WHERE actor='{}' AND experiment='0'"""
+                .format(actor_id))
+        hits_exp_0 = len(self.c.fetchall())
+        self.c.execute(
             """SELECT * FROM hits WHERE actor='{}' AND experiment='1'"""
                 .format(actor_id))
         hits_exp_1 = len(self.c.fetchall())
-        self.c.execute(
-            """SELECT * FROM hits WHERE actor='{}' AND experiment='2'"""
-                .format(actor_id))
-        hits_exp_2 = len(self.c.fetchall())
-        tot_hits = hits_exp_1 + hits_exp_2
+        tot_hits = hits_exp_0 + hits_exp_1
         with self.conn:
-            data = {'tothitsexp0': hits_exp_1,
-                    'tothitsexp1': hits_exp_2,
+            data = {'tothitsexp0': hits_exp_0,
+                    'tothitsexp1': hits_exp_1,
                     'tothits': tot_hits,
                     'actor_id': actor_id}
             query = """UPDATE actors SET tothitsexp0 = :tothitsexp0, 
