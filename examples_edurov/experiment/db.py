@@ -24,6 +24,8 @@ class DB:
                     '/displays/experiment0.html', '/forms/survey.html',
                     '/displays/finish.html']
 
+    finish_idx = 4
+
     def __init__(self):
         if not path.isfile(self.db_path):
             self.createdb()
@@ -63,6 +65,9 @@ class DB:
             self.c.execute(
                 """UPDATE actors SET position={} 
                 WHERE rowid={} LIMIT 1""".format(next, actor_id))
+        if newpage == self.finish_idx:
+            self.actor_finished(self.last_id())
+
         return 'redirect={}'.format(newpage)
 
     @classmethod
@@ -226,7 +231,7 @@ class DB:
                         """UPDATE actors SET startexp2={time} 
                         WHERE rowid={actor_id} LIMIT 1""".format(**data),
                     )
-            print('db: experiment started')
+            print('db: experiment {} started'.format(experiment))
         elif change == 'end':
             with self.conn:
                 if experiment == 1:
@@ -239,7 +244,7 @@ class DB:
                         """UPDATE actors SET endexp2={time} 
                         WHERE rowid={actor_id} LIMIT 1""".format(**data),
                     )
-            print('db: experiment ended')
+            print('db: experiment {} ended'.format(experiment))
         else:
             print('db: not able to process experiment change')
 
