@@ -106,7 +106,28 @@ class DB:
         self.c.execute("""SELECT rowid FROM actors ORDER BY rowid DESC""")
         return self.c.fetchone()[0]
 
-    def last_experiment(self):
+    def relevant_experiment(self):
+        self.c.execute("""SELECT startexp1, endexp1, startexp2, endexp2, crowd 
+        FROM actors ORDER BY rowid DESC LIMIT 1""")
+        result = self.c.fetchone()
+        start0 = result[0]
+        end0 = result[1]
+        start1 = result[2]
+        end1 = result[3]
+        crowd = result[4]
+        if crowd == 0:
+            if end0:
+                return 1
+            else:
+                return 0
+        else:
+            if end1:
+                return 0
+            else:
+                return 1
+
+
+    def current_experiment(self):
         self.c.execute("""SELECT startexp1, endexp1, startexp2, endexp2 
         FROM actors ORDER BY rowid DESC LIMIT 1""")
         result = self.c.fetchone()
