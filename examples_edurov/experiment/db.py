@@ -65,9 +65,9 @@ class DB:
             self.c.execute(
                 """UPDATE actors SET position={} 
                 WHERE rowid={} LIMIT 1""".format(next, actor_id))
-        if newpage == self.finish_idx:
+        if next == self.finish_idx:
             self.actor_finished(self.last_id())
-        print(newpage)
+        print(next)
 
         return 'redirect={}'.format(newpage)
 
@@ -87,12 +87,12 @@ class DB:
                 end real,
                 endtxt text,
                 crowd integer,
+                startexp0 real,
                 startexp1 real,
-                startexp2 real,
+                endexp0 real,
                 endexp1 real,
-                endexp2 real,
+                tothitsexp0 integer,
                 tothitsexp1 integer,
-                tothitsexp2 integer,
                 tothits integer,
                 valid integer
                 )""")
@@ -113,7 +113,7 @@ class DB:
         return self.c.fetchone()[0]
 
     def relevant_experiment(self):
-        self.c.execute("""SELECT startexp1, endexp1, startexp2, endexp2, crowd 
+        self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1, crowd 
         FROM actors ORDER BY rowid DESC LIMIT 1""")
         result = self.c.fetchone()
         start0 = result[0]
@@ -134,7 +134,7 @@ class DB:
 
 
     def current_experiment(self):
-        self.c.execute("""SELECT startexp1, endexp1, startexp2, endexp2 
+        self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1 
         FROM actors ORDER BY rowid DESC LIMIT 1""")
         result = self.c.fetchone()
         start0 = result[0]
@@ -145,14 +145,14 @@ class DB:
         if start0 and start1:
             if start0 > start1:
                 if not end0:
-                    return 1
+                    return 0
             else:
                 if not end1:
-                    return 2
+                    return 1
         elif start0 and not end0:
-            return 1
+            return 0
         elif start1 and not end1:
-            return 2
+            return 1
         return None
 
     def next_crowd(self):
@@ -195,12 +195,12 @@ class DB:
         hits_exp_2 = len(self.c.fetchall())
         tot_hits = hits_exp_1 + hits_exp_2
         with self.conn:
-            data = {'tothitsexp1': hits_exp_1,
-                    'tothitsexp2': hits_exp_2,
+            data = {'tothitsexp0': hits_exp_1,
+                    'tothitsexp1': hits_exp_2,
                     'tothits': tot_hits,
                     'actor_id': actor_id}
-            query = """UPDATE actors SET tothitsexp1 = :tothitsexp1, 
-            tothitsexp2 = :tothitsexp2, tothits = :tothits 
+            query = """UPDATE actors SET tothitsexp0 = :tothitsexp0, 
+            tothitsexp1 = :tothitsexp1, tothits = :tothits 
             WHERE rowid = :actor_id LIMIT 1"""
             self.c.execute(query, data)
         print('db: updated total hits')
@@ -223,27 +223,27 @@ class DB:
         data = {'actor_id': actor_id, 'time': timestamp}
         if change == 'start':
             with self.conn:
+                if experiment == 0:
+                    self.c.execute(
+                        """UPDATE actors SET startexp0={time} 
+                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
+                    )
                 if experiment == 1:
                     self.c.execute(
                         """UPDATE actors SET startexp1={time} 
                         WHERE rowid={actor_id} LIMIT 1""".format(**data),
                     )
-                if experiment == 2:
-                    self.c.execute(
-                        """UPDATE actors SET startexp2={time} 
-                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
-                    )
             print('db: experiment {} started'.format(experiment))
         elif change == 'end':
             with self.conn:
+                if experiment == 0:
+                    self.c.execute(
+                        """UPDATE actors SET endexp0={time} 
+                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
+                    )
                 if experiment == 1:
                     self.c.execute(
                         """UPDATE actors SET endexp1={time} 
-                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
-                    )
-                if experiment == 2:
-                    self.c.execute(
-                        """UPDATE actors SET endexp2={time} 
                         WHERE rowid={actor_id} LIMIT 1""".format(**data),
                     )
             print('db: experiment {} ended'.format(experiment))
@@ -278,11 +278,11 @@ class DB:
 
     def all_actors_html(self):
         cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Start', 'End',
-                     'Start 1', 'End 1', 'Start 2', 'End 2', 'Hits 1',
-                     'Hits 2']
+                     'Start 0', 'End 0', 'Start 1', 'End 1', 'Hits 0',
+                     'Hits 1']
         cols = ['rowid', 'nickname', 'crowd', 'age', 'starttxt', 'endtxt',
-                'startexp1', 'endexp1', 'startexp2', 'endexp2', 'tothitsexp1',
-                'tothitsexp2']
+                'startexp0', 'endexp0', 'startexp1', 'endexp1', 'tothitsexp0',
+                'tothitsexp1']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))

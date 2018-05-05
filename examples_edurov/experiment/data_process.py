@@ -29,7 +29,7 @@ def response_parser(not_used, path):
         # /new_hit?button=2
         form_data = form_to_dict(path)
         exp = db.current_experiment()
-        if exp:
+        if exp != None:
             db.new_hit(
                 actor_id=db.last_id(),
                 experiment=exp,
