@@ -21,6 +21,7 @@ var x = setInterval(function() {
             training = false;
             elapsed = 0;
         }
+    }
     else {
         if (experiment_time > elapsed){
             elapsed += 1;
