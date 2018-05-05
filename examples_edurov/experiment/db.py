@@ -211,7 +211,7 @@ class DB:
                     'actor_id': actor_id}
             query = """UPDATE actors SET end={end}, endtxt={endtxt} WHERE rowid={actor_id}""".format(**data)
             print('trying: {}'.format(query))
-            self.c.execute(query)
+            self.c.execute("""UPDATE actors SET end={end}, endtxt={endtxt} WHERE rowid={actor_id}""".format(**data))
         print('db: actor finished')
 
     def experiment_change(self, actor_id, experiment, change):
