@@ -6,6 +6,7 @@ var training_time = 10;
 var experiment_time = 20;
 var training = true;
 var elapsed = 0;
+var experimenting = false;
 
 sleep(1000)
 
@@ -17,16 +18,18 @@ var x = setInterval(function() {
             elapsed += 1;
             document.getElementById("timer").innerHTML = training_time-elapsed;
         } else {
-            window.alert("Reposition robot. The real experiment will now last for 60 seconds.");
             training = false;
+            experimenting = true;
             elapsed = 0;
+            window.alert("Reposition robot. The real experiment will now last for 60 seconds.");
         }
     }
-    else {
+    else if (experimenting) {
         if (experiment_time > elapsed){
             elapsed += 1;
             document.getElementById("timer").innerHTML = experiment_time-elapsed;
         } else {
+            experimenting = false;
             window.alert("Reposition the robot");
             window.location.replace("/next");
         }
