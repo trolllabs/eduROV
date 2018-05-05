@@ -9,6 +9,26 @@ var elapsed = 0;
 var experimenting = false;
 var server_notified = false;
 
+var last_key;
+var key_dict = {event:'', keycode:0};
+
+document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    if (evt.keyCode != last_key){
+        key_dict['event'] = 'KEYDOWN';
+        key_dict['keycode'] = evt.keyCode;
+        send_keys(JSON.stringify(key_dict))
+        last_key = evt.keyCode;
+    }
+}
+
+document.onkeyup = function(evt) {
+    key_dict['event'] = 'KEYUP';
+    key_dict['keycode'] = evt.keyCode;
+    send_keys(JSON.stringify(key_dict))
+    last_key = 0;
+}
+
 sleep(1000)
 
 window.alert("You will now get 30 seconds to try this display.");
@@ -45,3 +65,4 @@ var x = setInterval(function() {
         }
     }
 }, 1000);
+

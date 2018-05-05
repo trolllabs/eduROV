@@ -51,7 +51,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     custom_response = None
 
     def do_GET(self):
-        print('GET: {}'.format(self.path))
         if self.path == '/':
             self.redirect('/index.html')
         elif self.path == '/stream.mjpg':
