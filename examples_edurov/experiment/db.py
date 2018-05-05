@@ -67,6 +67,7 @@ class DB:
                 WHERE rowid={} LIMIT 1""".format(next, actor_id))
         if newpage == self.finish_idx:
             self.actor_finished(self.last_id())
+        print(newpage)
 
         return 'redirect={}'.format(newpage)
 
@@ -136,20 +137,21 @@ class DB:
         self.c.execute("""SELECT startexp1, endexp1, startexp2, endexp2 
         FROM actors ORDER BY rowid DESC LIMIT 1""")
         result = self.c.fetchone()
-        start1 = result[0]
-        end1 = result[1]
-        start2 = result[2]
-        end2 = result[3]
-        if start1 and start2:
-            if start1 > start2:
-                if not end1:
+        start0 = result[0]
+        end0 = result[1]
+        start1 = result[2]
+        end1 = result[3]
+        print([start0, end0, start1, end1])
+        if start0 and start1:
+            if start0 > start1:
+                if not end0:
                     return 1
             else:
-                if not end2:
+                if not end1:
                     return 2
-        elif start1 and not end1:
+        elif start0 and not end0:
             return 1
-        elif start2 and not end2:
+        elif start1 and not end1:
             return 2
         return None
 
