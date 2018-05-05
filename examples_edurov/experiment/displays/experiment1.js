@@ -6,7 +6,7 @@
 //
 function next_page(){
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/next", true);
+    xhttp.open("GET", "/next124", true);
     xhttp.onload = function() {
                 console.log(this.responseURL)
                 window.location.replace(this.responseURL);
