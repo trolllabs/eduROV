@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Info</title>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #info {
+            width: 500px;
+            display: block;
+            margin: 50px auto;
+        }
+        img {
+            width: 100%;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="info">
+    <h2>Welcome to the experiment!</h2>
+    <p>
+        This experiment aims to investigate how different ways of presenting a
+        video with time delay effects user performance.
+    </p>
+    <p>
+        You will soon be presented with a camera feed from a RC car similar to
+        the one below. You control the car with the arrow keys.
+    </p>
+    <img src="./static/example.jpg">
+    <p>
+        One by one, in random order the round LED will light up. You shall then
+        steer the robot such that black pin goes inside the corresponding hole.
+    </p>
+    <h3>
+        Your goal
+    </h3>
+    <p>
+        In 60 seconds, your goal is to make as many "hits" as possible.
+    </p>
+    <h3>
+        Last notes
+    </h3>
+    <p>
+        Two different display types will be shown to you. You will be given a
+        30 seconds long "training period" to get used to the display before
+        hits starts to count.
+    </p>
+    <a class="btn btn-primary" href="stop" role="button">OK, continue</a>
+</div>
+
+</body>
+</html>
