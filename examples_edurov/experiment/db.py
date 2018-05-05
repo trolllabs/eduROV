@@ -63,7 +63,7 @@ class DB:
                 """UPDATE actors SET position={} 
                 WHERE rowid={} LIMIT 1""".format(next, actor_id))
 
-        if next == 4:
+        if newpage == '/displays/finish.html':
             self.actor_finished(actor_id=self.last_id())
 
         return 'redirect={}'.format(newpage)
