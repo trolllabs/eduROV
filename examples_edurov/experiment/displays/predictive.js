@@ -45,5 +45,3 @@ function set_base_margin(){
     console.log(base_margin);
     document.getElementById("stream").style.marginLeft = `${base_margin}px`;
 }
-
-set_base_margin();
