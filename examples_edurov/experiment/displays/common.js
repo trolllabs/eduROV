@@ -26,6 +26,7 @@ function update_exp1_keys(keycode, value){
 }
 
 document.onkeydown = async function(evt) {
+    console.log('key DOWN')
     evt = evt || window.event;
     if (evt.keyCode != last_key){
         key_dict['event'] = 'KEYDOWN';
@@ -37,11 +38,13 @@ document.onkeydown = async function(evt) {
             }
             await sleep(added_delay);
             send_keys(JSON.stringify(key_dict));
+            console.log('sent DOWN')
         }
     }
 }
 
 document.onkeyup = async function(evt) {
+    console.log('key UP')
     key_dict['event'] = 'KEYUP';
     key_dict['keycode'] = evt.keyCode;
     last_key = 0;
@@ -49,10 +52,9 @@ document.onkeyup = async function(evt) {
         if (exp == 1){
             update_exp1_keys(evt.keyCode, 0)
         }
-        console.log('before')
         await sleep(added_delay);
         send_keys(JSON.stringify(key_dict));
-        console.log('after')
+        console.log('sent UP')
     }
 }
 
