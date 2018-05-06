@@ -57,7 +57,7 @@ function send_keys(json_string){
     }
 }
 
-await sleep(1000);
+sleep(1000);
 
 window.alert("You will now get 30 seconds to try this display.");
 
