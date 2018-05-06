@@ -7,7 +7,7 @@ var key_status = {up: 0, down: 0, right: 0, left:0}
 var horizontal_move = 0;
 var vertical_move = 0;
 
-var update_interval = 500;
+var update_interval = 50;
 var perceived_delay = 800;
 
 function sleep(ms) {
