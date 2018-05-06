@@ -2,6 +2,8 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+var arrow_key_codes = [38, 40, 39, 37]
+
 var training_time = 10;
 var experiment_time = 20;
 var training = true;
@@ -13,20 +15,33 @@ var last_key;
 var key_dict = {event:'', keycode:0};
 
 document.onkeydown = function(evt) {
-    evt = evt || window.event;
-    if (evt.keyCode != last_key){
-        key_dict['event'] = 'KEYDOWN';
-        key_dict['keycode'] = evt.keyCode;
-        send_keys(JSON.stringify(key_dict))
-        last_key = evt.keyCode;
+    if (experimenting || training){
+        evt = evt || window.event;
+        if (evt.keyCode != last_key){
+            key_dict['event'] = 'KEYDOWN';
+            key_dict['keycode'] = evt.keyCode;
+            send_keys(JSON.stringify(key_dict))
+            last_key = evt.keyCode;
+        }
     }
 }
 
 document.onkeyup = function(evt) {
-    key_dict['event'] = 'KEYUP';
-    key_dict['keycode'] = evt.keyCode;
-    send_keys(JSON.stringify(key_dict))
-    last_key = 0;
+    if (experimenting || training){
+        key_dict['event'] = 'KEYUP';
+        key_dict['keycode'] = evt.keyCode;
+        send_keys(JSON.stringify(key_dict))
+        last_key = 0;
+    }
+}
+
+function stop_car(){
+    var length = arrow_key_codes.length;
+    for (i = 0; i < length; i++) {
+        key_dict['event'] = 'KEYUP';
+        key_dict['keycode'] = arrow_key_codes[i];
+        send_keys(JSON.stringify(key_dict))
+    }
 }
 
 function send_keys(json_string){
@@ -48,6 +63,7 @@ var x = setInterval(function() {
             elapsed += 1;
             document.getElementById("timer").innerHTML = training_time-elapsed;
         } else {
+            stop_car();
             training = false;
             experimenting = true;
             elapsed = 0;
@@ -57,7 +73,7 @@ var x = setInterval(function() {
     else if (experimenting) {
         if (!server_notified){
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open( "GET", "/experiment_change?change=start", false);
+            xmlHttp.open( "GET", "/experiment_change?change=start", true);
             xmlHttp.send( null );
             server_notified = true;
         }
@@ -65,9 +81,10 @@ var x = setInterval(function() {
             elapsed += 1;
             document.getElementById("timer").innerHTML = experiment_time-elapsed;
         } else {
+            stop_car();
             experimenting = false;
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open( "GET", "/experiment_change?change=end", false);
+            xmlHttp.open( "GET", "/experiment_change?change=end", true);
             xmlHttp.send( null );
             window.alert("Reposition the robot");
             window.location.replace("/next");
