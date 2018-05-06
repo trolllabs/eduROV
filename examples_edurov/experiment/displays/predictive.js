@@ -14,20 +14,20 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function update_var_with_delay(variable, amount, delay){
+async function update_hor_with_delay(amount, delay){
     console.log("Before delay");
     await sleep(delay);
-    variable += amount;
+    horizontal_move += amount;
     console.log("after delay");
 }
 
 var x = setInterval(function() {
     if (key_status[left]){
         horizontal_move += 1;
-        update_var_with_delay(horizontal_move, -1, perceived_delay);
+        update_hor_with_delay(-1, perceived_delay);
     } else if (key_status[right]){
         horizontal_move -= 1;
-        update_var_with_delay(horizontal_move, +1, perceived_delay);
+        update_hor_with_delay(+1, perceived_delay);
     }
     console.log(horizontal_move);
 }, update_interval);
