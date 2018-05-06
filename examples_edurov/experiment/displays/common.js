@@ -29,6 +29,15 @@ document.onkeyup = function(evt) {
     last_key = 0;
 }
 
+function send_keys(json_string){
+    if(json_string.length > 0){
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "keys.json", true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(json_string);
+    }
+}
+
 sleep(1000)
 
 window.alert("You will now get 30 seconds to try this display.");
