@@ -35,7 +35,7 @@ document.onkeydown = async function(evt) {
             if (exp == 1){
                 update_exp1_keys(evt.keyCode, 1)
             }
-            await sleep(added_delay);
+//            await sleep(added_delay);
             send_keys(JSON.stringify(key_dict));
         }
     }
@@ -49,7 +49,7 @@ document.onkeyup = async function(evt) {
         if (exp == 1){
             update_exp1_keys(evt.keyCode, 0)
         }
-        await sleep(added_delay);
+//        await sleep(added_delay);
         send_keys(JSON.stringify(key_dict));
     }
 }
