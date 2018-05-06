@@ -16,7 +16,7 @@ var server_notified = false;
 var last_key;
 var key_dict = {event:'', keycode:0};
 
-document.onkeydown = function(evt) {
+document.onkeydown = async function(evt) {
     if (experimenting || training){
         await sleep(added_delay);
         evt = evt || window.event;
@@ -29,7 +29,7 @@ document.onkeydown = function(evt) {
     }
 }
 
-document.onkeyup = function(evt) {
+document.onkeyup = async function(evt) {
     if (experimenting || training){
         await sleep(added_delay);
         key_dict['event'] = 'KEYUP';
