@@ -99,8 +99,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path.startswith('/keys.json'):
             content_len = int(self.headers['Content-Length'])
-            print('got {} bytes'.format(content_len))
             post_body = self.rfile.read(content_len).decode('utf-8')
+            print(post_body)
             json_obj = json.loads(post_body)
             self.keys.set_from_js_dict(json_obj)
             self.send_response(200)
