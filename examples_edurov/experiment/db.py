@@ -99,6 +99,12 @@ class DB:
                 button integer,
                 time integer
                 )""")
+            c.execute("""CREATE TABLE survey (
+                actor integer,
+                experiment integer,
+                difficulty integer,
+                time integer
+                )""")
             conn.commit()
             conn.close()
             print('db: created DB at {}'.format(cls.db_path))
@@ -113,9 +119,7 @@ class DB:
         self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1, crowd 
         FROM actors ORDER BY rowid DESC LIMIT 1""")
         result = self.c.fetchone()
-        start0 = result[0]
         end0 = result[1]
-        start1 = result[2]
         end1 = result[3]
         crowd = result[4]
         if crowd == 0:
@@ -149,6 +153,36 @@ class DB:
         elif start1 and not end1:
             return 1
         return None
+
+    def last_experiment(self):
+        self.c.execute("""SELECT endexp0, endexp1 FROM actors ORDER BY 
+        rowid DESC LIMIT 1""")
+        result = self.c.fetchone()
+        end0 = result[0]
+        end1 = result[1]
+        if end0 and end1:
+            if end0 > end1:
+                return 0
+            else:
+                return 1
+        elif end0:
+            return 0
+        elif end1:
+            return 1
+        else:
+            return None
+
+    def add_survey(self, actor_id, experiment, difficulty):
+        timestamp = time.time()
+        with self.conn:
+            self.c.execute(
+                """INSERT INTO survey (actor, experiment, difficulty, time) 
+                VALUES (:actor, :experiment, :difficulty, :time)""",
+                {'actor': actor_id,
+                 'experiment': experiment,
+                 'difficulty': int(difficulty),
+                 'time': timestamp})
+        print('db: survey added')
 
     def next_crowd(self):
         self.c.execute("""SELECT * FROM actors WHERE crowd='0'""")

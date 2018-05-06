@@ -21,10 +21,13 @@ def response_parser(not_used, path):
             game_consumption=form_data['game']
         )
         return db.next_page()
+
     elif path.startswith('/actors'):
         return db.all_actors_html()
+
     elif path.startswith('/highscore'):
         return db.highscore_html()
+
     elif path.startswith('/new_hit'):
         # /new_hit?button=2
         form_data = form_to_dict(path)
@@ -37,9 +40,11 @@ def response_parser(not_used, path):
             return 'Hit registered for experiment {}'.format(exp)
         else:
             return 'No active experiment'
+
     elif path.startswith('/participant_finished'):
         db.actor_finished(actor_id=db.last_id())
         return 'Finished participant registered'
+
     elif path.startswith('/experiment_change'):
         # /experiment_change?change=start
         form_data = form_to_dict(path)
@@ -50,12 +55,17 @@ def response_parser(not_used, path):
             change=form_data['change'])
         return 'Experiment change registered'
 
-
     elif path.startswith('/survey_post'):
+        # /survey_post.php?difficulty=2
         form_data = form_to_dict(path)
-        # process survey data
+        exp = db.last_experiment()
+        db.add_survey(actor_id=db.last_id(),
+                      experiment=exp,
+                      difficulty=form_data['difficulty'])
         return db.next_page()
+
     elif path.startswith('/next'):
         return db.next_page()
+
     else:
         return None
