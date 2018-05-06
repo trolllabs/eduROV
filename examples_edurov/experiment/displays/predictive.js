@@ -23,7 +23,25 @@ async function update_hor_with_delay(amount, delay){
 }
 
 var x = setInterval(function() {
-    if (key_status[left]){
+    if (key_status[up]){
+        var factor = 0.8;
+        if (key_status[left]){
+            horizontal_move += factor;
+            update_hor_with_delay(-factor, perceived_delay);
+        } else if (key_status[right]){
+            horizontal_move -= factor;
+            update_hor_with_delay(+factor, perceived_delay);
+        }
+    } else if (key_status[down]){
+        var factor = -0.8;
+        if (key_status[left]){
+            horizontal_move += factor;
+            update_hor_with_delay(-factor, perceived_delay);
+        } else if (key_status[right]){
+            horizontal_move -= factor;
+            update_hor_with_delay(+factor, perceived_delay);
+        }
+    } else if (key_status[left]){
         horizontal_move += 1;
         update_hor_with_delay(-1, perceived_delay);
     } else if (key_status[right]){
