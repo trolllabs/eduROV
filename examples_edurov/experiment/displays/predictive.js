@@ -4,7 +4,7 @@ var right = 39;
 var left = 37;
 var key_status = {up: 0, down: 0, right: 0, left:0};
 var base_margin = 300;
-var pixel_turn_rate = 10;
+var pixel_turn_rate = 20;
 
 var horizontal_move = 0;
 var vertical_move = 0;
