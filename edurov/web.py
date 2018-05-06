@@ -55,6 +55,20 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.redirect('/index.html')
         elif self.path == '/stream.mjpg':
             self.serve_stream()
+        elif self.path.startswith('/keyup'):
+            print(self.path)
+            self.send_response(200)
+            self.end_headers()
+            self.keys.set(
+                key=int(self.path.split('=')[1]),
+                state=True)
+        elif self.path.startswith('/keydown'):
+            print(self.path)
+            self.send_response(200)
+            self.end_headers()
+            self.keys.set(
+                key=int(self.path.split('=')[1]),
+                state=True)
         elif self.path.startswith('/sensor.json'):
             self.serve_rov_data('sensor')
         elif self.path.startswith('/actuator.json'):
