@@ -42,6 +42,8 @@ function set_base_margin(){
     var imgW = myImage.width;
     var bodW = document.body.clientWidth;
     base_margin = (bodW-imgW)/2;
+    console.log(base_margin);
+    document.getElementById("stream").style.marginLeft = `${base_margin}px`;
 }
 
 set_base_margin();
