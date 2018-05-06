@@ -43,3 +43,5 @@ function set_base_margin(){
     var bodW = document.body.clientWidth;
     base_margin = (bodW-imgW)/2;
 }
+
+set_base_margin();
