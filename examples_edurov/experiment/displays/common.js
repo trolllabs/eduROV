@@ -29,7 +29,7 @@ document.onkeydown = async function(evt) {
     console.log('key DOWN')
     evt = evt || window.event;
     if (evt.keyCode != last_key){
-        if (arrow_key_codes.indexOf(keycode) > -1){
+        if (arrow_key_codes.indexOf(evt.keyCode) > -1){
     //        key_dict['event'] = 'KEYDOWN';
     //        key_dict['keycode'] = evt.keyCode;
             last_key = evt.keyCode;
@@ -51,7 +51,7 @@ document.onkeyup = async function(evt) {
 //    key_dict['event'] = 'KEYUP';
 //    key_dict['keycode'] = evt.keyCode;
     last_key = 0;
-    if (arrow_key_codes.indexOf(keycode) > -1){
+    if (arrow_key_codes.indexOf(evt.keyCode) > -1){
         if (experimenting || training){
             if (exp == 1){
                 update_exp1_keys(evt.keyCode, 0)
