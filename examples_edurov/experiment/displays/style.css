@@ -12,10 +12,14 @@ body {
     color: red;
     font-family: Arial;
 }
-img {
-    display:block;
-    transform: rotate(180deg);
+#wrapper {
     margin-top: 20px;
+}
+img {
+    display: block;
     margin-left: auto;
     margin-right: auto;
+}
+#stream {
+    transform: rotate(180deg);
 }
