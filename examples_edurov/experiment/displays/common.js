@@ -2,6 +2,8 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+var added_delay = 800;
+
 var arrow_key_codes = [38, 40, 39, 37]
 
 var training_time = 10;
@@ -16,6 +18,7 @@ var key_dict = {event:'', keycode:0};
 
 document.onkeydown = function(evt) {
     if (experimenting || training){
+        sleep(added_delay);
         evt = evt || window.event;
         if (evt.keyCode != last_key){
             key_dict['event'] = 'KEYDOWN';
@@ -28,6 +31,7 @@ document.onkeydown = function(evt) {
 
 document.onkeyup = function(evt) {
     if (experimenting || training){
+        sleep(added_delay);
         key_dict['event'] = 'KEYUP';
         key_dict['keycode'] = evt.keyCode;
         send_keys(JSON.stringify(key_dict))
