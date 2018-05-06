@@ -19,10 +19,10 @@ var key_dict = {event:'', keycode:0};
 
 function determine_exp(){
     var url = window.location.href;
-    if (url.includes("0")){
+    if (url.includes("experiment0")){
         exp = 0;
         console.log('exp = 0');
-    } else if (url.includes("1")){
+    } else if (url.includes("experiment1")){
         exp = 1;
         console.log('exp = 1');
         in_exp1();
