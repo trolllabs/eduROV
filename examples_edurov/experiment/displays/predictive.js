@@ -2,11 +2,12 @@ var up = 38;
 var down = 40;
 var right = 39;
 var left = 37;
-var key_status = {up: 0, down: 0, right: 0, left:0}
+var key_status = {up: 0, down: 0, right: 0, left:0};
 var base_marginLeft = 300;
 
 var horizontal_move = 0;
 var vertical_move = 0;
+var horizontal_px_move = 0;
 
 var update_interval = 25;
 var perceived_delay = 750;
@@ -28,7 +29,8 @@ var x = setInterval(function() {
         horizontal_move -= 1;
         update_hor_with_delay(+1, perceived_delay);
     }
-    console.log(horizontal_move)
-    document.getElementById("stream").style.marginLeft = base_marginLeft+horizontal_move;
+    console.log(horizontal_move);
+    horizontal_px_move = base_marginLeft+horizontal_move;
+    document.getElementById("stream").style.marginLeft = `${horizontal_px_move}px`;
 }, update_interval);
 

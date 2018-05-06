@@ -56,12 +56,10 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         elif self.path == '/stream.mjpg':
             self.serve_stream()
         elif self.path.startswith('/keyup'):
-            print(self.path)
             self.send_response(200)
             self.end_headers()
             self.keys.keyup(key=int(self.path.split('=')[1]))
         elif self.path.startswith('/keydown'):
-            print(self.path)
             self.send_response(200)
             self.end_headers()
             self.keys.keydown(key=int(self.path.split('=')[1]))
