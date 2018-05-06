@@ -12,20 +12,17 @@ body {
     color: red;
     font-family: Arial;
 }
-#wrapper {
+#stream {
     margin-top: 20px;
-}
-img {
     display: block;
     margin-left: auto;
     margin-right: auto;
-}
-#stream {
     transform: rotate(180deg);
     z-index: 1;
 }
 
 #overlay {
-    position: relative;
+    position: absolute;
     z-index: 2;
+    top: 20px;
 }

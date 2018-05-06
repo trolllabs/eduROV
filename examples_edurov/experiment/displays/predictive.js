@@ -44,4 +44,5 @@ function set_base_margin(){
     base_margin = (bodW-imgW)/2;
     console.log(base_margin);
     document.getElementById("stream").style.marginLeft = `${base_margin}px`;
+    document.getElementById("overlay").style.left = `${base_margin}px`;
 }
