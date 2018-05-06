@@ -29,17 +29,19 @@ document.onkeydown = async function(evt) {
     console.log('key DOWN')
     evt = evt || window.event;
     if (evt.keyCode != last_key){
-//        key_dict['event'] = 'KEYDOWN';
-//        key_dict['keycode'] = evt.keyCode;
-        last_key = evt.keyCode;
-        if (experimenting || training){
-            if (exp == 1){
-                update_exp1_keys(evt.keyCode, 1)
+        if (arrow_key_codes.indexOf(keycode) > -1){
+    //        key_dict['event'] = 'KEYDOWN';
+    //        key_dict['keycode'] = evt.keyCode;
+            last_key = evt.keyCode;
+            if (experimenting || training){
+                if (exp == 1){
+                    update_exp1_keys(evt.keyCode, 1)
+                }
+                await sleep(added_delay);
+    //            send_keys(JSON.stringify(key_dict));
+                send_keydown(evt.keyCode);
+                console.log('sent DOWN')
             }
-            await sleep(added_delay);
-//            send_keys(JSON.stringify(key_dict));
-            send_keydown(evt.keyCode);
-            console.log('sent DOWN')
         }
     }
 }
@@ -49,14 +51,16 @@ document.onkeyup = async function(evt) {
 //    key_dict['event'] = 'KEYUP';
 //    key_dict['keycode'] = evt.keyCode;
     last_key = 0;
-    if (experimenting || training){
-        if (exp == 1){
-            update_exp1_keys(evt.keyCode, 0)
+    if (arrow_key_codes.indexOf(keycode) > -1){
+        if (experimenting || training){
+            if (exp == 1){
+                update_exp1_keys(evt.keyCode, 0)
+            }
+            await sleep(added_delay);
+    //        send_keys(JSON.stringify(key_dict));
+            send_keyup(evt.keyCode);
+            console.log('sent UP')
         }
-        await sleep(added_delay);
-//        send_keys(JSON.stringify(key_dict));
-        send_keyup(evt.keyCode);
-        console.log('sent UP')
     }
 }
 
