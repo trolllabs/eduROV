@@ -32,7 +32,7 @@ document.onkeyup = function(evt) {
 function send_keys(json_string){
     if(json_string.length > 0){
         var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "keys.json", true);
+        xhttp.open("POST", "/keys.json", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(json_string);
     }
