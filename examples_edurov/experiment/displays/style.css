@@ -23,9 +23,9 @@ img {
 #stream {
     transform: rotate(180deg);
     z-index: 1;
-    position: relative;
 }
 
 #overlay {
+    position: relative;
     z-index: 2;
 }
