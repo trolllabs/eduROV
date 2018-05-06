@@ -15,8 +15,10 @@ function sleep(ms) {
 }
 
 async function update_var_with_delay(variable, amount, delay){
+    console.log("Before delay");
     await sleep(delay);
     variable += amount;
+    console.log("after delay);
 }
 
 var x = setInterval(function() {
