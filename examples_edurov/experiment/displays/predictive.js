@@ -15,10 +15,8 @@ function sleep(ms) {
 }
 
 async function update_hor_with_delay(amount, delay){
-    console.log("Before delay");
     await sleep(delay);
     horizontal_move += amount;
-    console.log("after delay");
 }
 
 var x = setInterval(function() {
@@ -29,6 +27,5 @@ var x = setInterval(function() {
         horizontal_move -= 1;
         update_hor_with_delay(+1, perceived_delay);
     }
-    console.log(horizontal_move);
 }, update_interval);
 

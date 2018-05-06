@@ -49,8 +49,10 @@ document.onkeyup = async function(evt) {
         if (exp == 1){
             update_exp1_keys(evt.keyCode, 0)
         }
+        console.log('before')
         await sleep(added_delay);
         send_keys(JSON.stringify(key_dict));
+        console.log('after')
     }
 }
 
