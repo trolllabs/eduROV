@@ -3,6 +3,7 @@ function sleep(ms) {
 }
 
 var added_delay = 500;
+var exp = 0;
 
 var arrow_key_codes = [38, 40, 39, 37]
 
@@ -15,6 +16,18 @@ var server_notified = false;
 
 var last_key;
 var key_dict = {event:'', keycode:0};
+
+function determine_exp(){
+    var url = window.location.href;
+    if (url.includes("0")){
+        exp = 0;
+        console.log('exp = 0');
+    } else if (url.includes("1")){
+        exp = 1;
+        console.log('exp = 1');
+        in_exp1();
+    }
+}
 
 document.onkeydown = async function(evt) {
     await sleep(added_delay);
@@ -57,7 +70,7 @@ function send_keys(json_string){
     }
 }
 
-sleep(1000);
+determine_exp();
 
 window.alert("You will now get 30 seconds to try this display.");
 
