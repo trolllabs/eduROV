@@ -2,7 +2,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-var added_delay = 500;
+var added_delay = 0; //500
 var exp = 0;
 var arrow_key_codes = [38, 40, 39, 37];
 var training = true;

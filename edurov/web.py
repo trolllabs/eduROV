@@ -59,16 +59,12 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             print(self.path)
             self.send_response(200)
             self.end_headers()
-            self.keys.set(
-                key=int(self.path.split('=')[1]),
-                state=True)
+            self.keys.keyup(key=int(self.path.split('=')[1]))
         elif self.path.startswith('/keydown'):
             print(self.path)
             self.send_response(200)
             self.end_headers()
-            self.keys.set(
-                key=int(self.path.split('=')[1]),
-                state=True)
+            self.keys.keydown(key=int(self.path.split('=')[1]))
         elif self.path.startswith('/sensor.json'):
             self.serve_rov_data('sensor')
         elif self.path.startswith('/actuator.json'):
