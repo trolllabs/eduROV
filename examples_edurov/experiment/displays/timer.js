@@ -3,7 +3,7 @@ var experiment_time = 60;
 var elapsed = 0;
 var server_notified = false;
 
-function async stop_car(){
+async function stop_car(){
     var length = arrow_key_codes.length;
     for (i = 0; i < length; i++) {
         send_keyup(arrow_key_codes[i]);
@@ -14,7 +14,6 @@ function async stop_car(){
     }
 }
 
-console.log('i am in timer');
 window.alert("You will now get 30 seconds to try this display.");
 
 var x = setInterval(function() {
