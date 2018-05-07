@@ -17,7 +17,7 @@ var update_interval = 25;
 var perceived_delay = 750;
 
 
-var bodW = document.body.clientWidth;
+var bodW = 0;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -78,7 +78,7 @@ function set_base_margin(){
     var img = document.getElementById("stream");
     myImage.src = img.src;
     var imgW = myImage.width;
-    var bodW = document.body.clientWidth;
+    bodW = document.body.clientWidth;
     base_margin = (bodW-imgW)/2;
     console.log(base_margin);
     document.getElementById("stream").style.marginLeft = `${base_margin}px`;
