@@ -3,8 +3,12 @@ var experiment_time = 60;
 var elapsed = 0;
 var server_notified = false;
 
-function stop_car(){
+function async stop_car(){
     var length = arrow_key_codes.length;
+    for (i = 0; i < length; i++) {
+        send_keyup(arrow_key_codes[i]);
+    }
+    await sleep(added_delay+50);
     for (i = 0; i < length; i++) {
         send_keyup(arrow_key_codes[i]);
     }
