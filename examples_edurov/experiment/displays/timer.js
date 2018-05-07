@@ -6,9 +6,7 @@ var server_notified = false;
 function stop_car(){
     var length = arrow_key_codes.length;
     for (i = 0; i < length; i++) {
-        key_dict['event'] = 'KEYUP';
-        key_dict['keycode'] = arrow_key_codes[i];
-        send_keys(JSON.stringify(key_dict))
+        send_keyup(arrow_key_codes[i]);
     }
 }
 
