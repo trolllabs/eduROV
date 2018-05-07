@@ -36,7 +36,7 @@ async function update_scale_with_delay(amount, delay){
 var x = setInterval(function() {
     if (key_status[up]){
         scale_move += 1;
-        update_hor_with_delay(-1, perceived_delay);
+        update_scale_with_delay(-1, perceived_delay);
 
         var factor = 0.8;
         if (key_status[left]){
@@ -48,7 +48,7 @@ var x = setInterval(function() {
         }
     } else if (key_status[down]){
         scale_move -= 1;
-        update_hor_with_delay(1, perceived_delay);
+        update_scale_with_delay(1, perceived_delay);
 
         var factor = -0.8;
         if (key_status[left]){
