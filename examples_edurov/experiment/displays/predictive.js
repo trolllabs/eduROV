@@ -6,7 +6,7 @@ var key_status = {up: 0, down: 0, right: 0, left:0};
 var base_margin = 0;
 var base_image_width = 1024;
 var pixel_turn_rate = 30;
-var pixel_scale_rate = 2;
+var pixel_scale_rate = 5;
 
 var horizontal_move = 0;
 var scale_move = 0;
