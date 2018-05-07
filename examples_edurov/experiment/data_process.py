@@ -39,6 +39,7 @@ def response_parser(not_used, path):
                 button=form_data['button'])
             return 'Hit registered for experiment {}'.format(exp)
         else:
+            print('No active experiment')
             return 'No active experiment'
 
     elif path.startswith('/participant_finished'):

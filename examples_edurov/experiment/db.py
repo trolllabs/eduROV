@@ -289,7 +289,7 @@ class DB:
                  'button': int(button),
                  'time': time.time()})
             self.update_total_hits(actor_id)
-        print('db: new hit registered')
+        print('db: new hit registered for btn {}'.format(button))
 
     def n_actors(self):
         self.c.execute("""SELECT * FROM actors""")

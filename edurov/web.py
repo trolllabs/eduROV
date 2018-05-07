@@ -58,11 +58,13 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         elif self.path.startswith('/keyup'):
             self.send_response(200)
             self.end_headers()
-            self.keys.keyup(key=int(self.path.split('=')[1]))
+            self.keys.keyup(key=int(self.path.split('=')[1]),
+                            make_exception=False)
         elif self.path.startswith('/keydown'):
             self.send_response(200)
             self.end_headers()
-            self.keys.keydown(key=int(self.path.split('=')[1]))
+            self.keys.keydown(key=int(self.path.split('=')[1]),
+                              make_exception=False)
         elif self.path.startswith('/sensor.json'):
             self.serve_rov_data('sensor')
         elif self.path.startswith('/actuator.json'):
@@ -108,7 +110,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         if self.path.startswith('/keys.json'):
             content_len = int(self.headers['Content-Length'])
             post_body = self.rfile.read(content_len).decode('utf-8')
-            print(post_body)
             json_obj = json.loads(post_body)
             self.keys.set_from_js_dict(json_obj)
             self.send_response(200)

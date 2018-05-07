@@ -27,29 +27,25 @@ function update_exp1_keys(keycode, value){
 document.onkeydown = async function(evt) {
     evt = evt || window.event;
     if (evt.keyCode != last_key){
-        if (arrow_key_codes.indexOf(evt.keyCode) > -1){
-            last_key = evt.keyCode;
-            if (experimenting || training){
-                if (exp == 1){
-                    update_exp1_keys(evt.keyCode, 1)
-                }
-                await sleep(added_delay);
-                send_keydown(evt.keyCode);
+        last_key = evt.keyCode;
+        if (experimenting || training){
+            if (exp == 1){
+                update_exp1_keys(evt.keyCode, 1)
             }
+            await sleep(added_delay);
+            send_keydown(evt.keyCode);
         }
     }
 }
 
 document.onkeyup = async function(evt) {
     last_key = 0;
-    if (arrow_key_codes.indexOf(evt.keyCode) > -1){
-        if (experimenting || training){
-            if (exp == 1){
-                update_exp1_keys(evt.keyCode, 0)
-            }
-            await sleep(added_delay);
-            send_keyup(evt.keyCode);
+    if (experimenting || training){
+        if (exp == 1){
+            update_exp1_keys(evt.keyCode, 0)
         }
+        await sleep(added_delay);
+        send_keyup(evt.keyCode);
     }
 }
 

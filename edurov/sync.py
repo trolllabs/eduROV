@@ -76,7 +76,7 @@ class KeyManager(object):
                     key.keyup()
                 return
 
-    def get(self, key_idx):
+    def get(self, key_idx, make_exception=True):
         if isinstance(key_idx, str):
             for key in self.keys:
                 if key.common == key_idx or key.KeyASCII == key_idx:
@@ -85,16 +85,23 @@ class KeyManager(object):
             for key in self.keys:
                 if key.keycode == key_idx:
                     return key
-        raise ValueError('Could not find key {}'.format(key_idx))
+        if make_exception:
+            raise ValueError('Could not find key {}'.format(key_idx))
+        else:
+            return None
 
     def state(self, key):
         return self.get(key).state
 
-    def keydown(self, key):
-        self.get(key).keydown()
+    def keydown(self, key, make_exception=True):
+        btn = self.get(key, make_exception=make_exception)
+        if btn:
+            btn.keydown()
 
-    def keyup(self, key):
-        self.get(key).keyup()
+    def keyup(self, key, make_exception=True):
+        btn = self.get(key, make_exception=make_exception)
+        if btn:
+            btn.keyup()
 
     @property
     def qweasd_dict(self):
