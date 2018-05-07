@@ -30,7 +30,7 @@ document.onkeydown = async function(evt) {
         last_key = evt.keyCode;
         if (experimenting || training){
             if (exp == 1){
-                update_exp1_keys(evt.keyCode, 1)
+                update_exp1_keys(evt.keyCode, 1);
             }
             await sleep(added_delay);
             send_keydown(evt.keyCode);
@@ -42,7 +42,7 @@ document.onkeyup = async function(evt) {
     last_key = 0;
     if (experimenting || training){
         if (exp == 1){
-            update_exp1_keys(evt.keyCode, 0)
+            update_exp1_keys(evt.keyCode, 0);
         }
         await sleep(added_delay);
         send_keyup(evt.keyCode);
