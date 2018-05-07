@@ -6,7 +6,7 @@ var key_status = {up: 0, down: 0, right: 0, left:0};
 var base_margin = 0;
 var base_image_width = 1024;
 var pixel_turn_rate = 30;
-var pixel_scale_rate = 8;
+var pixel_scale_rate = 2;
 
 var horizontal_move = 0;
 var scale_move = 0;
@@ -66,11 +66,15 @@ var x = setInterval(function() {
         update_hor_with_delay(+1, perceived_delay);
     }
     console.log(horizontal_move);
+
+    var new_width = base_image_width + scale_move*pixel_scale_rate;
+    var new_margin_left = (bodW-new_width)/2 + horizontal_move*pixel_turn_rate;
+
     horizontal_px_move = base_margin+horizontal_move*pixel_turn_rate;
     scale_px_move = base_image_width+scale_move*pixel_scale_rate;
-    margin_left = (bodW-base_image_width)/2+scale_move*pixel_scale_rate;
-    document.getElementById("stream").style.marginLeft = `${margin_left}px`;
-    document.getElementById("stream").style.width = `${scale_px_move}px`;
+    margin_left = (bodW-scale_px_move)/2+scale_move*pixel_scale_rate;
+    document.getElementById("stream").style.width = `${new_width}px`;
+    document.getElementById("stream").style.marginLeft = `${new_margin_left}px`;
 }, update_interval);
 
 function set_base_margin(){
