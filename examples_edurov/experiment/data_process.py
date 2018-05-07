@@ -28,7 +28,7 @@ def response_parser(not_used, path):
     elif path.startswith('/highscore'):
         return db.highscore_html()
 
-    elif path.startswith('/keydowns'):
+    elif path.startswith('/total_keydowns'):
         form_data = form_to_dict(path)
         db.set_keydowns(actor_id=db.last_id(),
                         exp=form_data['exp'],
@@ -69,7 +69,7 @@ def response_parser(not_used, path):
         exp = db.last_experiment()
         db.add_survey(actor_id=db.last_id(),
                       experiment=exp,
-                      difficulty=form_data['difficulty'])
+                      form=form_data)
         return db.next_page()
 
     elif path.startswith('/next'):

@@ -197,6 +197,7 @@ class DB:
         self.c.execute("""SELECT position, crowd FROM actors ORDER BY rowid 
         DESC LIMIT 1""")
         position, crowd = self.c.fetchone()
+        print('current exp: {}'.format(self.crowds_exp[crowd][position]))
         return self.crowds_exp[crowd][position]
 
         # self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1

@@ -44,7 +44,7 @@ var x = setInterval(function() {
             xmlHttp.send( null );
 
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/keydowns?amount="+total_n_keydowns+"&exp="+exp,
+            xhttp.open("GET", "/total_keydowns?amount="+total_n_keydowns+"&exp="+exp,
 
             true);
             xhttp.setRequestHeader("Content-Type", "text/html");
