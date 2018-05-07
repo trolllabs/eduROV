@@ -1,5 +1,5 @@
-var training_time = 10;
-var experiment_time = 20;
+var training_time = 30;
+var experiment_time = 60;
 var elapsed = 0;
 var server_notified = false;
 
