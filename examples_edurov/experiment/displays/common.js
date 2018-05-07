@@ -28,6 +28,7 @@ function update_exp1_keys(keycode, value){
 }
 
 document.onkeydown = async function(evt) {
+    document.getElementById("note").innerHTML = "<h1>DOWN</h1>";
     evt = evt || window.event;
     if (evt.keyCode != last_key){
         last_key = evt.keyCode;
@@ -44,6 +45,7 @@ document.onkeydown = async function(evt) {
 }
 
 document.onkeyup = async function(evt) {
+    document.getElementById("note").innerHTML = "";
     last_key = 0;
     if (experimenting || training){
         if (exp == 1){
