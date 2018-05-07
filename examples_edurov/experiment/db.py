@@ -92,6 +92,9 @@ class DB:
                 tothitsexp0 integer,
                 tothitsexp1 integer,
                 tothitsexp2 integer,
+                keydowns0 integer,
+                keydowns1 integer,
+                keydowns2 integer,
                 tothits integer,
                 valid integer
                 )""")
@@ -111,11 +114,6 @@ class DB:
                 performance integer,
                 frustration integer,
                 delay integer,
-                time integer
-                )""")
-            c.execute("""CREATE TABLE keydown (
-                actor integer,
-                experiment integer,
                 time integer
                 )""")
             conn.commit()
@@ -164,15 +162,18 @@ class DB:
         self.c.execute("""SELECT rowid FROM actors ORDER BY rowid DESC""")
         return self.c.fetchone()[0]
 
-    def new_keydown(self, actor_id, exp):
+    def set_keydowns(self, actor_id, exp, amount):
+        data = {
+            'exp': exp,
+            'actor_id': actor_id,
+            'amount': amount
+        }
         with self.conn:
             self.c.execute(
-                """INSERT INTO keydown (actor, experiment, time) 
-                VALUES (:actor, :experiment, :time)""",
-                {'actor': actor_id,
-                 'experiment': exp,
-                 'time': time.time()})
-        print('db: keydown added')
+                """UPDATE actors SET keydowns{exp}={amount} 
+                WHERE rowid={actor_id} LIMIT 1""".format(**data),
+            )
+        print('db: keydowns added')
 
         # def relevant_experiment(self):
         #     self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1, crowd
@@ -394,11 +395,12 @@ class DB:
     def all_actors_html(self):
         cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Start', 'End',
                      'Start 0', 'End 0', 'Start 1', 'End 1', 'Start 2', 'End 2'
-                     'Hits 0', 'Hits 1', 'Hits 2']
+                                                                        'Hits 0',
+                     'Hits 1', 'Hits 2']
         cols = ['rowid', 'nickname', 'crowd', 'age', 'starttxt', 'endtxt',
                 'startexp0', 'endexp0', 'startexp1', 'endexp1',
                 'startexp2', 'endexp2', 'tothitsexp0',
-                'tothitsexp1','tothitsexp2']
+                'tothitsexp1', 'tothitsexp2']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))

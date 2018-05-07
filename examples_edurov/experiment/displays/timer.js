@@ -42,6 +42,14 @@ var x = setInterval(function() {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open( "GET", "/experiment_change?change=end&exp="+exp, true);
             xmlHttp.send( null );
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/keydowns?amount="+total_n_keydowns+"&exp="+exp,
+
+            true);
+            xhttp.setRequestHeader("Content-Type", "text/html");
+            xhttp.send(null);
+
             window.alert("Reposition the robot");
             window.location.replace("/next");
         }

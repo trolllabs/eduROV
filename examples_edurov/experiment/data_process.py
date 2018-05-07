@@ -28,11 +28,12 @@ def response_parser(not_used, path):
     elif path.startswith('/highscore'):
         return db.highscore_html()
 
-    elif path.startswith('/new_keydown'):
-        exp = db.current_experiment()
-        if exp is not None:
-            db.new_keydown(actor_id=db.last_id(),
-                           exp=exp)
+    elif path.startswith('/keydowns'):
+        form_data = form_to_dict(path)
+        db.set_keydowns(actor_id=db.last_id(),
+                        exp=form_data['exp'],
+                        amount=form_data['amount'])
+        return 'ok'
 
     elif path.startswith('/new_hit'):
         # /new_hit?button=2

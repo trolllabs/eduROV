@@ -8,6 +8,7 @@ var arrow_key_codes = [38, 40, 39, 37];
 var training = true;
 var experimenting = false;
 var last_key;
+var total_n_keydowns = 0;
 
 function determine_exp(){
     var url = window.location.href;
@@ -60,10 +61,7 @@ function send_keydown(keycode){
     xhttp.open("GET", "/keydown="+keycode, true);
     xhttp.setRequestHeader("Content-Type", "text/html");
     xhttp.send(null);
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/new_keydown", true);
-    xhttp.setRequestHeader("Content-Type", "text/html");
-    xhttp.send(null);
+    total_n_keydowns += 1;
 }
 
 function send_keyup(keycode){
