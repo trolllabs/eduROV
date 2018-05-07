@@ -47,7 +47,7 @@ var x = setInterval(function() {
             update_hor_with_delay(+factor, perceived_delay);
         }
     } else if (key_status[down]){
-        scale_move += -;
+        scale_move -= 1;
         update_hor_with_delay(1, perceived_delay);
 
         var factor = -0.8;
