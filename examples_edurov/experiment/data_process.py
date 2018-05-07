@@ -31,7 +31,7 @@ def response_parser(not_used, path):
     elif path.startswith('/new_keydown'):
         exp = db.current_experiment()
         if exp is not None:
-            db.new_keydown(actor_id=db.last_id,
+            db.new_keydown(actor_id=db.last_id(),
                            exp=exp)
 
     elif path.startswith('/new_hit'):
