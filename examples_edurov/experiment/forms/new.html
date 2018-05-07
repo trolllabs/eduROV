@@ -13,6 +13,7 @@
             display: block;
             margin: 50px auto;
         }
+
     </style>
 </head>
 <body>
@@ -25,25 +26,42 @@
     <div class="form-group">
         <label>Gender</label>
         <select class="form-control" name="gender" required>
-            <option disabled selected value> -- select an option -- </option>
-            <option value="1">Male</option>
-            <option value="2">Female</option>
+            <option disabled selected value> -- select an option --</option>
+            <option value="0">Male</option>
+            <option value="1">Female</option>
+            <option value="2">Blank</option>
         </select>
     </div>
+
     <div class="form-group">
         <label>Video game consumption</label>
         <small class="form-text text-muted">How often do you
             play video games (computer or console)?
         </small>
         <select class="form-control" name="game" required>
-            <option disabled selected value> -- select an option -- </option>
-            <option value="1">Every day</option>
-            <option value="2">1-3 times per week</option>
-            <option value="3">A few times per month</option>
-            <option value="4">A few times per year</option>
-            <option value="5">Never</option>
+            <option disabled selected value> -- select an option --</option>
+            <option value="0">Daily</option>
+            <option value="1">Weekly</option>
+            <option value="2">Monthly</option>
+            <option value="3">Yearly</option>
+            <option value="4">Never</option>
         </select>
     </div>
+
+    <div class="form-group">
+        <label>Computer use</label>
+        <small class="form-text text-muted">How often do you use a computer?
+        </small>
+        <select class="form-control" name="computer" required>
+            <option disabled selected value> -- select an option --</option>
+            <option value="0">Daily</option>
+            <option value="1">Weekly</option>
+            <option value="2">Monthly</option>
+            <option value="3">Yearly</option>
+            <option value="4">Never</option>
+        </select>
+    </div>
+
     <div class="form-group">
         <label>Nickname</label>
         <small class="form-text text-muted">

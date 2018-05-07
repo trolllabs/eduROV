@@ -28,11 +28,17 @@ def response_parser(not_used, path):
     elif path.startswith('/highscore'):
         return db.highscore_html()
 
+    elif path.startswith('/new_keydown'):
+        exp = db.current_experiment()
+        if exp is not None:
+            db.new_keydown(actor_id=db.last_id,
+                           exp=exp)
+
     elif path.startswith('/new_hit'):
         # /new_hit?button=2
         form_data = form_to_dict(path)
         exp = db.current_experiment()
-        if exp != None:
+        if exp is not None:
             db.new_hit(
                 actor_id=db.last_id(),
                 experiment=exp,
@@ -49,15 +55,15 @@ def response_parser(not_used, path):
     elif path.startswith('/experiment_change'):
         # /experiment_change?change=start
         form_data = form_to_dict(path)
-        exp = db.relevant_experiment()
         db.experiment_change(
             actor_id=db.last_id(),
-            experiment=exp,
+            experiment=form_data['exp'],
             change=form_data['change'])
         return 'Experiment change registered'
 
     elif path.startswith('/survey_post'):
-        # /survey_post.php?difficulty=2
+        # /survey_post.php?mental=10&physical=10&temporal=10&effort=10
+        # &performance=10&frustration=10&delay=500
         form_data = form_to_dict(path)
         exp = db.last_experiment()
         db.add_survey(actor_id=db.last_id(),

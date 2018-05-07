@@ -17,12 +17,46 @@ class DB:
             padding: 5px;
             text-align: left;    
         }'''
-    crowd0_order = ['/displays/info.html', '/displays/experiment0.html',
-                    '/forms/survey.html', '/displays/experiment1.html',
-                    '/forms/survey.html', '/displays/finish.html']
-    crowd1_order = ['/displays/info.html', '/displays/experiment1.html',
-                    '/forms/survey.html', '/displays/experiment0.html',
-                    '/forms/survey.html', '/displays/finish.html']
+
+    inf = '/displays/info.html'
+    exp0 = '/displays/experiment0.html'
+    exp1 = '/displays/experiment1.html'
+    exp2 = '/displays/experiment2.html'
+    sur = '/forms/survey.html'
+    fin = '/displays/finish.html'
+
+    # crowd0_order = ['/displays/info.html', '/displays/experiment0.html',
+    #                 '/forms/survey.html', '/displays/experiment1.html',
+    #                 '/forms/survey.html', '/displays/finish.html']
+    # crowd1_order = ['/displays/info.html', '/displays/experiment1.html',
+    #                 '/forms/survey.html', '/displays/experiment0.html',
+    #                 '/forms/survey.html', '/displays/finish.html']
+
+    crowd0_exp = [None, 0, None, 1, None, 2, None, None]
+    crowd1_exp = [None, 0, None, 2, None, 1, None, None]
+    crowd2_exp = [None, 1, None, 0, None, 2, None, None]
+    crowd3_exp = [None, 1, None, 2, None, 0, None, None]
+    crowd4_exp = [None, 2, None, 0, None, 1, None, None]
+    crowd5_exp = [None, 2, None, 1, None, 0, None, None]
+    crowds_exp = {0: crowd0_exp,
+                  1: crowd1_exp,
+                  2: crowd2_exp,
+                  3: crowd3_exp,
+                  4: crowd4_exp,
+                  5: crowd5_exp}
+
+    crowd0_order = [inf, exp0, sur, exp1, sur, exp2, sur, fin]
+    crowd1_order = [inf, exp0, sur, exp2, sur, exp1, sur, fin]
+    crowd2_order = [inf, exp1, sur, exp0, sur, exp2, sur, fin]
+    crowd3_order = [inf, exp1, sur, exp2, sur, exp0, sur, fin]
+    crowd4_order = [inf, exp2, sur, exp0, sur, exp1, sur, fin]
+    crowd5_order = [inf, exp2, sur, exp1, sur, exp0, sur, fin]
+    crowds_order = {0: crowd0_order,
+                    1: crowd1_order,
+                    2: crowd2_order,
+                    3: crowd3_order,
+                    4: crowd4_order,
+                    5: crowd5_order}
 
     def __init__(self):
         if not path.isfile(self.db_path):
@@ -32,6 +66,63 @@ class DB:
         self.c = self.conn.cursor()
         with open(path.join(path.dirname(__file__), 'table.html'), 'r') as f:
             self.table_base = f.read()
+
+    @classmethod
+    def createdb(cls):
+        if not path.isfile(cls.db_path):
+            conn = sqlite3.connect(cls.db_path)
+            c = conn.cursor()
+            c.execute("""CREATE TABLE actors (
+                nickname text, 
+                age integer,
+                gender integer,
+                game integer,
+                position integer,
+                start real,
+                starttxt text,
+                end real,
+                endtxt text,
+                crowd integer,
+                startexp0 real,
+                startexp1 real,
+                startexp2 real,
+                endexp0 real,
+                endexp1 real,
+                endexp2 real,
+                tothitsexp0 integer,
+                tothitsexp1 integer,
+                tothitsexp2 integer,
+                tothits integer,
+                valid integer
+                )""")
+            c.execute("""CREATE TABLE hits (
+                actor integer,
+                experiment integer,
+                button integer,
+                time integer
+                )""")
+            c.execute("""CREATE TABLE survey (
+                actor integer,
+                experiment integer,
+                mental integer,
+                physical integer,
+                temporal integer,
+                effort integer,
+                performance integer,
+                frustration integer,
+                delay integer,
+                time integer
+                )""")
+            c.execute("""CREATE TABLE keydown (
+                actor integer,
+                experiment integer,
+                time integer
+                )""")
+            conn.commit()
+            conn.close()
+            print('db: created DB at {}'.format(cls.db_path))
+        else:
+            raise FileExistsError('{} already exist'.format(cls.db_path))
 
     @classmethod
     def check(cls):
@@ -53,10 +144,11 @@ class DB:
         dic = self.actor_dict(actor_id)
         next = dic['position'] + 1
         crowd = dic['crowd']
-        if crowd == 0:
-            newpage = self.crowd0_order[next]
-        else:
-            newpage = self.crowd1_order[next]
+        newpage = self.crowds_order[crowd][next]
+        # if crowd == 0:
+        #     newpage = self.crowd0_order[next]
+        # else:
+        #     newpage = self.crowd1_order[next]
 
         with self.conn:
             self.c.execute(
@@ -68,120 +160,112 @@ class DB:
 
         return 'redirect={}'.format(newpage)
 
-    @classmethod
-    def createdb(cls):
-        if not path.isfile(cls.db_path):
-            conn = sqlite3.connect(cls.db_path)
-            c = conn.cursor()
-            c.execute("""CREATE TABLE actors (
-                nickname text, 
-                age integer,
-                gender integer,
-                game integer,
-                position integer,
-                start real,
-                starttxt text,
-                end real,
-                endtxt text,
-                crowd integer,
-                startexp0 real,
-                startexp1 real,
-                endexp0 real,
-                endexp1 real,
-                tothitsexp0 integer,
-                tothitsexp1 integer,
-                tothits integer,
-                valid integer
-                )""")
-            c.execute("""CREATE TABLE hits (
-                actor integer,
-                experiment integer,
-                button integer,
-                time integer
-                )""")
-            c.execute("""CREATE TABLE survey (
-                actor integer,
-                experiment integer,
-                difficulty integer,
-                time integer
-                )""")
-            conn.commit()
-            conn.close()
-            print('db: created DB at {}'.format(cls.db_path))
-        else:
-            raise FileExistsError('{} already exist'.format(cls.db_path))
-
     def last_id(self):
         self.c.execute("""SELECT rowid FROM actors ORDER BY rowid DESC""")
         return self.c.fetchone()[0]
 
-    def relevant_experiment(self):
-        self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1, crowd 
-        FROM actors ORDER BY rowid DESC LIMIT 1""")
-        result = self.c.fetchone()
-        end0 = result[1]
-        end1 = result[3]
-        crowd = result[4]
-        if crowd == 0:
-            if end0:
-                return 1
-            else:
-                return 0
-        else:
-            if end1:
-                return 0
-            else:
-                return 1
-
-    def current_experiment(self):
-        self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1 
-        FROM actors ORDER BY rowid DESC LIMIT 1""")
-        result = self.c.fetchone()
-        start0 = result[0]
-        end0 = result[1]
-        start1 = result[2]
-        end1 = result[3]
-        if start0 and start1:
-            if start0 > start1:
-                if not end0:
-                    return 0
-            else:
-                if not end1:
-                    return 1
-        elif start0 and not end0:
-            return 0
-        elif start1 and not end1:
-            return 1
-        return None
-
-    def last_experiment(self):
-        self.c.execute("""SELECT endexp0, endexp1 FROM actors ORDER BY 
-        rowid DESC LIMIT 1""")
-        result = self.c.fetchone()
-        end0 = result[0]
-        end1 = result[1]
-        if end0 and end1:
-            if end0 > end1:
-                return 0
-            else:
-                return 1
-        elif end0:
-            return 0
-        elif end1:
-            return 1
-        else:
-            return None
-
-    def add_survey(self, actor_id, experiment, difficulty):
-        timestamp = time.time()
+    def new_keydown(self, actor_id, exp):
         with self.conn:
             self.c.execute(
-                """INSERT INTO survey (actor, experiment, difficulty, time) 
-                VALUES (:actor, :experiment, :difficulty, :time)""",
+                """INSERT INTO keydown (actor, experiment, time) 
+                VALUES (:actor, :experiment, :time)""",
                 {'actor': actor_id,
-                 'experiment': experiment,
-                 'difficulty': int(difficulty),
-                 'time': timestamp})
+                 'experiment': exp,
+                 'time': time.time()})
+        print('db: keydown added')
+
+        # def relevant_experiment(self):
+        #     self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1, crowd
+        #     FROM actors ORDER BY rowid DESC LIMIT 1""")
+        #     result = self.c.fetchone()
+        #     end0 = result[1]
+        #     end1 = result[3]
+        #     crowd = result[4]
+        #     if crowd == 0:
+        #         if end0:
+        #             return 1
+        #         else:
+        #             return 0
+        #     else:
+        #         if end1:
+        #             return 0
+        #         else:
+        #             return 1
+
+    def current_experiment(self):
+        self.c.execute("""SELECT position, crowd FROM actors ORDER BY rowid 
+        DESC LIMIT 1""")
+        position, crowd = self.c.fetchone()
+        return self.crowds_exp[crowd][position]
+
+        # self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1
+        # FROM actors ORDER BY rowid DESC LIMIT 1""")
+        # result = self.c.fetchone()
+        # start0 = result[0]
+        # end0 = result[1]
+        # start1 = result[2]
+        # end1 = result[3]
+        # if start0 and start1:
+        #     if start0 > start1:
+        #         if not end0:
+        #             return 0
+        #     else:
+        #         if not end1:
+        #             return 1
+        # elif start0 and not end0:
+        #     return 0
+        # elif start1 and not end1:
+        #     return 1
+        # return None
+
+    def last_experiment(self):
+        self.c.execute("""SELECT position, crowd FROM actors ORDER BY rowid 
+        DESC LIMIT 1""")
+        position, crowd = self.c.fetchone()
+        return self.crowds_exp[crowd][position - 1]
+        # self.c.execute("""SELECT endexp0, endexp1 FROM actors ORDER BY
+        # rowid DESC LIMIT 1""")
+        # result = self.c.fetchone()
+        # end0 = result[0]
+        # end1 = result[1]
+        # if end0 and end1:
+        #     if end0 > end1:
+        #         return 0
+        #     else:
+        #         return 1
+        # elif end0:
+        #     return 0
+        # elif end1:
+        #     return 1
+        # else:
+        #     return None
+
+    def add_survey(self, actor_id, experiment, form):
+        timestamp = time.time()
+        data = {'actor': actor_id,
+                'experiment': experiment,
+                'mental': form['mental'],
+                'physical': form['physical'],
+                'temporal': form['temporal'],
+                'effort': form['effort'],
+                'performance': form['performance'],
+                'frustration': form['frustration'],
+                'delay': form['delay'],
+                'time': time.time()
+                }
+        query = """INSERT INTO survey (actor, experiment, mental, 
+        physical, temporal, effort, performance, frustration, delay, time) 
+        VALUES (:actor, :experiment, :mental, :physical, :temporal, 
+        :effort, :performance, :frustration, :delay, :time)"""
+        with self.conn:
+            # self.c.execute(
+            #     """INSERT INTO survey (actor, experiment, difficulty, time)
+            #     VALUES (:actor, :experiment, :difficulty, :time)""",
+            #     {'actor': actor_id,
+            #      'experiment': experiment,
+            #      'difficulty': int(difficulty),
+            #      'time': timestamp})
+            self.c.execute(query, data)
         print('db: survey added')
 
     def next_crowd(self):
@@ -189,10 +273,33 @@ class DB:
         crowd_0 = len(self.c.fetchall())
         self.c.execute("""SELECT * FROM actors WHERE crowd='1'""")
         crowd_1 = len(self.c.fetchall())
-        if crowd_0 > crowd_1:
-            return 1
-        else:
-            return 0
+        self.c.execute("""SELECT * FROM actors WHERE crowd='2'""")
+        crowd_2 = len(self.c.fetchall())
+        self.c.execute("""SELECT * FROM actors WHERE crowd='3'""")
+        crowd_3 = len(self.c.fetchall())
+        self.c.execute("""SELECT * FROM actors WHERE crowd='4'""")
+        crowd_4 = len(self.c.fetchall())
+        self.c.execute("""SELECT * FROM actors WHERE crowd='5'""")
+        crowd_5 = len(self.c.fetchall())
+        totals = {0: crowd_0,
+                  1: crowd_1,
+                  2: crowd_2,
+                  3: crowd_3,
+                  4: crowd_4,
+                  5: crowd_5}
+        smallest = 999
+        smallest_crowd = 0
+        for crowd in totals:
+            if totals[crowd] < smallest:
+                smallest_crowd = crowd
+                smallest = totals[crowd]
+        return smallest_crowd
+
+        #
+        # if crowd_0 > crowd_1:
+        #     return 1
+        # else:
+        #     return 0
 
     def new_actor(self, nickname, age, gender, game_consumption):
         timestamp = time.time()
@@ -222,15 +329,20 @@ class DB:
             """SELECT * FROM hits WHERE actor='{}' AND experiment='1'"""
                 .format(actor_id))
         hits_exp_1 = len(self.c.fetchall())
-        tot_hits = hits_exp_0 + hits_exp_1
+        self.c.execute(
+            """SELECT * FROM hits WHERE actor='{}' AND experiment='2'"""
+                .format(actor_id))
+        hits_exp_2 = len(self.c.fetchall())
+        tot_hits = hits_exp_0 + hits_exp_1 + hits_exp_2
         with self.conn:
             data = {'tothitsexp0': hits_exp_0,
                     'tothitsexp1': hits_exp_1,
+                    'tothitsexp2': hits_exp_2,
                     'tothits': tot_hits,
                     'actor_id': actor_id}
             query = """UPDATE actors SET tothitsexp0 = :tothitsexp0, 
-            tothitsexp1 = :tothitsexp1, tothits = :tothits 
-            WHERE rowid = :actor_id LIMIT 1"""
+            tothitsexp1 = :tothitsexp1, tothitsexp2 = :tothitsexp2, tothits 
+            = :tothits WHERE rowid = :actor_id LIMIT 1"""
             self.c.execute(query, data)
         print('db: updated total hits')
 
@@ -249,32 +361,20 @@ class DB:
     def experiment_change(self, actor_id, experiment, change):
         experiment = int(experiment)
         timestamp = time.time()
-        data = {'actor_id': actor_id, 'time': timestamp}
+        data = {'actor_id': actor_id, 'time': timestamp, 'exp': experiment}
         if change == 'start':
             with self.conn:
-                if experiment == 0:
-                    self.c.execute(
-                        """UPDATE actors SET startexp0={time} 
-                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
-                    )
-                if experiment == 1:
-                    self.c.execute(
-                        """UPDATE actors SET startexp1={time} 
-                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
-                    )
+                self.c.execute(
+                    """UPDATE actors SET startexp{exp}={time} 
+                    WHERE rowid={actor_id} LIMIT 1""".format(**data),
+                )
             print('db: experiment {} started'.format(experiment))
         elif change == 'end':
             with self.conn:
-                if experiment == 0:
-                    self.c.execute(
-                        """UPDATE actors SET endexp0={time} 
-                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
-                    )
-                if experiment == 1:
-                    self.c.execute(
-                        """UPDATE actors SET endexp1={time} 
-                        WHERE rowid={actor_id} LIMIT 1""".format(**data),
-                    )
+                self.c.execute(
+                    """UPDATE actors SET endexp{exp}={time} 
+                    WHERE rowid={actor_id} LIMIT 1""".format(**data),
+                )
             print('db: experiment {} ended'.format(experiment))
         else:
             print('db: not able to process experiment change')
@@ -288,30 +388,17 @@ class DB:
                  'experiment': int(experiment),
                  'button': int(button),
                  'time': time.time()})
-            self.update_total_hits(actor_id)
+            # self.update_total_hits(actor_id)
         print('db: new hit registered for btn {}'.format(button))
-
-    def n_actors(self):
-        self.c.execute("""SELECT * FROM actors""")
-        return str(len(self.c.fetchall()))
-
-    def actor(self, actor_id):
-        self.c.execute(
-            """SELECT * FROM actors WHERE rowid='{}'""".format(actor_id))
-        text = str(self.c.fetchone())
-        return text
-
-    def clear_table(self, table):
-        with self.conn:
-            self.c.execute("DELETE FROM {}".format(table))
 
     def all_actors_html(self):
         cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Start', 'End',
-                     'Start 0', 'End 0', 'Start 1', 'End 1', 'Hits 0',
-                     'Hits 1']
+                     'Start 0', 'End 0', 'Start 1', 'End 1', 'Start 2', 'End 2'
+                     'Hits 0', 'Hits 1', 'Hits 2']
         cols = ['rowid', 'nickname', 'crowd', 'age', 'starttxt', 'endtxt',
-                'startexp0', 'endexp0', 'startexp1', 'endexp1', 'tothitsexp0',
-                'tothitsexp1']
+                'startexp0', 'endexp0', 'startexp1', 'endexp1',
+                'startexp2', 'endexp2', 'tothitsexp0',
+                'tothitsexp1','tothitsexp2']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))

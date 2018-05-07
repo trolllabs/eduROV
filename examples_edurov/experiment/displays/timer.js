@@ -28,7 +28,8 @@ var x = setInterval(function() {
     else if (experimenting) {
         if (!server_notified){
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open( "GET", "/experiment_change?change=start", true);
+            xmlHttp.open( "GET", "/experiment_change?change=start&exp="+exp,
+            true);
             xmlHttp.send( null );
             server_notified = true;
         }
@@ -39,7 +40,7 @@ var x = setInterval(function() {
             stop_car();
             experimenting = false;
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open( "GET", "/experiment_change?change=end", true);
+            xmlHttp.open( "GET", "/experiment_change?change=end&exp="+exp, true);
             xmlHttp.send( null );
             window.alert("Reposition the robot");
             window.location.replace("/next");

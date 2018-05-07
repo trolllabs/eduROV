@@ -46,11 +46,11 @@ void loop() {
 
 int success(int button) {
   int result = false;
-  Serial.print(analogRead(R0pin));
-  Serial.print("  ");
-  Serial.print(analogRead(R1pin));
-  Serial.print("  ");
-  Serial.println(analogRead(R2pin));
+//  Serial.print(analogRead(R0pin));
+//  Serial.print("  ");
+//  Serial.print(analogRead(R1pin));
+//  Serial.print("  ");
+//  Serial.println(analogRead(R2pin));
   if (button == 0) {
     if (analogRead(R0pin) >= threshold0) {
       result = true;

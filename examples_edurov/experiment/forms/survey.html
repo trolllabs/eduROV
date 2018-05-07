@@ -3,35 +3,111 @@
 <head>
     <title>Experiment survey</title>
     <link rel="stylesheet" type="text/css" href="../static/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./survey.css">
     <style>
         body {
             margin: 0;
             padding: 0;
         }
         form {
-            width: 500px;
+            width: 600px;
             display: block;
             margin: 50px auto;
         }
+
     </style>
 </head>
 <body>
 <form action="/survey_post.php" method="get">
     <h2>Experiment survey</h2>
+    <br>
     <div class="form-group">
-        <label>Rate your experience</label>
-        <small class="form-text text-muted">From 1-5, how was it to hit
-            the target holes?
-        </small>
-        <select class="form-control" name="difficulty">
-            <option disabled selected value> -- select an option -- </option>
-            <option value="1">1 - Very hard</option>
-            <option value="2">2 - A bit hard</option>
-            <option value="3">3 - OK</option>
-            <option value="4">4 - A bit easy</option>
-            <option value="5">5 - Very easy</option>
-        </select>
+
+
+        <h5>Mental demand</h5>
+        <p>How much mental and perceptual activity was required? (e.g.
+            thinking, deciding, calculating, remembering, looking,
+            searching etc.) Was the task easy or demanding?</p>
+        <ul>
+            <li class="two left" >Low / Easy</li>
+            <li class="two right">High / Hard</li>
+        </ul>
+        <input type="range" min="0" max="20" step="1"
+               name="mental" class="form-control-range" >
+        <br>
+
+
+        <h5>Physical demand</h5>
+        <p>How much physical activity was required? (e.g.
+            controlling, activating etc.) Was the task easy or demanding?</p>
+        <ul>
+            <li class="two left" >Low / Easy</li>
+            <li class="two right">High / Hard</li>
+        </ul>
+        <input type="range" min="0" max="20" step="1"
+               name="physical" class="form-control-range" >
+        <br>
+
+
+        <h5>Temporal demand</h5>
+        <p>How much time pressure did you feel due to the rate at which
+            the tasks occurred?</p>
+        <ul>
+            <li class="two left" >Low</li>
+            <li class="two right">High</li>
+        </ul>
+        <input type="range" min="0" max="20" step="1"
+               name="temporal" class="form-control-range" >
+        <br>
+
+
+        <h5>Effort</h5>
+        <p>How hard did you have to work (mentally and physically) to
+            accomplish your level of performance?</p>
+        <ul>
+            <li class="two left" >Low / Easy</li>
+            <li class="two right">High / Hard</li>
+        </ul>
+        <input type="range" min="0" max="20" step="1"
+               name="effort" class="form-control-range" >
+        <br>
+
+        <h5>Performance</h5>
+        <p>How successful do you think you were in accomplishing the goals of
+            the task set by the experiment? How satisfied were you with your
+        performance in accomplishing these goals?</p>
+        <ul>
+            <li class="two left" >Good</li>
+            <li class="two right">Poor</li>
+        </ul>
+        <input type="range" min="0" max="20" step="1"
+               name="performance" class="form-control-range" >
+        <br>
+
+        <h5>Frustration level</h5>
+        <p>How insecure, discouraged, irritated, stressed, and annoyed
+            versus secure, gratified, content, relaxed and complacent did
+            you feel during the task?</p>
+        <ul>
+            <li class="two left" >Low / Relaxed</li>
+            <li class="two right">High / Stressed</li>
+        </ul>
+        <input type="range" min="0" max="20" step="1"
+               name="frustration" class="form-control-range" >
+        <br>
+
+        <h5>Delay time</h5>
+        <p>How many ms do you think the communication delay was? The time it
+            took from you
+            pressed a button to the reaction could be seen in the video?
+            (1s=1000ms)</p>
+        <input class="form-control" name="delay"
+               placeholder="delay in ms"required>
+        <br>
+
     </div>
+
+
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 </body>

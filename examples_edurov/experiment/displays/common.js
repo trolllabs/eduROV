@@ -2,7 +2,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-var added_delay = 500; //500
+var added_delay = 500;
 var exp = 0;
 var arrow_key_codes = [38, 40, 39, 37];
 var training = true;
@@ -15,6 +15,8 @@ function determine_exp(){
         exp = 0;
     } else if (url.includes("experiment1")){
         exp = 1;
+    } else if (url.includes("experiment2")){
+        exp = 2;
     }
 }
 
@@ -32,7 +34,9 @@ document.onkeydown = async function(evt) {
             if (exp == 1){
                 update_exp1_keys(evt.keyCode, 1);
             }
-            await sleep(added_delay);
+            if (exp != 2){
+                await sleep(added_delay);
+            }
             send_keydown(evt.keyCode);
         }
     }
@@ -44,7 +48,9 @@ document.onkeyup = async function(evt) {
         if (exp == 1){
             update_exp1_keys(evt.keyCode, 0);
         }
-        await sleep(added_delay);
+        if (exp != 2){
+            await sleep(added_delay);
+        }
         send_keyup(evt.keyCode);
     }
 }
@@ -52,6 +58,10 @@ document.onkeyup = async function(evt) {
 function send_keydown(keycode){
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "/keydown="+keycode, true);
+    xhttp.setRequestHeader("Content-Type", "text/html");
+    xhttp.send(null);
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/new_keydown", true);
     xhttp.setRequestHeader("Content-Type", "text/html");
     xhttp.send(null);
 }
