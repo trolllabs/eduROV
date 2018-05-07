@@ -194,11 +194,18 @@ class DB:
         #             return 1
 
     def current_experiment(self):
-        self.c.execute("""SELECT position, crowd FROM actors ORDER BY rowid 
-        DESC LIMIT 1""")
-        position, crowd = self.c.fetchone()
-        print('current exp: {}'.format(self.crowds_exp[crowd][position]))
-        return self.crowds_exp[crowd][position]
+        self.c.execute("""SELECT position, crowd, startexp0, startexp1, 
+        startexp2 FROM actors ORDER BY rowid DESC LIMIT 1""")
+        position, crowd, st0, st1, st2 = self.c.fetchone()
+        exp = self.crowds_exp[crowd][position]
+        if exp == 0 and st0:
+            return 0
+        elif exp == 1 and st1:
+            return 1
+        elif exp == 2 and st2:
+            return 2
+        else:
+            return None
 
         # self.c.execute("""SELECT startexp0, endexp0, startexp1, endexp1
         # FROM actors ORDER BY rowid DESC LIMIT 1""")
@@ -358,6 +365,7 @@ class DB:
             query = """UPDATE actors SET end={end},endtxt='{endtxt}' WHERE rowid={actor_id}""".format(
                 **data)
             self.c.execute(query)
+            self.update_total_hits(actor_id)
         print('db: actor finished')
 
     def experiment_change(self, actor_id, experiment, change):
@@ -395,13 +403,12 @@ class DB:
 
     def all_actors_html(self):
         cols_head = ['ID', 'Nickname', 'Group', 'Age', 'Start', 'End',
-                     'Start 0', 'End 0', 'Start 1', 'End 1', 'Start 2', 'End 2'
-                                                                        'Hits 0',
-                     'Hits 1', 'Hits 2']
+                     'Start 0', 'End 0', 'Start 1', 'End 1', 'Start 2',
+                     'End 2', 'Hits 0', 'Hits 1', 'Hits 2']
         cols = ['rowid', 'nickname', 'crowd', 'age', 'starttxt', 'endtxt',
                 'startexp0', 'endexp0', 'startexp1', 'endexp1',
-                'startexp2', 'endexp2', 'tothitsexp0',
-                'tothitsexp1', 'tothitsexp2']
+                'startexp2', 'endexp2', 'tothitsexp0', 'tothitsexp1',
+                'tothitsexp2']
         self.c.execute("""SELECT {} FROM actors""".format(', '.join(cols)))
         table = '<table><tbody>'
         header = '<tr>{}</tr>'.format('<td>{}</td>' * len(cols))
