@@ -14,6 +14,7 @@ function async stop_car(){
     }
 }
 
+console.log('i am in timer');
 window.alert("You will now get 30 seconds to try this display.");
 
 var x = setInterval(function() {

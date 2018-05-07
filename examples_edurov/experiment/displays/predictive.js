@@ -65,7 +65,6 @@ var x = setInterval(function() {
         horizontal_move -= 1;
         update_hor_with_delay(+1, perceived_delay);
     }
-    console.log(horizontal_move);
 
     var new_width = base_image_width + scale_move*pixel_scale_rate;
     var new_margin_left = (bodW-new_width)/2 + horizontal_move*pixel_turn_rate;
@@ -84,7 +83,6 @@ function set_base_margin(){
     var imgW = myImage.width;
     bodW = document.body.clientWidth;
     base_margin = (bodW-imgW)/2;
-    console.log(base_margin);
     document.getElementById("stream").style.marginLeft = `${base_margin}px`;
     document.getElementById("overlay").style.left = `${base_margin}px`;
 }
