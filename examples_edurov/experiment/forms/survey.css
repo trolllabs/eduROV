@@ -14,10 +14,20 @@ ul > .two{
     width: 300px;
 }
 
+ul > .ten{
+    float: left;
+    width: 54px;
+    text-align: center;
+}
+
 .left {
     text-align: left;
 }
 
 .right {
     text-align: right;
+}
+
+.radio{
+    width: 50px;
 }

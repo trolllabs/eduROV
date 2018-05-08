@@ -19,19 +19,24 @@
 <body>
 <form action="/new_participant.php" method="get">
     <h2>New participant</h2>
-
     <p>
-        It is fully voluntarily to participate and by participating you
-        allow that the data can be used for any research purposes. None
-        of the data can be connected to you personally, unless you want to.
+        All data will be treated anonymously. No name is connected to
+        gathered data, unless you want to and specify so.<br><br>
+
+        The participation of this experiment is voluntary, and you can at any
+        time choose to stop and withdraw from the experiment.<br><br>
+
+        By continuing you agree that the data is collected, analyzed and
+        published anonymously. I also agree to be confidential about the
+        experiment to provide non-biased conditions for every participant.<br>
     </p>
 
     <div class="form-group">
-        <label>Age</label>
+        <h5>Age</h5>
         <input class="form-control" name="age" required>
     </div>
     <div class="form-group">
-        <label>Gender</label>
+        <h5>Gender</h5>
         <select class="form-control" name="gender" required>
             <option disabled selected value> -- select an option --</option>
             <option value="0">Male</option>
@@ -41,10 +46,26 @@
     </div>
 
     <div class="form-group">
-        <label>Video game consumption</label>
-        <small class="form-text text-muted">How often do you
-            play video games (computer or console)?
-        </small>
+        <h5>Education</h5>
+        <p>What is the highest degree or level of school you have completed?</p>
+        <select class="form-control" name="education" required>
+            <option disabled selected value> -- select an option --</option>
+            <option value="0">No schooling completed</option>
+            <option value="1">Nursery school</option>
+            <option value="2">Some high school, no diploma</option>
+            <option value="3">High school graduate, diploma</option>
+            <option value="4">Some college credit, no degree</option>
+            <option value="5">Bachelor’s degree</option>
+            <option value="6">Master’s degree</option>
+            <option value="7">Professional degree</option>
+            <option value="8">Doctorate degree</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <h5>Gaming</h5>
+        <p>How often do you
+            play video games (computer or console)?</p>
         <select class="form-control" name="game" required>
             <option disabled selected value> -- select an option --</option>
             <option value="0">Daily</option>
@@ -56,9 +77,8 @@
     </div>
 
     <div class="form-group">
-        <label>Computer use</label>
-        <small class="form-text text-muted">How often do you use a computer?
-        </small>
+        <h5>Computer use</h5>
+        <p>How often do you use a computer?</p>
         <select class="form-control" name="computer" required>
             <option disabled selected value> -- select an option --</option>
             <option value="0">Daily</option>
@@ -70,11 +90,23 @@
     </div>
 
     <div class="form-group">
-        <label>Nickname</label>
-        <small class="form-text text-muted">
-            If you want to compare highscore
-        </small>
-        <input class="form-control" name="nickname">
+        <h5>Eye health</h5>
+        <p>Do you use spectacles or contact
+            lenses?</p>
+        <select class="form-control" name="eye" required>
+            <option disabled selected value> -- select an option --</option>
+            <option value="0">No</option>
+            <option value="1">Yes, spectacles</option>
+            <option value="2">Yes, contact lenses</option>
+            <option value="3">Yes, both</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <h5>Nickname</h5>
+        <p>If you want to see your score</p>
+        <input class="form-control" name="nickname"
+               placeholder="not required" >
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
