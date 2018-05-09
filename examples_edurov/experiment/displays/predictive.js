@@ -14,7 +14,7 @@ var horizontal_px_move = 0;
 var scale_px_move = 0;
 
 var update_interval = 25;
-var perceived_delay = 750;
+var perceived_delay = 710;
 
 
 var bodW = 0;

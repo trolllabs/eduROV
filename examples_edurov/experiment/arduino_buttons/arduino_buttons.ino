@@ -12,9 +12,9 @@ int led2pin = 4;
 //int analog;
 
 String msg;
-int threshold0 = 670;
-int threshold1 = 760;
-int threshold2 = 730;
+int threshold0 = 620;
+int threshold1 = 810;
+int threshold2 = 780;
 int lastButton = 0;
 int newButton = 0;
 

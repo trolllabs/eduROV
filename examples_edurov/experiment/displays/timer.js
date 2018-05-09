@@ -1,7 +1,8 @@
 var training_time = 30;
-var experiment_time = 60;
+var experiment_time = 90;
 var elapsed = 0;
 var server_notified = false;
+var base_margin_set = false;
 
 async function stop_car(){
     var length = arrow_key_codes.length;
@@ -17,6 +18,10 @@ async function stop_car(){
 window.alert("You will now get 30 seconds to try this display.");
 
 var x = setInterval(function() {
+    if (exp==1 && !base_margin_set){
+                set_base_margin();
+                base_margin_set =  true;
+    }
     if (training){
         if (training_time > elapsed){
             elapsed += 1;
@@ -26,7 +31,7 @@ var x = setInterval(function() {
             training = false;
             experimenting = true;
             elapsed = 0;
-            window.alert("Reposition robot. The real experiment will now last for 60 seconds.");
+            window.alert("Reposition robot. The real experiment will now last for 90 seconds.");
         }
     }
     else if (experimenting) {
@@ -54,7 +59,7 @@ var x = setInterval(function() {
             xhttp.setRequestHeader("Content-Type", "text/html");
             xhttp.send(null);
 
-            window.alert("Reposition the robot");
+//            window.alert("Reposition the robot");
             window.location.replace("/next");
         }
     }
