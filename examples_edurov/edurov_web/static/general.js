@@ -1,4 +1,4 @@
-var keycodes = {l:76, c:67, esc:27};
+var keycodes = {l:76, c:67, esc:27, enter:13};
 var MOTOR_KEYS = [81, 87, 69, 65, 83, 68];
 var stat = {light:false, armed:false, roll_ui:true, cinema:false,
             video_rotation:0};
@@ -7,10 +7,18 @@ var sensors = {time:0, temp:0, pressure:0, humidity:0, pitch:0, roll:0, yaw:0,
 var critical_voltage = 10;
 var critical_disk_space = 500;
 
-sensor_interval = 500;
+var sensor_interval = 500;
+var interval;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function send_keydown(keycode){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/keydown="+keycode, true);
+    xhttp.setRequestHeader("Content-Type", "text/html");
+    xhttp.send(null);
 }
 
 function handle_in_browser(keycode){
@@ -21,6 +29,9 @@ function handle_in_browser(keycode){
         return true;
     } else if (keycode == keycodes.l){
         toggle_light();
+        return true;
+    } else if (keycode == keycodes.enter){
+        toggle_armed();
         return true;
     } else if (keycode == keycodes.esc && stat.cinema){
         toggle_cinema();
@@ -34,13 +45,6 @@ function handle_in_browser(keycode){
 function toggle_cinema(){
     stat.cinema = !stat.cinema;
     set_cinema(stat.cinema);
-}
-
-function send_keydown(keycode){
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/keydown="+keycode, true);
-    xhttp.setRequestHeader("Content-Type", "text/html");
-    xhttp.send(null);
 }
 
 function toggle_light(){
@@ -121,6 +125,12 @@ function get_sensor(){
         xhttp.open("GET", "sensor.json", true);
         xhttp.send();
     }
+
+    // Reset interval
+    interval = setInterval(function () {
+        clearInterval(interval);
+        get_sensor();
+    }, sensor_interval);
 }
 
 function refresh_ui(){
@@ -152,15 +162,4 @@ function refresh_ui(){
     }
 }
 
-var interval;
-
-function appear() {
-
-    console.log('hey')
-
-    interval = setInterval(function () {
-        clearInterval(interval);
-        appear();
-    }, sensor_interval);
-}
-appear();
+get_sensor();
