@@ -1,6 +1,6 @@
 var last_key;
 var key_dict = {event:'', keycode:0};
-//var getsensorID = setInterval(get_sensor, 80);
+var getsensorID = setInterval(get_sensor, 80);
 
 var light = false;
 var armed = false;

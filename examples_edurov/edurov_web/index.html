@@ -1,7 +1,10 @@
 <html>
 <head>
     <title>eduROV</title>
-    <script src="./static/script.js"></script>
+    <!--<script src="./static/script.js"></script>-->
+    <script src="./static/dynamic.js"></script>
+    <script src="./static/general.js"></script>
+    <script src="./static/keys.js"></script>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="./static/style.css">
@@ -14,8 +17,63 @@
         <div class="card bg-light cinema">
             <h5 class="card-header">Sensors</h5>
             <div class="card-body">
+                <h5>ROV</h5>
+                <table class="table table-hover table-sm">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Temperature</th>
+                        <td id="temp">24.2</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Pressure</th>
+                        <td id="pressure">1024</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Humidity</th>
+                        <td id="humidity">27</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Pitch</th>
+                        <td id="pitch">215</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Roll</th>
+                        <td id="roll">5</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Yaw</th>
+                        <td id="yaw">41</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h5>Water</h5>
                 <table class="table table-sm">
-                    <tbody id="sensordata">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Temperature</th>
+                        <td id="tempWater">24.2</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Pressure</th>
+                        <td id="pressureWater">1024</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card bg-light cinema">
+            <h5 class="card-header">System</h5>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tbody class="table-borderless">
+                    <tr id="voltageTr">
+                        <th scope="row">Voltage</th>
+                        <td id="batteryVoltage">10.5</td>
+                    </tr>
+                    <tr id="diskTr">
+                        <th scope="row">Disk space</th>
+                        <td id="free_space">4250</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -30,30 +88,37 @@
             <h5 class="card-header">Options</h5>
             <div class="card-body">
                 <button type="button" onclick="toggle_armed()" id="armBtn"
-                        class="btn btn-outline-success btn-sm btn-block">
+                        class="btn btn-outline-success btn-sm btn-block"
+                        title="Use this to arm the robot">
                     Arm
                 </button>
                 <button type="button" onclick="rotate_image()"
-                        class="btn btn-outline-primary btn-sm btn-block">
+                        class="btn btn-outline-primary btn-sm btn-block"
+                        title="Will rotate the video 180 degrees">
                     Flip video
                 </button>
                 <button type="button" onclick="toggle_roll()" id="rollBtn"
-                        class="btn btn-outline-primary btn-sm btn-block active">
+                        class="btn btn-outline-primary btn-sm btn-block active"
+                        title="Toggle the roll indicator on/off">
                     Roll
                 </button>
-                <button type="button" onclick="calculate_latency()"
-                        class="btn btn-outline-primary btn-sm btn-block">
-                    Latency
-                </button>
                 <button type="button" onclick="toggle_cinema()"
-                        class="btn btn-outline-primary btn-sm btn-block">
+                        class="btn btn-outline-primary btn-sm btn-block"
+                        title="Toggle cinema mode which hides everything except video">
                     Cinema
                 </button>
+                <button type="button" onclick="set_update_frequency()"
+                        class="btn btn-outline-primary btn-sm btn-block"
+                        title="Changes the sensor update frequency to desired value">
+                    Sensor frequency
+                </button>
                 <button type="button" onclick="toggle_light()" id="lightBtn"
-                        class="btn btn-outline-warning btn-sm btn-block">Light
+                        class="btn btn-outline-warning btn-sm btn-block"
+                        title="Toggle the light on the ROV on/off">Light
                 </button>
                 <button type="button" onclick="stop_rov()"
-                        class="btn btn-outline-danger btn-sm btn-block">
+                        class="btn btn-outline-danger btn-sm btn-block"
+                        title="Stops the ROV, this page will stop working">
                     Shutdown
                 </button>
             </div>
