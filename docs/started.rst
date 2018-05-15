@@ -14,6 +14,7 @@ describing all the features of the edurov package. Let's get started!
 
 Displaying the video feed
 -------------------------
+
 There are two main parts needed in any edurov project. First, it's the python
 file that creates the :class:`~edurov.core.WebMethod` class and starts serving the server.
 Secondly, a index.html file that describes how the different objects will be
@@ -49,3 +50,49 @@ Our file structure now looks like this:
 If you wanted to have a security camera system this is all you had to do. If
 you instead want to control you robot through the browser or display other
 information, keep reading.
+
+Moving a robot
+------------------------
+
+This section will let us control the ROV from within the web browser. In
+computer technology there is something called *parallelism*. It basically means
+that the CPU does multiple things at the same time in different processes. This
+is an important feature of the edurov package as it let's us do many things
+without interrupting the video feed. (It wouldn't be very practical if the
+video stopped each time we moved the robot).
+
+Reading keystrokes
+++++++++++++++++++
+
+First we have to ask the browser to send the server information about when keys
+are pressed. We do this by including :code:`keys.js` inside the
+:code:`index.html` file. We have put it inside a folder called *static* as this
+is the convention for these kind of files.
+
+.. literalinclude:: ../examples/features/index.html
+   :caption: index.html
+   :language: html
+   :linenos:
+   :emphasize-lines: 6
+   :lines: 1-4,6,8,9,12,21,22
+
+
+.. literalinclude:: ../examples/features/static/keys.js
+   :caption: /static/keys.js
+   :language: javascript
+   :linenos:
+   :lines: 6-33
+
+Controlling motors
+++++++++++++++++++
+
+In this example we will not show how to move the motors, instead the program
+will print out which arrow key you are pressing. You can then change the code
+to do whatever you want!
+
+.. literalinclude:: ../examples/features/features.py
+   :caption: features.py
+   :language: python
+   :emphasize-lines: 4,18-30,36
+   :linenos:
+   :lines: 1,4,6,17-30,32-36,38-40
