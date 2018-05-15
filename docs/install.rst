@@ -16,9 +16,11 @@ version (check by running :code:`python --version`), you can either (a) change t
 default python version, or (b) use pip3 and python3 instead.
 
 a. Change default python version
+
    Take a look at `this page <https://linuxconfig.org/how-to-change-from-default-to-alternative-python-version-on-debian-linux>`_.
 
 b. Use pip3 and python3
+
    If you don't want to make any changes, you can call `pip3` instead of `pip`
    and `python3` instead of `python`. This will use version 3 when installing
    and running python scripts instead.
