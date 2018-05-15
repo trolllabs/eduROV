@@ -3,16 +3,13 @@ body {
     padding: 0;
     font-family: Verdana;
 }
-
 a {
     text-decoration: none;
 }
-
 img {
     width: 100%;
     height: auto;
 }
-
 main{
     width: 700px;
     margin-top: 20px;

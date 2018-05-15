@@ -102,7 +102,7 @@ On line 22 we are telling the :class:`~edurov.core.WebMethod` that
 function in another process and shuts it down when we stop the ROV. For more
 information visit the API page. Since this function is running in another
 process it needs to communicate with the server. It does this by the help of
-:code:`pyro4` (line 2). We then connect to the :code:`KeyManager` and
+:code:`Pyro4` (line 2). We then connect to the :code:`KeyManager` and
 :code:`ROVSyncer` on line 7-8. This let's us access the variables we need.
 
 The resulting file structure:
@@ -114,3 +114,39 @@ The resulting file structure:
     ├── index.html
     └── static
         └── keys.js
+
+Making it pretty
+----------------
+
+At this point our web page is very boring. It is white with one image.
+Since it's a html file we can add whatever we want to it! This time we are
+adding a header, a button to stop the server and some information. In addition
+we are adding some styling that will center the content and make it look nicer.
+
+.. literalinclude:: ../examples/features/index.html
+   :caption: index.html
+   :language: html
+   :linenos:
+   :emphasize-lines: 5
+   :lines: 1-6,8-14,16-22
+
+
+.. literalinclude:: ../examples/features/static/style.css
+   :caption: /static/style.css
+   :language: css
+   :linenos:
+
+
+::
+
+    project
+    ├── features.py
+    ├── index.html
+    └── static
+        ├── keys.js
+        └── style.css
+
+Custom responses
+----------------
+
+bla bla
