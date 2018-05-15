@@ -16,3 +16,13 @@ Examples
 .. literalinclude:: ../examples/minimal/index.html
    :caption: index.html
    :language: html
+
+.. include:: ../examples/features/Readme.rst
+
+.. literalinclude:: ../examples/features/features.py
+   :caption: features.py
+   :language: python
+
+.. literalinclude:: ../examples/features/index.html
+   :caption: index.html
+   :language: html
