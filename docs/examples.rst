@@ -26,3 +26,13 @@ Examples
 .. literalinclude:: ../examples/features/index.html
    :caption: index.html
    :language: html
+
+.. include:: ../examples/edurov_web/Readme.rst
+
+.. literalinclude:: ../examples/edurov_web/start.py
+   :caption: start.py
+   :language: python
+
+.. literalinclude:: ../examples/edurov_web/index.html
+   :caption: index.html
+   :language: html
