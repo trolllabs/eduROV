@@ -52,7 +52,7 @@ you instead want to control you robot through the browser or display other
 information, keep reading.
 
 Moving a robot
-------------------------
+--------------
 
 This section will let us control the ROV from within the web browser. In
 computer technology there is something called *parallelism*. It basically means
@@ -64,7 +64,7 @@ video stopped each time we moved the robot).
 Reading keystrokes
 ++++++++++++++++++
 
-First we have to ask the browser to send the server information about when keys
+First, we have to ask the browser to send us information when keys
 are pressed. We do this by including :code:`keys.js` inside the
 :code:`index.html` file. We have put it inside a folder called *static* as this
 is the convention for these kind of files.
@@ -73,7 +73,7 @@ is the convention for these kind of files.
    :caption: index.html
    :language: html
    :linenos:
-   :emphasize-lines: 6
+   :emphasize-lines: 5
    :lines: 1-4,6,8,9,12,21,22
 
 
@@ -83,8 +83,8 @@ is the convention for these kind of files.
    :linenos:
    :lines: 6-33
 
-Controlling motors
-++++++++++++++++++
+Controlling motors (or anything)
+++++++++++++++++++++++++++++++++
 
 In this example we will not show how to move the motors, instead the program
 will print out which arrow key you are pressing. You can then change the code
@@ -93,6 +93,24 @@ to do whatever you want!
 .. literalinclude:: ../examples/features/features.py
    :caption: features.py
    :language: python
-   :emphasize-lines: 4,18-30,36
+   :emphasize-lines: 2,5-17,22
    :linenos:
    :lines: 1,4,6,17-30,32-36,38-40
+
+On line 22 we are telling the :class:`~edurov.core.WebMethod` that
+:code:`control_motors` should be a :code:`runtime_function`. This starts the
+function in another process and shuts it down when we stop the ROV. For more
+information visit the API page. Since this function is running in another
+process it needs to communicate with the server. It does this by the help of
+:code:`pyro4` (line 2). We then connect to the :code:`KeyManager` and
+:code:`ROVSyncer` on line 7-8. This let's us access the variables we need.
+
+The resulting file structure:
+
+::
+
+    project
+    ├── features.py
+    ├── index.html
+    └── static
+        └── keys.js
