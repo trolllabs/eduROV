@@ -19,8 +19,6 @@ Prerequisites
 *************
 - eduROV requires python 3, if you don't have python installed, you can
   download it here: https://www.python.org/downloads/
-- if python 3 is not your default python interpreter, pip3 and python3 should
-  be used as in this instruction
 - the camera on the raspberry pi has to be enabled, see
   https://www.raspberrypi.org/documentation/configuration/camera.md
 
