@@ -15,12 +15,12 @@ describing all the features of the edurov package. Let's get started!
 Displaying the video feed
 -------------------------
 There are two main parts needed in any edurov project. First, it's the python
-file that creates the WebMethod class and starts serving the server. Secondly,
-a index.html file that describes how the different objects will be displayed
-in the browser.
+file that creates the :class:`WebMethod` class and starts serving the server.
+Secondly, a index.html file that describes how the different objects will be
+displayed in the browser.
 
 In the two code blocks underneath you can see how simple they can be created.
-The index.html file needs to be called exactly this. We use the :code:`os.path`
+The index.html file needs to be called exactly this. We use the :meth:`os.path`
 library to ensure correct file path description.
 
 .. literalinclude:: ../examples/features/features.py
@@ -42,6 +42,10 @@ Our file structure now looks like this:
 
 ::
 
-    project_folder
+    project
     ├── features.py
     └── index.html
+
+If you wanted to have a security camera system this is all you had to do. If
+you instead want to control you robot through the browser or display other
+information, keep reading.
