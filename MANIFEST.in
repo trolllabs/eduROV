@@ -1,6 +1,6 @@
 include README.rst
 include LICENSE.txt
-recursive-include examples_edurov *
+recursive-include examples/edurov_web *
 recursive-include edurov *
 global-exclude */.svn/*
 global-exclude */.idea/*

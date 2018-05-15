@@ -7,14 +7,31 @@ and this project adheres to [Semantic Versioning]
 
 ## [Unreleased]
 ### Added
-- Minimal code example
+- Minimal, rc_car and experiment code examples
 - Sphinx docs
+- Keyup and keydown methods to key manager
+- Possibility to change sensor update interval while the program is running
+- Possibility to choose redirect type between 301 and 302
 
 ### Changed
 - Moved "arm" and "stop" from POST to GET method
+- KeyUp and KeyDown uses GET instead of POST
+- KeyManager uses dictionary instead of list for keys to increase performance
+- Refactored script.js into multiple files for clarity
+- Engange eduROV now has fixed places for sensor values
+- Engange eduROV has denomination on sensor values
+- renamed examples_edurov folder to examples
 
 ### Removed
-- Pygame dependency
+- Pygame implementations
+- Possibility to set keys from json dict
+- Duo file for pygame implementations
+- Armed property in ROVSyncer, use local variable in js instead
+- Echo response in webserver
+- Armed response in webserver
+- try except clause in GET method
+- args_resolution_help as command help
+- STANDARD_RESOLUTIONS
 
 ## [0.0.4] - 2018-03-20
 ### Added

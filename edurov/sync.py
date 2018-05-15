@@ -6,7 +6,6 @@ import os
 import time
 
 import Pyro4
-import pygame
 
 
 class Key(object):
@@ -42,7 +41,7 @@ class KeyManager(object):
     """Keeps control of all user input from keyboard"""
 
     def __init__(self):
-        self.keys = []
+        self.keys = {}
         cwd = os.path.dirname(os.path.abspath(__file__))
         with open(os.path.join(cwd, 'keys.txt'), 'r') as f:
             for line in f.readlines()[1:]:
@@ -50,7 +49,12 @@ class KeyManager(object):
                 ASCII = line[14:22].rstrip()
                 common = line[22:44].rstrip()
                 keycode = line[44:].rstrip()
-                self.keys.append(Key(KeyASCII, ASCII, common, keycode))
+                if keycode:
+                    dict_key = int(keycode)
+                else:
+                    dict_key = KeyASCII
+                self.keys.update({
+                    dict_key: Key(KeyASCII, ASCII, common, keycode)})
 
     def set_mode(self, key, mode):
         self.get(key).mode = mode
@@ -58,33 +62,15 @@ class KeyManager(object):
     def set(self, key, state):
         self.get(key).state = state
 
-    def set_from_pygame_event(self, event):
-        for key in self.keys:
-            if event.key == pygame.__getattribute__(key.KeyASCII):
-                if event.type == pygame.KEYDOWN:
-                    key.keydown()
-                elif event.type == pygame.KEYUP:
-                    key.keyup()
-                return
-
-    def set_from_js_dict(self, js_dict):
-        for key in self.keys:
-            if key.keycode == js_dict['keycode']:
-                if js_dict['event'] == 'KEYDOWN':
-                    key.keydown()
-                elif js_dict['event'] == 'KEYUP':
-                    key.keyup()
-                return
-
     def get(self, key_idx, make_exception=True):
-        if isinstance(key_idx, str):
-            for key in self.keys:
-                if key.common == key_idx or key.KeyASCII == key_idx:
-                    return key
-        elif isinstance(key_idx, int):
-            for key in self.keys:
-                if key.keycode == key_idx:
-                    return key
+        key = self.keys[key_idx]
+        if key:
+            return key
+        elif isinstance(key_idx, str):
+            for dict_key in self.keys:
+                if key_idx in [self.keys[dict_key].common,
+                               self.keys[dict_key].KeyASCII]:
+                    return self.keys[dict_key]
         if make_exception:
             raise ValueError('Could not find key {}'.format(key_idx))
         else:
@@ -93,12 +79,12 @@ class KeyManager(object):
     def state(self, key):
         return self.get(key).state
 
-    def keydown(self, key, make_exception=True):
+    def keydown(self, key, make_exception=False):
         btn = self.get(key, make_exception=make_exception)
         if btn:
             btn.keydown()
 
-    def keyup(self, key, make_exception=True):
+    def keyup(self, key, make_exception=False):
         btn = self.get(key, make_exception=make_exception)
         if btn:
             btn.keyup()
@@ -106,22 +92,22 @@ class KeyManager(object):
     @property
     def qweasd_dict(self):
         state = {
-            'q': self.get('q').state,
-            'w': self.get('w').state,
-            'e': self.get('e').state,
-            'a': self.get('a').state,
-            's': self.get('s').state,
-            'd': self.get('d').state,
+            'q': self.get(81).state,
+            'w': self.get(87).state,
+            'e': self.get(69).state,
+            'a': self.get(65).state,
+            's': self.get(83).state,
+            'd': self.get(68).state,
         }
         return state
 
     @property
     def arrow_dict(self):
         state = {
-            'up arrow': self.get('up arrow').state,
-            'down arrow': self.get('down arrow').state,
-            'left arrow': self.get('left arrow').state,
-            'right arrow': self.get('right arrow').state,
+            'up arrow': self.get(38).state,
+            'down arrow': self.get(40).state,
+            'left arrow': self.get(37).state,
+            'right arrow': self.get(39).state,
         }
         return state
 
@@ -134,7 +120,6 @@ class ROVSyncer(object):
         self._sensor = {'time': time.time()}
         self._actuator = {}
         self._run = True
-        self._armed = True
 
     @property
     def sensor(self):
@@ -161,14 +146,6 @@ class ROVSyncer(object):
     @run.setter
     def run(self, bool_):
         self._run = bool_
-
-    @property
-    def armed(self):
-        return self._armed
-
-    @armed.setter
-    def armed(self, bool_):
-        self._armed = bool_
 
 
 def start_sync_classes():

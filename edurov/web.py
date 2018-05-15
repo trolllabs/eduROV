@@ -51,76 +51,50 @@ class RequestHandler(server.BaseHTTPRequestHandler):
     custom_response = None
 
     def do_GET(self):
-        try:
-            if self.path == '/':
-                self.redirect('/index.html')
-            elif self.path == '/stream.mjpg':
-                self.serve_stream()
-            elif self.path.startswith('/keyup'):
-                self.send_response(200)
-                self.end_headers()
-                self.keys.keyup(key=int(self.path.split('=')[1]),
-                                make_exception=False)
-            elif self.path.startswith('/keydown'):
-                self.send_response(200)
-                self.end_headers()
-                self.keys.keydown(key=int(self.path.split('=')[1]),
-                                  make_exception=False)
-            elif self.path.startswith('/sensor.json'):
-                self.serve_rov_data('sensor')
-            elif self.path.startswith('/actuator.json'):
-                self.serve_rov_data('actuator')
-            elif self.path.startswith('/echo'):
-                text = self.path[self.path.find('=') + 1:]
-                self.serve_content(text.encode('utf-8'))
-            elif self.path.startswith('/stop'):
-                self.send_response(200)
-                self.end_headers()
-                self.rov.run = False
-            elif self.path.startswith('/armed'):
-                value = self.path[self.path.find('=') + 1:]
-                armed = False
-                if value == 'True':
-                    armed = True
-                self.send_response(200)
-                self.end_headers()
-                self.rov.armed = armed
-            else:
-                path = os.path.join(self.base_folder, self.path[1:])
-                if os.path.isfile(path):
-                    self.serve_path(path)
-                elif self.custom_response:
-                    response = self.custom_response(self.path)
-                    if response:
-                        if response.startswith('redirect='):
-                            new_path = response[response.find('=') + 1:]
-                            self.redirect(new_path)
-                        else:
-                            self.serve_content(response.encode('utf-8'))
-                    else:
-                        warning(message='Bad response. {}. custom '
-                                        'response function returned nothing'
-                                .format(self.requestline), filter='default')
-                        self.send_404()
-                else:
-                    warning(message='Bad response. {}. Could not find {}'
-                            .format(self.requestline, path), filter='default')
-                    self.send_404()
-        except Exception as e:
-            with open('~/except_log.txt', 'w+') as f:
-                f.write(e)
-                f.write('\n')
-
-    def do_POST(self):
-        if self.path.startswith('/keys.json'):
-            content_len = int(self.headers['Content-Length'])
-            post_body = self.rfile.read(content_len).decode('utf-8')
-            json_obj = json.loads(post_body)
-            self.keys.set_from_js_dict(json_obj)
+        if self.path == '/':
+            self.redirect('/index.html', redir_type=301)
+        elif self.path == '/stream.mjpg':
+            self.serve_stream()
+        elif self.path.startswith('/keyup'):
             self.send_response(200)
             self.end_headers()
+            self.keys.keyup(key=int(self.path.split('=')[1]))
+        elif self.path.startswith('/keydown'):
+            self.send_response(200)
+            self.end_headers()
+            self.keys.keydown(key=int(self.path.split('=')[1]))
+        elif self.path.startswith('/sensor.json'):
+            self.serve_rov_data('sensor')
+        elif self.path.startswith('/actuator.json'):
+            self.serve_rov_data('actuator')
+        elif self.path.startswith('/stop'):
+            self.send_response(200)
+            self.end_headers()
+            self.rov.run = False
         else:
-            self.send_404()
+            path = os.path.join(self.base_folder, self.path[1:])
+            if os.path.isfile(path):
+                self.serve_path(path)
+            elif self.custom_response:
+                response = self.custom_response(self.path)
+                if response:
+                    if response.startswith('redirect='):
+                        new_path = response[response.find('=') + 1:]
+                        self.redirect(new_path)
+                    else:
+                        self.serve_content(response.encode('utf-8'))
+                else:
+                    warning(message='Bad response. {}. custom '
+                                    'response function returned nothing'
+                            .format(self.requestline), filter='default')
+                    self.send_404()
+            else:
+                warning(message='Bad response. {}. Could not find {}'
+                        .format(self.requestline, path), filter='default')
+                self.send_404()
+
+    def do_POST(self):
+        self.send_404()
 
     def serve_content(self, content, content_type='text/html'):
         self.send_response(200)
@@ -140,8 +114,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             content = f.read()
         self.serve_content(content, content_type)
 
-    def redirect(self, path):
-        self.send_response(302)
+    def redirect(self, path, redir_type=302):
+        self.send_response(redir_type)
         self.send_header('Location', path)
         self.end_headers()
 

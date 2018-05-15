@@ -21,11 +21,6 @@ if detect_pi():
     import serial
     import fcntl
 
-STANDARD_RESOLUTIONS = ['160x120', '240x160', '640x360', '640x480', '960x540',
-                        '960x640', '1024x576', '1024x600', '1024x768',
-                        '1152x864', '1280x720', '1296x972', '1640x1232',
-                        '1920x1080']
-
 
 def is_int(number):
     if isinstance(number, int):
@@ -57,23 +52,7 @@ def valid_resolution(resolution):
         w, h = resolution.split('x')
         if is_int(w) and is_int(h):
             return resolution
-        else:
-            warning('Resolution must be WIDTHxHEIGHT or an integer')
-    elif is_int(resolution):
-        idx = int(resolution)
-        if idx in range(0, len(STANDARD_RESOLUTIONS)):
-            return STANDARD_RESOLUTIONS[idx]
-        else:
-            warning('Resolution index must be inr range 0-{}, not {}'
-                    .format(len(STANDARD_RESOLUTIONS), idx))
-    else:
-        warning('Resolution must be WIDTHxHEIGHT or an integer')
-
-
-def args_resolution_help():
-    print('{:<8} {:<10}'.format('Number', 'Resolution'))
-    for idx, res in enumerate(STANDARD_RESOLUTIONS):
-        print('{:<8} {:<10}'.format(idx, res))
+    warning('Resolution must be WIDTHxHEIGHT')
 
 
 def server_ip(port):
@@ -100,6 +79,12 @@ def check_requirements():
                                           'get_camera']).decode().rstrip()
         if '0' in camera:
             warning('Camera not enabled or connected properly')
+            return False
+        else:
+            return True
+    else:
+        warning('eduROV only works on a raspberry pi')
+        return False
 
 
 def send_arduino(msg, serial_connection):
