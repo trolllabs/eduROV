@@ -15,7 +15,7 @@ describing all the features of the edurov package. Let's get started!
 Displaying the video feed
 -------------------------
 There are two main parts needed in any edurov project. First, it's the python
-file that creates the :class:`WebMethod` class and starts serving the server.
+file that creates the :class:`~edurov.core.WebMethod` class and starts serving the server.
 Secondly, a index.html file that describes how the different objects will be
 displayed in the browser.
 
