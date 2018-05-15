@@ -21,8 +21,8 @@ a. Change default python version
 
 b. Use pip3 and python3
 
-   If you don't want to make any changes, you can call `pip3` instead of `pip`
-   and `python3` instead of `python`. This will use version 3 when installing
+   If you don't want to make any changes, you can call :code:`pip3` instead of :code:`pip`
+   and :code:`python3` instead of :code:`python`. This will use version 3 when installing
    and running python scripts instead.
 
 Install using pip
