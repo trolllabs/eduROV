@@ -191,3 +191,8 @@ def free_drive_space(as_string=False):
             return '{:.0f} MB'.format(mb)
     else:
         return mb
+
+def cpu_temperature():
+    """Returns the onboard CPU temperature"""
+    cmds = ['/opt/vc/bin/vcgencmd', 'measure_temp']
+    return subprocess.check_output(cmds).decode()

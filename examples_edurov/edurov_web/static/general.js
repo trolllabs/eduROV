@@ -3,9 +3,11 @@ var MOTOR_KEYS = [81, 87, 69, 65, 83, 68];
 var stat = {light:false, armed:false, roll_ui:true, cinema:false,
             video_rotation:0};
 var sensors = {time:0, temp:0, pressure:0, humidity:0, pitch:0, roll:0, yaw:0,
-            tempWater:0, pressureWater:0, batteryVoltage:0, free_space:0};
+            tempWater:0, pressureWater:0, batteryVoltage:0, free_space:0,
+            cpu_temp:0};
 var critical_voltage = 10;
 var critical_disk_space = 500;
+var critical_cpu_temp = 80;
 
 var sensor_interval = 500;
 var interval;
@@ -72,9 +74,9 @@ function toggle_armed(){
 function set_update_frequency(){
     var interval = prompt("Set sensor update interval in ms",sensor_interval);
     if (interval){
-        if (interval<50){
-            alert('Sensor frequency can not be less than 50 ms');
-            interval = 50;
+        if (interval<30){
+            alert('Sensor frequency can not be less than 30 ms');
+            interval = 30;
         }
         sensor_interval = interval;
     }
@@ -159,6 +161,11 @@ function refresh_ui(){
         document.getElementById("diskTr").className = "table-danger";
     } else{
         document.getElementById("diskTr").className.replace("table-danger", "");
+    }
+    if (sensors.cpu_temp < critical_cpu_temp){
+        document.getElementById("cpuTr").className = "table-danger";
+    } else{
+        document.getElementById("cpuTr").className.replace("table-danger", "");
     }
 }
 

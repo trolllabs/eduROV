@@ -5,7 +5,7 @@ import Pyro4
 
 from edurov import WebMethod
 from edurov.utils import detect_pi, serial_connection, send_arduino, \
-    receive_arduino, free_drive_space
+    receive_arduino, free_drive_space, cpu_temperature
 
 if detect_pi():
     from sense_hat import SenseHat
@@ -76,10 +76,11 @@ def senser():
                           'yaw': orientation['yaw']}
 
 
-def SD_card_monitor():
+def system_monitor():
     with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
         while rov.run:
-            rov.sensor = {'free_space': free_drive_space()}
+            rov.sensor = {'free_space': free_drive_space(),
+                          'cpu_temp': cpu_temperature() }
             time.sleep(10)
 
 
@@ -90,7 +91,7 @@ def main(video_resolution='1024x768', fps=30, server_port=8000, debug=False):
         fps=fps,
         server_port=server_port,
         debug=debug,
-        runtime_functions=[arduino, senser, SD_card_monitor]
+        runtime_functions=[arduino, senser, system_monitor]
     )
     web_method.serve()
 

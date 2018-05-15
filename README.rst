@@ -13,6 +13,8 @@ open-acces tools and platforms.
 :Documentation: http://edurov.readthedocs.io
 :Engage eduROV: https://www.edurov.no/
 
+.. image:: ./docs/edurov_gui.png
+
 Prerequisites
 *************
 - eduROV requires python 3, if you don't have python installed, you can
