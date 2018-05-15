@@ -38,7 +38,8 @@ class WebMethod(object):
         if set, this function will be called if default web server is not able
         to handle a GET request, should return a str or None. If returned value
         starts with ``redirect=`` followed by a path, the browser wil redirect
-        the user to this path
+        the user to this path. The callable must accept two parameters whereas
+        the second one is the requested path
     """
     def __init__(self, index_file, video_resolution='1024x768', fps=30,
                  server_port=8000, debug=False, runtime_functions=None,

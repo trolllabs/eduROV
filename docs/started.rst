@@ -146,7 +146,49 @@ we are adding some styling that will center the content and make it look nicer.
         ├── keys.js
         └── style.css
 
+Displaying sensor values
+------------------------
+
+Content here
+
 Custom responses
 ----------------
 
-bla bla
+In some cases you want to display information in the browser that you want to
+create yourself in a python function. The :class:`~edurov.core.WebMethod` has
+a parameter exactly for this purpose.
+
+.. literalinclude:: ../examples/features/features.py
+   :caption: features.py
+   :language: python
+   :emphasize-lines: 9-15,37
+   :linenos:
+
+.. literalinclude:: ../examples/features/index.html
+   :caption: index.html
+   :language: html
+   :linenos:
+   :emphasize-lines: 7, 15
+
+.. literalinclude:: ../examples/features/static/extra.js
+   :caption: /static/extra.js
+   :language: javascript
+   :linenos:
+
+As an example we have created a button in :code:`index.html` (line 15) which
+calls a function in :code:`extra.js` that asks the server what the CPU
+temperature is. The new .js file is included as usual (:code:`index.html`
+(line 7)). On line 7 in :code:`extra.js` we send a GET request with a value of
+*cpu_temp*. The server does not know how it should answer this request, but
+since we have defined a :code:`custom_response` (line 37) in
+:code:`features.py` the request is forwarded to this function and we can
+create the response our self!
+
+Note that this function needs to accept *two* parameters whereas the last one
+is path that is requested. If the path starts with :code:`/cpu_temp` we can
+return the value, else return :code:`None`.
+
+Adding more pages
+-----------------
+
+Content here
