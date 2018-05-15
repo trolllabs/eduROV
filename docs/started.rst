@@ -14,14 +14,27 @@ describing all the features of the edurov package. Let's get started!
 
 Displaying the video feed
 -------------------------
-bla bla bla
+There are two main parts needed in any edurov project. First, it's the python
+file that creates the WebMethod class and starts serving the server. Secondly,
+a index.html file that describes how the different objects will be displayed
+in the browser.
+
+In the two code blocks underneath you can see how simple they can be created.
 
 .. literalinclude:: ../examples/features/features.py
    :caption: features.py
    :language: python
-   :lines: 1,6,33-35,38-40
+   :linenos:
+   :lines: 1,6,32-35,38-40
 
 .. literalinclude:: ../examples/features/index.html
    :caption: index.html
    :language: html
+   :linenos:
    :lines: 1-4,8,9,12,21,22
+
+Our file structure now looks like this:
+
+project_dir
+  +-- features.py
+  +-- index.html
