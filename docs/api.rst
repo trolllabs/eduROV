@@ -55,10 +55,12 @@ KeyManager
 Key identifier
 ++++++++++++++
 
-When using the methods below a *key identifier* must be used.
-
-.. include:: ../edurov/keys.txt
-   :literal:
+When using the methods below a *key identifier* must be used. Either the
+keycode (int) or the KeyASCII or Common Name (str) from the table on the bottom
+of this page can be used. Using keycode is faster.
 
 .. autoclass:: edurov.sync.KeyManager
   :members:
+
+.. include:: ../edurov/keys.txt
+  :literal:
