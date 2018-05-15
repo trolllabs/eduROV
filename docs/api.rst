@@ -52,15 +52,15 @@ KeyManager
             else:
                 print('light off')
 
-Key identifier
-++++++++++++++
-
-When using the methods below a *key identifier* must be used. Either the
+When using the methods below a **key identifier** must be used. Either the
 keycode (int) or the KeyASCII or Common Name (str) from the table on the bottom
 of this page can be used. Using keycode is faster.
 
 .. autoclass:: edurov.sync.KeyManager
   :members:
+
+Keys table
++++++++++++
 
 .. include:: ../edurov/keys.txt
   :literal:
