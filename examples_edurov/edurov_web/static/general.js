@@ -1,3 +1,8 @@
+/**
+ * Handles sensor values and some simple GUI updates
+ * https://github.com/trolllabs/eduROV
+ */
+
 var keycodes = {l:76, c:67, esc:27, enter:13};
 var MOTOR_KEYS = [81, 87, 69, 65, 83, 68];
 var stat = {light:false, armed:false, roll_ui:true, cinema:false,
@@ -5,9 +10,7 @@ var stat = {light:false, armed:false, roll_ui:true, cinema:false,
 var sensors = {time:0, temp:0, pressure:0, humidity:0, pitch:0, roll:0, yaw:0,
             tempWater:0, pressureWater:0, batteryVoltage:0, free_space:0,
             cpu_temp:0};
-var critical_voltage = 10;
-var critical_disk_space = 500;
-var critical_cpu_temp = 80;
+var critical = {voltage:10, disk_space:500, cpu_temp:80};
 
 var sensor_interval = 500;
 var interval;
@@ -136,9 +139,9 @@ function get_sensor(){
 }
 
 function refresh_ui(){
-    var roll = sensors.roll
+    var roll_val = sensors.roll
     document.getElementById("rollOverlay").style.transform =
-        `rotate(${roll}deg)`;
+        `rotate(${roll_val}deg)`;
 
     for (var key in sensors){
         var element = document.getElementById(key);
@@ -151,18 +154,18 @@ function refresh_ui(){
         }
     }
 
-    // Battery and disk space
-    if (sensors.batteryVoltage < critical_voltage){
+    // Check critical system values
+    if (sensors.batteryVoltage < critical.voltage){
         document.getElementById("voltageTr").className = "table-danger";
     } else{
         document.getElementById("voltageTr").className.replace("table-danger", "");
     }
-    if (sensors.free_space < critical_disk_space){
+    if (sensors.free_space < critical.disk_space){
         document.getElementById("diskTr").className = "table-danger";
     } else{
         document.getElementById("diskTr").className.replace("table-danger", "");
     }
-    if (sensors.cpu_temp < critical_cpu_temp){
+    if (sensors.cpu_temp < critical.cpu_temp){
         document.getElementById("cpuTr").className = "table-danger";
     } else{
         document.getElementById("cpuTr").className.replace("table-danger", "");

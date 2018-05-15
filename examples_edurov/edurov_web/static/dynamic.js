@@ -1,4 +1,10 @@
+/**
+ * Handles resize event and cinema mode to create a dynamic layout
+ * https://github.com/trolllabs/eduROV
+ */
+
 var MINIMUM_PANEL_WIDTH = 250;
+var pad = 10;
 cinema = false;
 
 function set_cinema(cinema_mode){
@@ -25,7 +31,6 @@ function set_size(){
     var myImage = new Image();
     var img = document.getElementById("image");
     myImage.src = img.src;
-    var pad = 10;
 
     var imgW = myImage.width;
     var imgH = myImage.height;
@@ -33,35 +38,33 @@ function set_size(){
     var bodH = document.body.clientHeight;
     var imgR = imgW / imgH;
     var bodR = bodW / bodH;
+    var roll = document.getElementsByClassName("rollOverlay")[0];
     if (cinema){
         var img = document.getElementsByClassName("center-panel")[0];
-        var roll = document.getElementsByClassName("rollOverlay")[0];
         if (bodR > imgR){
             var new_width = bodH*imgR;
             var margin = (bodW-new_width)/2;
-            img.style.width = new_width.toString();
             img.style.marginLeft = margin.toString();
-            roll.style.width = new_width.toString();
         } else {
             var new_width = bodW;
-            img.style.width = new_width.toString();
-            roll.style.width = new_width.toString();
         }
+        img.style.width = new_width.toString();
+        roll.style.width = new_width.toString();
+
         var top = new_width/imgR/2*0.9;
         roll.style.top = top.toString();
     } else {
+        var container =  document.getElementsByClassName("grid-container")[0];
         var imgDispW = (bodH - 2*pad)*imgR;
         var imgDispH = imgDispW / imgR;
         var panelW = Math.max(parseInt((bodW-2*pad-imgDispW)/2), MINIMUM_PANEL_WIDTH);
-        document.getElementsByClassName("grid-container")[0].setAttribute("style",
-        `grid-template-columns: ${panelW}px auto ${panelW}px`);
+        container.style.gridTemplateColumns = `${panelW}px auto ${panelW}px`;
 
         var realImgW = bodW - 2*panelW - 2*pad;
         var realImhH = realImgW / imgR;
 
-        document.getElementsByClassName("rollOverlay")[0].setAttribute("style",
-        `width: ${(bodW - 2*panelW - 2*pad)}px;
-        top: ${realImhH/2}px`);
+        roll.style.width = `${(bodW - 2*panelW - 2*pad)}px`;
+        roll.style.top = `${realImhH/2}px`;
     }
 }
 

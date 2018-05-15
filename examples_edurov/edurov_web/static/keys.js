@@ -1,3 +1,9 @@
+/**
+ * Handles keydown and keyup events
+ * If not handle_in_browser it sends the event to the server
+ * https://github.com/trolllabs/eduROV
+ */
+
 var last_key;
 
 document.onkeydown = function(evt) {
