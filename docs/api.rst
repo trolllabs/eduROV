@@ -19,3 +19,38 @@ WebMethod
 
 .. autoclass:: edurov.core.WebMethod
   :members:
+
+ROVSyncer
+---------
+
+.. code:: python
+
+  import Pyro4
+
+  with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
+      while rov.run:
+          print('The ROV is still running')
+
+.. autoclass:: edurov.sync.ROVSyncer
+  :members:
+
+KeyManager
+----------
+
+.. code:: python
+
+  import Pyro4
+
+  with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
+    with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
+        keys.set_mode(key='l', mode='toggle')
+        while rov.run:
+            if keys.state('K_UP'):
+                print('You are pressing the up arrow')
+            if keys.state('K_l'):
+                print('light on')
+            else:
+                print('light off')
+
+.. autoclass:: edurov.sync.KeyManager
+  :members:

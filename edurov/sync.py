@@ -57,12 +57,48 @@ class KeyManager(object):
                     dict_key: Key(KeyASCII, ASCII, common, keycode)})
 
     def set_mode(self, key, mode):
-        self.get(key).mode = mode
+        """
+        Set the press mode for the key to *hold* or *toggle*
+
+        Parameters
+        ----------
+        key : int or str
+            key identifier as described above
+        mode : str
+            *hold* or *toggle*
+        """
+        self._get(key).mode = mode
 
     def set(self, key, state):
-        self.get(key).state = state
+        """
+        Set the state of the key to True or False
 
-    def get(self, key_idx, make_exception=True):
+        Parameters
+        ----------
+        key : int or str
+            key identifier as described above
+        state : bool
+            *True* or *False*
+        """
+        self._get(key).state = bool(state)
+
+    def _get(self, key_idx, make_exception=True):
+        """
+        Returns the Key object identified by *key_idx*
+
+        Parameters
+        ----------
+        key_idx : int or str
+            key identifier as described above
+        make_exception : bool, optional
+            As default an exception is raised if the key is not found, this
+            behavior can be changed be setting it to *False*
+
+        Returns
+        -------
+        key : Key object
+            list items is *namedtuple* of type *LiItem*
+        """
         key = self.keys[key_idx]
         if key:
             return key
@@ -77,37 +113,79 @@ class KeyManager(object):
             return None
 
     def state(self, key):
-        return self.get(key).state
+        """
+        Returns the state of *key*
+
+        Parameters
+        ----------
+        key : int or str
+            key identifier as described above
+
+        Returns
+        -------
+        state : bool
+            *True* or *False*
+        """
+        return self._get(key).state
 
     def keydown(self, key, make_exception=False):
-        btn = self.get(key, make_exception=make_exception)
+        """
+        Call to simulate a keydown event
+
+        Parameters
+        ----------
+        key : int or str
+            key identifier as described above
+        make_exception : bool, optional
+            As default an exception is raised if the key is not found, this
+            behavior can be changed be setting it to *False*
+        """
+        btn = self._get(key, make_exception=make_exception)
         if btn:
             btn.keydown()
 
     def keyup(self, key, make_exception=False):
-        btn = self.get(key, make_exception=make_exception)
+        """
+        Call to simulate a keyup event
+
+        Parameters
+        ----------
+        key : int or str
+            key identifier as described above
+        make_exception : bool, optional
+            As default an exception is raised if the key is not found, this
+            behavior can be changed be setting it to *False*
+        """
+        btn = self._get(key, make_exception=make_exception)
         if btn:
             btn.keyup()
 
     @property
     def qweasd_dict(self):
+        """
+        Dictionary with the state of the letters q, w, e, a, s and d
+        """
         state = {
-            'q': self.get(81).state,
-            'w': self.get(87).state,
-            'e': self.get(69).state,
-            'a': self.get(65).state,
-            's': self.get(83).state,
-            'd': self.get(68).state,
+            'q': self._get(81).state,
+            'w': self._get(87).state,
+            'e': self._get(69).state,
+            'a': self._get(65).state,
+            's': self._get(83).state,
+            'd': self._get(68).state,
         }
         return state
 
     @property
     def arrow_dict(self):
+        """
+        Dictionary with the state of the keys *up arrow*, *down arrow*,
+        *left arrow* and *right arrow*
+        """
         state = {
-            'up arrow': self.get(38).state,
-            'down arrow': self.get(40).state,
-            'left arrow': self.get(37).state,
-            'right arrow': self.get(39).state,
+            'up arrow': self._get(38).state,
+            'down arrow': self._get(40).state,
+            'left arrow': self._get(37).state,
+            'right arrow': self._get(39).state,
         }
         return state
 
@@ -123,6 +201,13 @@ class ROVSyncer(object):
 
     @property
     def sensor(self):
+        """
+        Dictionary holding sensor values
+
+        :getter: Returns sensor values as dict
+        :setter: Update sensor values with dict
+        :type: dict
+        """
         return self._sensor
 
     @sensor.setter
@@ -132,6 +217,13 @@ class ROVSyncer(object):
 
     @property
     def actuator(self):
+        """
+        Dictionary holding actuator values
+
+        :getter: Returns actuator values as dict
+        :setter: Update actuator values with dict
+        :type: dict
+        """
         return self._actuator
 
     @actuator.setter
@@ -141,6 +233,13 @@ class ROVSyncer(object):
 
     @property
     def run(self):
+        """
+        Bool describing if the ROV is still running
+
+        :getter: Returns bool describing if the ROV is running
+        :setter: Set to False if the ROV should stop
+        :type: bool
+        """
         return self._run
 
     @run.setter
