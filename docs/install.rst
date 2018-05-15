@@ -12,14 +12,15 @@ Python version
 --------------
 
 The edurov package requires python 3. If python 3 si not your default python
-version (check by running :code:`python --version`), you can either (a) change the
-default python version, or (b) use pip3 and python3 instead.
+version (check by running :code:`python --version`), you can either (1) change the
+default python version, or (2) use pip3 and python3 instead.
 
-a. Change default python version
+1. **Change default python version**
 
    Take a look at `this page <https://linuxconfig.org/how-to-change-from-default-to-alternative-python-version-on-debian-linux>`_.
 
-b. Use pip3 and python3
+
+2. **Use pip3 and python3**
 
    If you don't want to make any changes, you can call :code:`pip3` instead of :code:`pip`
    and :code:`python3` instead of :code:`python`. This will use version 3 when installing
