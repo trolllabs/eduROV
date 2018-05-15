@@ -52,5 +52,13 @@ KeyManager
             else:
                 print('light off')
 
+Key identifier
+++++++++++++++
+
+When using the methods below a *key identifier* must be used.
+
+.. include:: ../edurov/keys.txt
+   :literal:
+
 .. autoclass:: edurov.sync.KeyManager
   :members:
