@@ -20,12 +20,17 @@ a index.html file that describes how the different objects will be displayed
 in the browser.
 
 In the two code blocks underneath you can see how simple they can be created.
+The index.html file needs to be called exactly this. We use the :code:`os.path`
+library to ensure correct file path description.
 
 .. literalinclude:: ../examples/features/features.py
    :caption: features.py
    :language: python
    :linenos:
    :lines: 1,6,32-35,38-40
+
+The index.html file must have an img element with :code:`src="stream.mjpg"`.
+The server will then populate this tag with the one coming from the camera.
 
 .. literalinclude:: ../examples/features/index.html
    :caption: index.html
@@ -35,6 +40,8 @@ In the two code blocks underneath you can see how simple they can be created.
 
 Our file structure now looks like this:
 
-project_dir
-  +-- features.py
-  +-- index.html
+::
+
+    project_folder
+    ├── features.py
+    └── index.html
