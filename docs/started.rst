@@ -188,6 +188,16 @@ Note that this function needs to accept *two* parameters whereas the last one
 is path that is requested. If the path starts with :code:`/cpu_temp` we can
 return the value, else return :code:`None`.
 
+::
+
+    project
+    ├── features.py
+    ├── index.html
+    └── static
+        ├── keys.js
+        ├── style.css
+        └── extra.js
+
 Adding more pages
 -----------------
 
