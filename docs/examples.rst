@@ -3,7 +3,7 @@ Examples
 
 .. TIP::
    The following examples can be downloaded from the
-   `eduROV examples folder <https://github.com/trolllabs/eduROV/tree/master/examples_edurov>`_.
+   `eduROV examples folder <https://github.com/trolllabs/eduROV/tree/master/examples>`_.
 
 .. include:: ../examples/rc_car/Readme.rst
 
@@ -11,6 +11,7 @@ Examples
 
 .. literalinclude:: ../examples/minimal/minimal.py
    :caption: minimal.py
+   :language: python
 
 .. literalinclude:: ../examples/minimal/index.html
    :caption: index.html
