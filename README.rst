@@ -13,7 +13,7 @@ open-acces tools and platforms.
 :Documentation: http://edurov.readthedocs.io
 :Engage eduROV: https://www.edurov.no/
 
-.. image:: ./docs/edurov_gui.png
+.. image:: ./docs/edurov_gui.jpg
 
 Prerequisites
 *************
