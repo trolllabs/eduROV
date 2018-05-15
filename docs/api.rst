@@ -45,9 +45,9 @@ KeyManager
     with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
         keys.set_mode(key='l', mode='toggle')
         while rov.run:
-            if keys.state('K_UP'):
+            if keys.state('up arrow'):
                 print('You are pressing the up arrow')
-            if keys.state('K_l'):
+            if keys.state('l'):
                 print('light on')
             else:
                 print('light off')
