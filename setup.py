@@ -32,7 +32,7 @@ setup(
     author='trolllabs',
     author_email='martinloland@gmail.com',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Education',
         'Intended Audience :: End Users/Desktop',
         'Topic :: Education',
@@ -40,7 +40,6 @@ setup(
         'Topic :: Multimedia :: Video :: Display',
         'Framework :: Robot Framework',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Programming Language :: Python',
         'Programming Language :: Python :: 3',
     ],
     keywords='video education ROV picamera',
