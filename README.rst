@@ -26,16 +26,11 @@ Prerequisites
 
 Installation
 ************
-Run the following commands in a terminal on the Raspberry Pi.
-
-First, make sure that your Raspberry Pi is up to date::
-
-    sudo apt-get update
-    sudo apt-get dist-upgrade
-
-Install edurov, sudo rights are needed to enable console scripts::
+Run the following commands in a terminal on the Raspberry Pi.::
 
   sudo pip3 install edurov
+
+For a more in depth description visit `the official documentation <http://edurov.readthedocs.io/>`_.
 
 Usage
 *****
