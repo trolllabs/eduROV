@@ -12,10 +12,9 @@ Remote control
 --------------
 
 In most cases it is more practical to control the Raspberry Pi using another
-computer. The two most popular methods are with either SSH or VNC.
-
+computer. The two most popular methods are with either
 `SSH <https://www.raspberrypi.org/documentation/remote-access/ssh/README.md>`_
-`VNC <https://www.raspberrypi.org/documentation/remote-access/vnc/README.md>`_
+or `VNC <https://www.raspberrypi.org/documentation/remote-access/vnc/README.md>`_.
 
 Update system
 -------------
@@ -63,8 +62,7 @@ Start at system startup
 -----------------------
 
 If you want the edurov-web command to run automatically when the raspberry pi
-has started, or start your own python script at startup. Run the following
-command::
+has started. Run the following command::
 
     sudo nano /etc/rc.local
 
