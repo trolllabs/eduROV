@@ -3,8 +3,6 @@ import sys
 
 from setuptools import setup, find_packages
 
-from edurov.utils import detect_pi
-
 CURRENT_PYTHON = sys.version_info[:2]
 REQUIRED_PYTHON = (3, 0)
 
@@ -26,12 +24,11 @@ def read(fname):
 
 setup(
     name='edurov',
-    version='0.0.4',
+    version='0.0.5',
     description='A educational project for remotely operated vehicles',
     long_description=read('README.rst'),
     license='GPLv3',
     url='https://github.com/trolllabs/eduROV',
-
     author='trolllabs',
     author_email='martinloland@gmail.com',
     classifiers=[
@@ -57,7 +54,7 @@ setup(
         ],
     },
     project_urls={
-        'Documentation': 'http://http://edurov.no/',
+        'Documentation': 'http://edurov.readthedocs.io',
         'Source': 'https://github.com/trolllabs/eduROV/',
         'Tracker': 'https://github.com/trolllabs/eduROV/issues',
     }
