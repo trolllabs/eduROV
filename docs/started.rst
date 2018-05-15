@@ -153,7 +153,7 @@ we are adding some styling that will center the content and make it look nicer.
 Displaying sensor values
 ------------------------
 
-Content here
+Coming soon
 
 Custom responses
 ----------------
@@ -205,4 +205,4 @@ return the value, else return :code:`None`.
 Adding more pages
 -----------------
 
-Content here
+Coming soon
