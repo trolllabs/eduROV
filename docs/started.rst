@@ -15,3 +15,13 @@ describing all the features of the edurov package. Let's get started!
 Displaying the video feed
 -------------------------
 bla bla bla
+
+.. literalinclude:: /examples/features/features.py
+   :caption: features.py
+   :language: python
+   :lines: 1,6,33-35,38-40
+
+.. literalinclude:: /examples/features/index.html
+   :caption: index.html
+   :language: html
+   :lines: 1-4,8,9,12,21,22
