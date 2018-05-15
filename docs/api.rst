@@ -1,6 +1,10 @@
 API
 ===
 
+.. TIP::
+  If you are having a hard time, you can always have a look at the examples
+  page where the classes, methods and parameters are used in practice.
+
 WebMethod
 ---------
 
