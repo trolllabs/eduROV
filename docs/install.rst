@@ -1,9 +1,26 @@
 Installation
 ============
 
+Raspbian
+--------
+
+First, you will need a raspberry pi with an operating system running on it.
+Visit the `official software guide <https://www.raspberrypi.org/learning/software-guide/quickstart/>`_
+for a step by step guide on how to do that.
+
+Remote control
+--------------
+
+In most cases it is more practical to control the Raspberry Pi using another
+computer. The two most popular methods are with either SSH or VNC.
+
+`SSH <https://www.raspberrypi.org/documentation/remote-access/ssh/README.md>`_
+`VNC <https://www.raspberrypi.org/documentation/remote-access/vnc/README.md>`_
+
 Update system
 -------------
-First, make sure that your Raspberry Pi is up to date::
+
+Make sure that your Raspberry Pi is up to date::
 
     sudo apt-get update
     sudo apt-get dist-upgrade
@@ -32,3 +49,31 @@ Install using pip
 Install edurov, sudo rights are needed to enable console scripts::
 
   sudo pip install edurov
+
+
+Static IP
+---------
+
+If you are remotely connected to the Pi it can be very useful with a static ip
+so that you can find the Pi on the network. How you should configure this
+depends how your network is setup. A guide can be found
+`here <https://www.modmypi.com/blog/how-to-give-your-raspberry-pi-a-static-ip-address-update>`_.
+
+Start at system startup
+-----------------------
+
+If you want the edurov-web command to run automatically when the raspberry pi
+has started, or start your own python script at startup. Run the following
+command::
+
+    sudo nano /etc/rc.local
+
+Then add the following line to the bottom of the screen, but *before* the line
+that says :code:`exit 0`::
+
+    edurov-web &
+
+Exit and save by pressing CTRL+C, y, ENTER. The system then needs to be
+rebooted::
+
+    sudo shutdown -r now
