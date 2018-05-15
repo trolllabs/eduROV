@@ -5,8 +5,6 @@ Examples
    The following examples can be downloaded from the
    `eduROV examples folder <https://github.com/trolllabs/eduROV/tree/master/examples>`_.
 
-.. include:: ../examples/rc_car/Readme.rst
-
 .. include:: ../examples/minimal/Readme.rst
 
 .. literalinclude:: ../examples/minimal/minimal.py
@@ -26,6 +24,8 @@ Examples
 .. literalinclude:: ../examples/features/index.html
    :caption: index.html
    :language: html
+
+.. include:: ../examples/rc_car/Readme.rst
 
 .. include:: ../examples/edurov_web/Readme.rst
 
