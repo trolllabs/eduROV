@@ -55,6 +55,8 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             self.redirect('/index.html', redir_type=301)
         elif self.path == '/stream.mjpg':
             self.serve_stream()
+        elif self.path.startswith('/http') or self.path.startswith('/www'):
+            self.redirect(self.path[1:])
         elif self.path.startswith('/keyup'):
             self.send_response(200)
             self.end_headers()

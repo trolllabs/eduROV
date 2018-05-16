@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning]
 - Keyup and keydown methods to key manager
 - Possibility to change sensor update interval while the program is running
 - Possibility to choose redirect type between 301 and 302
+- support for http and www redirect from links
 
 ### Changed
 - Moved "arm" and "stop" from POST to GET method

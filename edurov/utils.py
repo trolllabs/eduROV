@@ -88,6 +88,19 @@ def check_requirements():
 
 
 def send_arduino(msg, serial_connection):
+    """
+    Send the *msg* over the *serial_connection*
+
+    Adds a hexadecimal number of 6 bytes to the start of the message before
+    sending it. "hello there" -> "0x000bhello there"
+
+    Parameters
+    ----------
+    msg : str or bytes
+        the message you want to send
+    serial_connection : object
+        the :code:`serial.Serial` object you want to use for sending
+    """
     if not isinstance(msg, bytes):
         msg = str(msg).encode()
     length = "{0:#0{1}x}".format(len(msg), 6).encode()
@@ -96,6 +109,23 @@ def send_arduino(msg, serial_connection):
 
 
 def receive_arduino(serial_connection):
+    """
+    Returns a message received over *serial_connection*
+
+    Expects that the message received starts with a 6 bytes long number
+    describing the size of the remaining data. "0x000bhello there" -> "hello
+    there".
+
+    Parameters
+    ----------
+    serial_connection : object
+        the :code:`serial.Serial` object you want to use for receiving
+
+    Returns
+    -------
+    msg : str or None
+        the message received or None
+    """
     if serial_connection.inWaiting():
         msg = serial_connection.readline().decode().rstrip()
         if len(msg) >= 6:
@@ -113,12 +143,44 @@ def receive_arduino(serial_connection):
 
 
 def send_arduino_simple(msg, serial_connection):
+    """
+    Send the *msg* over the *serial_connection*
+
+    Same as :code:`send_arduino`, but doesn't add anything to the message
+    before sending it.
+
+    Parameters
+    ----------
+    msg : str or bytes
+        the message you want to send
+    serial_connection : object
+        the :code:`serial.Serial` object you want to use for sending
+    """
     if not isinstance(msg, bytes):
         msg = str(msg).encode()
     serial_connection.write(msg)
 
 
 def receive_arduino_simple(serial_connection, min_length=1):
+    """
+    Returns a message received over *serial_connection*
+
+    Same as :code:`receive_arduino` but doesn't expect that the message starts
+    with a hex number.
+
+    Parameters
+    ----------
+    serial_connection : object
+        the :code:`serial.Serial` object you want to use for receiving
+    min_length : int, optional
+        if you only want that the function to only return the string if it is
+        at least this long.
+
+    Returns
+    -------
+    msg : str or None
+        the message received or None
+    """
     if serial_connection.inWaiting():
         msg = serial_connection.readline().decode().rstrip()
         if len(msg) >= min_length:
@@ -128,6 +190,23 @@ def receive_arduino_simple(serial_connection, min_length=1):
 
 
 def serial_connection(port='/dev/ttyACM0', baudrate=115200, timeout=0.05):
+    """
+    Establishes a serial connection
+
+    Parameters
+    ----------
+    port : str, optional
+        the serial port you want to use
+    baudrate : int, optional
+        the baudrate of the serial connection
+    timeout : float, optional
+        read timeout value
+
+    Returns
+    -------
+    connection : class or None
+        a :code:`serial.Serial` object if successful or None if not
+    """
     try:
         ser = serial.Serial(port, baudrate, timeout=timeout)
         ser.close()
@@ -158,7 +237,20 @@ def warning_format(message, category, filename, lineno,
 
 
 def free_drive_space(as_string=False):
-    """Return folder/drive free space (in megabytes)."""
+    """
+    Checks and returns the remaining free drive space
+
+    Parameters
+    ----------
+    as_string : bool, optional
+        set to True if you want the function to return a formatted string.
+        4278 -> 4.28 GB
+
+    Returns
+    -------
+    space : float or str
+        the remaining MB in float or as string if *as_string=True*
+    """
     if platform.system() == 'Windows':
         free_bytes = ctypes.c_ulonglong(0)
         ctypes.windll.kernel32.GetDiskFreeSpaceExW(ctypes.c_wchar_p('/'),
@@ -178,6 +270,13 @@ def free_drive_space(as_string=False):
         return mb
 
 def cpu_temperature():
-    """Returns the onboard CPU temperature"""
+    """
+    Checks and returns the on board CPU temperature
+
+    Returns
+    -------
+    temperature : float
+        the temperature
+    """
     cmds = ['/opt/vc/bin/vcgencmd', 'measure_temp']
     return subprocess.check_output(cmds).decode()

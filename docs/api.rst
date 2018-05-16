@@ -64,3 +64,9 @@ Keys table
 
 .. include:: ../edurov/keys.txt
   :literal:
+
+Utilities
+---------
+
+.. automodule:: edurov.utils
+  :members:
