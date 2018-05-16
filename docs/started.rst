@@ -35,7 +35,7 @@ library to ensure correct file path description.
    :lines: 1,6,32-35,38-40
 
 The index.html file must have an img element with :code:`src="stream.mjpg"`.
-The server will then populate this tag with the one coming from the camera.
+The server will then populate this image with the one coming from the camera.
 
 .. literalinclude:: ../examples/features/index.html
    :caption: index.html
