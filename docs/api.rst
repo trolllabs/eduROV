@@ -53,8 +53,8 @@ KeyManager
                 print('light off')
 
 When using the methods below a **key identifier** must be used. Either the
-keycode (int) or the KeyASCII or Common Name (str) from the table on the bottom
-of this page can be used. Using keycode is faster.
+keycode (int) or the KeyASCII or Common Name (str) from the table further down
+on this page can be used. Using keycode is faster.
 
 .. autoclass:: edurov.sync.KeyManager
   :members:

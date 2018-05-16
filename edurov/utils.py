@@ -1,5 +1,5 @@
 """
-Different utility functions
+Different utility functions practical for ROV control
 """
 
 import ctypes
@@ -13,7 +13,6 @@ import warnings
 
 
 def detect_pi():
-    """Returns True if debian is the running operating system"""
     return platform.linux_distribution()[0].lower() == 'debian'
 
 
@@ -268,6 +267,7 @@ def free_drive_space(as_string=False):
             return '{:.0f} MB'.format(mb)
     else:
         return mb
+
 
 def cpu_temperature():
     """
