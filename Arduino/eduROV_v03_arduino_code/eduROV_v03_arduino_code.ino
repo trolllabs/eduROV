@@ -35,12 +35,14 @@ String input = " ";
 String output = " ";
 
 unsigned long messageTime = 0;
-unsigned int delayTime = 100; //how long between each sensor update - milliseconds
+unsigned int delayTime = 500; //how long between each sensor update - milliseconds
 
 //Sensor variables
-volatile double pressure = 0;
-volatile double temp = 0;
-volatile double battVolt = 0;
+double pressure = 0;
+double temp = 0;
+double discard_temp = 0;
+double battVolt = 0;
+
 
 void setup() {
   Serial.begin(115200);
@@ -80,13 +82,17 @@ void loop() {
 
   //Reading sensors
   pressure = kPaRead(pressPin);
+  discard_temp = getTemp(tempPin); // discard one measurement to dump noisy sensor values
   temp = getTemp(tempPin);
-  battVolt = getVolt(battVoltPin);
   
+  battVolt = getVolt(battVoltPin);
+
   if ((millis() - messageTime) > delayTime) {
     messageTime = millis();
     printSensorValues();
+    //Serial.println(temp);
   }
   updateOutput(input);
 
 }
+
