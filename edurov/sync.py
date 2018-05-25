@@ -99,9 +99,8 @@ class KeyManager(object):
         key : Key object
             list items is *namedtuple* of type *LiItem*
         """
-        key = self.keys[key_idx]
-        if key:
-            return key
+        if key_idx in self.keys:
+            return self.keys[key_idx]
         elif isinstance(key_idx, str):
             for dict_key in self.keys:
                 if key_idx in [self.keys[dict_key].common,
