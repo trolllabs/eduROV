@@ -157,9 +157,12 @@ function refresh_ui(){
     } else{
         document.getElementById("voltageTr").className.replace("table-danger", "");
     }
+    console.log(sensors.free_space);
     if (sensors.free_space < critical.disk_space){
+        cosole.log('danger');
         document.getElementById("diskTr").className = "table-danger";
     } else{
+        cosole.log('ok');
         document.getElementById("diskTr").className.replace("table-danger", "");
     }
     if (sensors.cpu_temp < critical.cpu_temp){
