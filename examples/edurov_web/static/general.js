@@ -71,6 +71,7 @@ function toggle_armed(){
         btn.className += " active";
     }
     stat.armed = !stat.armed;
+    alert(stat.armed);
     refresh_ui();
 }
 
@@ -113,11 +114,11 @@ function rotate_image(){
 
 function get_sensor(){
     if(stat.armed){
+        alert('i am armed')
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.stat == 200) {
                 var response = JSON.parse(this.responseText);
-                alert(response);
                 for (var key in response) {
                     if (isNaN(response[key])){
                         sensors[key] = response[key];
