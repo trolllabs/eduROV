@@ -50,6 +50,6 @@ and this project adheres to [Semantic Versioning]
 ### Added
 - New GUI in browser based on bootstrap
 
-
+[Unreleased] : https://github.com/trolllabs/eduROV/compare/0.0.4...master
 [0.0.4]: https://github.com/trolllabs/eduROV/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/trolllabs/eduROV/compare/0.0.1rc1...0.0.3
