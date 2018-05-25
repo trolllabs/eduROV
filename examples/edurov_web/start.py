@@ -66,7 +66,7 @@ def senser():
         while rov.run:
             orientation = sense.get_orientation()
             rov.sensor = {'temp': sense.get_temperature(),
-                          'pressure': sense.get_pressure()/10,
+                          'pressure': sense.get_pressure() / 10,
                           'humidity': sense.get_humidity(),
                           'pitch': orientation['pitch'],
                           'roll': orientation['roll'] + 180,
@@ -77,7 +77,7 @@ def system_monitor():
     with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
         while rov.run:
             rov.sensor = {'free_space': free_drive_space(),
-                          'cpu_temp': cpu_temperature() }
+                          'cpu_temp': cpu_temperature()}
             time.sleep(10)
 
 
