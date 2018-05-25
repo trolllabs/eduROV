@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning]
 
 ## [0.0.4] - 2018-03-20
 ### Added
+- Tooltips for buttons on Engange eduROV index page
 - Changelog created
 - Arming of ROV functionality
 - Custom response parameter for WebMethod class, lets the user define own
