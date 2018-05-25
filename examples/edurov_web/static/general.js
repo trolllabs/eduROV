@@ -115,8 +115,7 @@ function get_sensor(){
     if(stat.armed){
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.stat == 200) {
-                console.log(this.responseText)
+            if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);
                 for (var key in response) {
                     if (isNaN(response[key])){
