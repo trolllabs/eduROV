@@ -117,6 +117,7 @@ function get_sensor(){
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.stat == 200) {
                 var response = JSON.parse(this.responseText);
+                alert(response);
                 for (var key in response) {
                     if (isNaN(response[key])){
                         sensors[key] = response[key];
