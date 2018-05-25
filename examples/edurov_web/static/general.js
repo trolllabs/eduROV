@@ -10,7 +10,7 @@ var stat = {light:false, armed:false, roll_ui:true, cinema:false,
 var sensors = {time:0, temp:0, pressure:0, humidity:0, pitch:0, roll:0, yaw:0,
             tempWater:0, pressureWater:0, batteryVoltage:0, free_space:0,
             cpu_temp:0};
-var critical = {voltage:10, disk_space:500, cpu_temp:80};
+var critical = {voltage:10.0, disk_space:500.0, cpu_temp:80.0};
 
 var sensor_interval = 500;
 var interval;
@@ -159,10 +159,10 @@ function refresh_ui(){
     }
     console.log(sensors.free_space);
     if (sensors.free_space < critical.disk_space){
-        cosole.log('danger');
+        console.log('danger');
         document.getElementById("diskTr").className = "table-danger";
     } else{
-        cosole.log('ok');
+        console.log('ok');
         document.getElementById("diskTr").className.replace("table-danger", "");
     }
     if (sensors.cpu_temp < critical.cpu_temp){
