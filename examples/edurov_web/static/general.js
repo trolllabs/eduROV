@@ -154,7 +154,7 @@ function refresh_ui(){
     // Check critical system values
     var voltElem = document.getElementById("voltageTr");
     var diskElem = document.getElementById("diskTr");
-    var cpuElem = document.getElementById("cpuTr";
+    var cpuElem = document.getElementById("cpuTr");
     if (sensors.batteryVoltage < critical.voltage){
         voltElem.className = " table-danger";
     } else{
