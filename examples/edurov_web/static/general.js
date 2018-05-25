@@ -118,10 +118,11 @@ function get_sensor(){
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);
                 for (var key in response) {
-                    if (isNaN(response[key])){
-                        sensors[key] = response[key];
+                    var val = response[key]
+                    if (isNaN(val)){
+                        sensors[key] = val;
                     } else{
-                        sensors[key] = response[key].toFixed(1)
+                        sensors[key] = val.toFixed(1)
                     }
                 }
                 refresh_ui();
