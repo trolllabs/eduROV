@@ -155,17 +155,17 @@ function refresh_ui(){
     if (sensors.batteryVoltage < critical.voltage){
         document.getElementById("voltageTr").className = " table-danger";
     } else{
-        document.getElementById("voltageTr").className.replace(" table-danger", "");
+        document.getElementById("voltageTr").className.replace("table-danger", "");
     }
     if (sensors.free_space < critical.disk_space){
         document.getElementById("diskTr").className = " table-danger";
     } else{
-        document.getElementById("diskTr").className.replace(" table-danger", "");
+        document.getElementById("diskTr").className.replace("table-danger", "");
     }
     if (sensors.cpu_temp < critical.cpu_temp){
         document.getElementById("cpuTr").className = " table-danger";
     } else{
-        document.getElementById("cpuTr").className.replace(" table-danger", "");
+        document.getElementById("cpuTr").className.replace("table-danger", "");
     }
 }
 
