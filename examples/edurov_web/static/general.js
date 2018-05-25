@@ -112,20 +112,18 @@ function rotate_image(){
 }
 
 function get_sensor(){
-    if(stat.armed){
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.responseText);
-                for (var key in response) {
-                    sensors[key] = response[key];
-                }
-                refresh_ui();
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var response = JSON.parse(this.responseText);
+            for (var key in response) {
+                sensors[key] = response[key];
             }
-        };
-        xhttp.open("GET", "sensor.json", true);
-        xhttp.send();
-    }
+            refresh_ui();
+        }
+    };
+    xhttp.open("GET", "sensor.json", true);
+    xhttp.send();
 
     // Reset interval
     interval = setInterval(function () {
@@ -165,7 +163,7 @@ function refresh_ui(){
     } else{
         diskElem.className = diskElem.className.replace(" table-danger", "");
     }
-    if (sensors.cpu_temp < critical.cpu_temp){
+    if (sensors.cpu_temp > critical.cpu_temp){
         cpuElem.className = " table-danger";
     } else{
         cpuElem.className = cpuElem.className.replace(" table-danger", "");
