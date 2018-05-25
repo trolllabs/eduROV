@@ -153,22 +153,19 @@ function refresh_ui(){
 
     // Check critical system values
     if (sensors.batteryVoltage < critical.voltage){
-        document.getElementById("voltageTr").className = "table-danger";
+        document.getElementById("voltageTr").className = " table-danger";
     } else{
-        document.getElementById("voltageTr").className.replace("table-danger", "");
+        document.getElementById("voltageTr").className.replace(" table-danger", "");
     }
-    console.log(sensors.free_space);
     if (sensors.free_space < critical.disk_space){
-        console.log('danger');
-        document.getElementById("diskTr").className = "table-danger";
+        document.getElementById("diskTr").className = " table-danger";
     } else{
-        console.log('ok');
-        document.getElementById("diskTr").className.replace("table-danger", "");
+        document.getElementById("diskTr").className.replace(" table-danger", "");
     }
     if (sensors.cpu_temp < critical.cpu_temp){
-        document.getElementById("cpuTr").className = "table-danger";
+        document.getElementById("cpuTr").className = " table-danger";
     } else{
-        document.getElementById("cpuTr").className.replace("table-danger", "");
+        document.getElementById("cpuTr").className.replace(" table-danger", "");
     }
 }
 
