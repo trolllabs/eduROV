@@ -118,12 +118,7 @@ function get_sensor(){
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);
                 for (var key in response) {
-                    var val = response[key]
-                    if (isNaN(val)){
-                        sensors[key] = val;
-                    } else{
-                        sensors[key] = val.toFixed(1)
-                    }
+                    sensors[key] = response[key];
                 }
                 refresh_ui();
             }
@@ -147,10 +142,11 @@ function refresh_ui(){
     for (var key in sensors){
         var element = document.getElementById(key);
         if (element){
-            if (isNaN(sensors[key])){
-                element.innerHTML = sensors[key]
+            var val = sensors[key];
+            if (isNaN(val)){
+                element.innerHTML = val;
             } else{
-                element.innerHTML = sensors[key].toFixed(1);
+                element.innerHTML = val.toFixed(1);
             }
         }
     }
