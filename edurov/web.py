@@ -126,7 +126,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
         self.end_headers()
 
     def serve_rov_data(self, data_type):
-        print('i will do my best')
         values = ''
         if data_type == 'sensor':
             values = json.dumps(self.rov.sensor)
@@ -134,7 +133,6 @@ class RequestHandler(server.BaseHTTPRequestHandler):
             values = json.dumps(self.rov.actuator)
         else:
             warning('Unable to process data_type {}'.format(data_type))
-        print(values)
         content = values.encode('utf-8')
         self.serve_content(content, 'application/json')
 

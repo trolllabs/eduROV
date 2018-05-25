@@ -279,4 +279,5 @@ def cpu_temperature():
         the temperature
     """
     cmds = ['/opt/vc/bin/vcgencmd', 'measure_temp']
-    return subprocess.check_output(cmds).decode()
+    response = subprocess.check_output(cmds).decode()
+    return float(response.split('=')[1].split("'")[0].rstrip())
