@@ -152,20 +152,23 @@ function refresh_ui(){
     }
 
     // Check critical system values
+    var voltElem = document.getElementById("voltageTr");
+    var diskElem = document.getElementById("diskTr");
+    var cpuElem = document.getElementById("cpuTr";
     if (sensors.batteryVoltage < critical.voltage){
-        document.getElementById("voltageTr").className = " table-danger";
+        voltElem.className = " table-danger";
     } else{
-        document.getElementById("voltageTr").className.replace("table-danger", "");
+        voltElem.className = voltElem.className.replace(" table-danger", "");
     }
     if (sensors.free_space < critical.disk_space){
-        document.getElementById("diskTr").className = " table-danger";
+        diskElem.className = " table-danger";
     } else{
-        document.getElementById("diskTr").className.replace("table-danger", "");
+        diskElem.className = diskElem.className.replace(" table-danger", "");
     }
     if (sensors.cpu_temp < critical.cpu_temp){
-        document.getElementById("cpuTr").className = " table-danger";
+        cpuElem.className = " table-danger";
     } else{
-        document.getElementById("cpuTr").className.replace("table-danger", "");
+        cpuElem.className = cpuElem.className.replace(" table-danger", "");
     }
 }
 
