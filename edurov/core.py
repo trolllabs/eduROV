@@ -40,6 +40,19 @@ class WebMethod(object):
         starts with ``redirect=`` followed by a path, the browser wil redirect
         the user to this path. The callable must accept two parameters whereas
         the second one is the requested path
+
+    Examples
+    --------
+    >>> import os
+    >>> from edurov import WebMethod
+
+    >>> file = os.path.join(os.path.dirname(__file__), 'index.html', )
+    >>> web_method = WebMethod(index_file=file)
+    >>> web_method.serve()
+
+    Notes
+    -----
+
     """
     def __init__(self, index_file, video_resolution='1024x768', fps=30,
                  server_port=8000, debug=False, runtime_functions=None,
@@ -96,6 +109,10 @@ class WebMethod(object):
         timeout : int, optional
             if set, the web page will only be served for that many seconds
             before it automatically shuts down
+
+        Notes
+        -----
+        This method will block the rest of the script.
         """
         start = time.time()
         name_server = subprocess.Popen('pyro4-ns', shell=False,
