@@ -1,8 +1,9 @@
+.. include:: ../README.rst
+
 .. toctree::
    :maxdepth: 2
    :hidden:
-
-   ../README.rst
+   Overview <../README.rst>
    install.rst
    engage.rst
    started.rst
