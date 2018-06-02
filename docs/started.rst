@@ -1,5 +1,5 @@
 Getting started
-================
+***************
 
 .. TIP::
   If you came here to find out how to to use the Engage ROV submersible, the
@@ -17,7 +17,7 @@ one feature at a time. This example was created with the intention of
 describing all the features of the edurov package. Let's get started!
 
 Displaying the video feed
--------------------------
+===============================
 
 There are two main parts needed in any edurov project. First, it's the python
 file that creates the :class:`~edurov.core.WebMethod` class and starts serving the server.
@@ -56,7 +56,7 @@ you instead want to control you robot through the browser or display other
 information, keep reading.
 
 Moving a robot
---------------
+===============================
 
 This section will let us control the ROV from within the web browser. In
 computer technology there is something called *parallelism*. It basically means
@@ -66,7 +66,7 @@ without interrupting the video feed. (It wouldn't be very practical if the
 video stopped each time we moved the robot).
 
 Reading keystrokes
-++++++++++++++++++
+--------------------
 
 First, we have to ask the browser to send us information when keys
 are pressed. We do this by including :code:`keys.js` inside the
@@ -88,7 +88,7 @@ is the convention for these kind of files.
    :lines: 6-33
 
 Controlling motors (or anything)
-++++++++++++++++++++++++++++++++
+------------------------------------
 
 In this example we will not show how to move the motors, instead the program
 will print out which arrow key you are pressing. You can then change the code
@@ -120,7 +120,7 @@ The resulting file structure:
         └── keys.js
 
 Making it pretty
-----------------
+==================
 
 At this point our web page is very boring. It is white with one image.
 Since it's a html file we can add whatever we want to it! This time we are
@@ -151,12 +151,12 @@ we are adding some styling that will center the content and make it look nicer.
         └── style.css
 
 Displaying sensor values
-------------------------
+===============================
 
 Coming soon
 
 Custom responses
-----------------
+===============================
 
 In some cases you want to display information in the browser that you want to
 create yourself in a python function. The :class:`~edurov.core.WebMethod` has
@@ -203,6 +203,6 @@ return the value, else return :code:`None`.
         └── extra.js
 
 Adding more pages
------------------
+===============================
 
 Coming soon

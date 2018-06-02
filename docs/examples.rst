@@ -1,5 +1,5 @@
 Examples
-================
+********
 
 .. TIP::
    The following examples can be downloaded from the

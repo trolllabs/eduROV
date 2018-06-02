@@ -1,5 +1,5 @@
 eduROV - Educational Remotely Operated Vehicle
-==============================================
+**********************************************
 
 Stream camera feed from a Raspberry Pi camera to any web browser on the network.
 Control the robot with your keyboard directly in the browser.
@@ -19,7 +19,7 @@ open-access tools and platforms.
 .. image:: ./docs/edurov_gui.jpg
 
 Main features
-*************
+=============
 
 1. **Low video latency**
 
@@ -49,14 +49,14 @@ Main features
    maintaining the possibility to share variables.
 
 Prerequisites
-*************
+=============
 - eduROV requires python 3, if you don't have python installed, you can
   download it here: https://www.python.org/downloads/
 - the camera on the raspberry pi has to be enabled, see
   https://www.raspberrypi.org/documentation/configuration/camera.md
 
 Installation
-************
+============
 Run the following commands in a terminal on the Raspberry Pi.::
 
   sudo pip3 install edurov
@@ -65,7 +65,7 @@ For a more in depth description visit
 `the official documentation <http://edurov.readthedocs.io/>`_.
 
 Usage
-*****
+=====
 
 Engage eduROV submersible
 -------------------------
@@ -87,7 +87,7 @@ matter of minutes. Visit
 started*, examples and API.
 
 Performance
-***********
+===========
 The eduROV package were created with a strong focus on keeping the latency at
 a minimum. When deploying on a wireless network the actual performance will
 vary depending on factors such as distance, interference and hardware.

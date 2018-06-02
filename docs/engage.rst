@@ -1,8 +1,8 @@
 Engage eduROV
-================
+*************
 
 Terminal command
----------------------------
+================
 
 By calling :code:`edurov-web` in the terminal the edurov-web example will be
 launched. This command also supports multiple flags that can be displayed by
