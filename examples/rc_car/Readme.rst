@@ -1,5 +1,5 @@
 Wireless RC car with camera feed
-**********************************
+=================================
 
 .. image:: docs/rc_car.jpg
 
