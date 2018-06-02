@@ -3,6 +3,7 @@
 .. toctree::
    :maxdepth: 2
    :hidden:
+
    install.rst
    engage.rst
    started.rst
