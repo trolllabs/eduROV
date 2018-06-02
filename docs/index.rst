@@ -3,7 +3,7 @@
 .. toctree::
    :maxdepth: 2
    :hidden:
-   Overview <../README.rst>
+   Overview <https://edurov.readthedocs.io/en/latest/index.html>
    install.rst
    engage.rst
    started.rst
