@@ -38,7 +38,30 @@ class Key(object):
 
 @Pyro4.expose
 class KeyManager(object):
-    """Keeps control of all user input from keyboard"""
+    """
+    Keeps control of all user input from keyboard.
+
+    Examples
+    --------
+    >>> import Pyro4
+    >>>
+    >>> with Pyro4.Proxy("PYRONAME:KeyManager") as keys:
+    >>> with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
+    >>>     keys.set_mode(key='l', mode='toggle')
+    >>>     while rov.run:
+    >>>         if keys.state('up arrow'):
+    >>>             print('You are pressing the up arrow')
+    >>>         if keys.state('l'):
+    >>>             print('light on')
+    >>>         else:
+    >>>             print('light off')
+
+    Note
+    ----
+    When using the methods below a **key identifier** must be used. Either the
+    keycode (int) or the KeyASCII or Common Name (str) from the table further
+    down on this page can be used. Using keycode is faster.
+    """
 
     def __init__(self):
         self.keys = {}
@@ -191,7 +214,17 @@ class KeyManager(object):
 
 @Pyro4.expose
 class ROVSyncer(object):
-    """Holds all variables for ROV related to control and sensors"""
+    """
+    Holds all variables for ROV related to control and sensors
+
+    Examples
+    --------
+    >>> import Pyro4
+    >>>
+    >>> with Pyro4.Proxy("PYRONAME:ROVSyncer") as rov:
+    >>>   while rov.run:
+    >>>       print('The ROV is still running')
+    """
 
     def __init__(self):
         self._sensor = {'time': time.time()}
