@@ -205,4 +205,4 @@ return the value, else return :code:`None`.
 Adding more pages
 ===============================
 
-Coming soon
+Coming very soon.
