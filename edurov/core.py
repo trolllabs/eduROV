@@ -19,7 +19,7 @@ class WebMethod(object):
     ----------
     index_file : str
         Absolute path to the frontpage of the webpage, must be called
-        ``index.html``. For more information, see DisplayingFeed_.
+        ``index.html``. For more information, see :ref:`DisplayingFeed`.
     video_resolution : str, optional
         A string representation of the wanted video resolution in the format
         WIDTHxHEIGHT.
@@ -34,14 +34,14 @@ class WebMethod(object):
     runtime_functions : callable or list, optional
         Should be a callable function or a list of callable functions, will be
         started as independent processes automatically. For more information,
-        see ControllingMotors_.
+        see :ref:`ControllingMotors`.
     custom_response : callable, optional
         If set, this function will be called if default web server is not able
         to handle a GET request, should return a str or None. If returned value
         starts with ``redirect=`` followed by a path, the browser wil redirect
         the user to this path. The callable must accept two parameters whereas
         the second one is the requested path. For more information, see
-        CustomResponses_.
+        :ref:`CustomResponses`.
 
     Examples
     --------
