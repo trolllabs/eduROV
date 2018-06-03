@@ -15,6 +15,10 @@ Examples
    :caption: index.html
    :language: html
 
+    project
+    ├── minimal.py
+    └── index.html
+
 .. include:: ../examples/features/Readme.rst
 
 .. literalinclude:: ../examples/features/features.py
@@ -25,7 +29,22 @@ Examples
    :caption: index.html
    :language: html
 
+    project
+    ├── features.py
+    ├── index.html
+    └── static
+        ├── keys.js
+        ├── extra.js
+        └── style.css
+
 .. include:: ../examples/rc_car/Readme.rst
+
+    project
+    ├── rc_car.py
+    ├── index.html
+    ├── electronics.py
+    └── static
+        └── keys.js
 
 .. include:: ../examples/edurov_web/Readme.rst
 
@@ -36,3 +55,15 @@ Examples
 .. literalinclude:: ../examples/edurov_web/index.html
    :caption: index.html
    :language: html
+
+    project
+    ├── entry.py
+    ├── start.py
+    ├── index.html
+    └── static
+        ├── keys.js
+        ├── general.js
+        ├── dynamic.js
+        ├── roll.png
+        ├── bootstrap.css
+        └── style.css

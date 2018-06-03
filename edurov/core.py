@@ -39,9 +39,9 @@ class WebMethod(object):
     custom_response : callable, optional
         If set, this function will be called if default web server is not able
         to handle a GET request, should return a str or None. If returned value
-        starts with ``redirect=`` followed by a path, the browser wil redirect
-        the user to this path. The callable must accept two parameters whereas
-        the second one is the requested path. For more information, see
+        starts with ``redirect=`` followed by a path, the server will redirect
+        the browser to this path. The callable must accept two parameters
+        whereas the second one is the requested path. For more information, see
         :ref:`Custom-Responses`.
 
     Examples
@@ -95,7 +95,7 @@ class WebMethod(object):
         if os.path.isfile(file_path):
             return os.path.abspath(file_path)
         else:
-            warning('could not find "{}", needs absolute path'
+            warning('Could not find "{}", needs absolute path'
                     .format(file_path))
         return None
 
