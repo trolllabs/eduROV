@@ -42,7 +42,7 @@ class WebMethod(object):
         starts with ``redirect=`` followed by a path, the browser wil redirect
         the user to this path. The callable must accept two parameters whereas
         the second one is the requested path. For more information, see
-        :ref:`custom-res`.
+        :ref:`Custom-Responses`.
 
     Examples
     --------

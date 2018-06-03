@@ -159,7 +159,8 @@ Displaying sensor values
 
 Coming soon
 
-.. _custom-res:
+.. _Custom-Responses:
+
 Custom responses
 ===============================
 
