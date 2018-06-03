@@ -93,3 +93,8 @@ a minimum. When deploying on a wireless network the actual performance will
 vary depending on factors such as distance, interference and hardware.
 
 .. image:: ./docs/latency.png
+
+Author
+========
+The package is created by Martin Løland as part of the master thesis at
+Norwegian University of Science and Technology 2018
