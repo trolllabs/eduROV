@@ -18,28 +18,30 @@ class WebMethod(object):
     Parameters
     ----------
     index_file : str
-        absolute path to the frontpage of the webpage, must be called
-        ``index.html``
+        Absolute path to the frontpage of the webpage, must be called
+        ``index.html``. For more information, see DisplayingFeed_.
     video_resolution : str, optional
-        a string representation of the wanted video resolution in the format
-        WIDTHxHEIGHT
+        A string representation of the wanted video resolution in the format
+        WIDTHxHEIGHT.
     fps : int, optional
-        wanted framerate, may not be achieved depending on available resources
-        and network
+        Wanted framerate, may not be achieved depending on available resources
+        and network.
     server_port : int, optional
-        the web page will be served at this port
+        The web page will be served at this port
     debug : bool, optional
-        if set True, additional information will be printed for debug
-        purposes
+        If set True, additional information will be printed for debug
+        purposes.
     runtime_functions : callable or list, optional
-        should be a callable function or a list of callable functions, will be
-        started as independent processes automatically
+        Should be a callable function or a list of callable functions, will be
+        started as independent processes automatically. For more information,
+        see ControllingMotors_.
     custom_response : callable, optional
-        if set, this function will be called if default web server is not able
+        If set, this function will be called if default web server is not able
         to handle a GET request, should return a str or None. If returned value
         starts with ``redirect=`` followed by a path, the browser wil redirect
         the user to this path. The callable must accept two parameters whereas
-        the second one is the requested path
+        the second one is the requested path. For more information, see
+        CustomResponses_.
 
     Examples
     --------
