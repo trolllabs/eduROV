@@ -15,6 +15,8 @@ Examples
    :caption: index.html
    :language: html
 
+::
+
     project
     ├── minimal.py
     └── index.html
@@ -29,6 +31,8 @@ Examples
    :caption: index.html
    :language: html
 
+::
+
     project
     ├── features.py
     ├── index.html
@@ -38,6 +42,8 @@ Examples
         └── style.css
 
 .. include:: ../examples/rc_car/Readme.rst
+
+::
 
     project
     ├── rc_car.py
@@ -55,6 +61,8 @@ Examples
 .. literalinclude:: ../examples/edurov_web/index.html
    :caption: index.html
    :language: html
+
+::
 
     project
     ├── entry.py
