@@ -16,7 +16,7 @@ On this page we will walk through the
 one feature at a time. This example was created with the intention of
 describing all the features of the edurov package. Let's get started!
 
-.. _DisplayingFeed:
+.. _Displaying-the-video-feed:
 
 Displaying the video feed
 ===============================
@@ -89,7 +89,7 @@ is the convention for these kind of files.
    :linenos:
    :lines: 6-33
 
-.. _ControllingMotors:
+.. _Controlling-motors-(or-anything):
 
 Controlling motors (or anything)
 ------------------------------------
@@ -159,7 +159,7 @@ Displaying sensor values
 
 Coming soon
 
-.. _CustomResponses:
+.. _Custom-Responses:
 
 Custom responses
 ===============================
