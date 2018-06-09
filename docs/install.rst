@@ -7,7 +7,7 @@ Raspbian
 
 First, you will need a raspberry pi with an operating system running on it.
 Visit the `official software guide <https://www.raspberrypi.org/learning/software-guide/quickstart/>`_
-for a step by step guide on how to do that.
+for a step by step guide on how to do that..
 
 Remote control
 ==============
