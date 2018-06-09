@@ -40,8 +40,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
-    'sphinx.ext.autosummary',
-    'rinoh.frontend.sphinx'
+    'sphinx.ext.autosummary'
 ]
 
 # Napoleon settings
