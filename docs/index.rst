@@ -1,7 +1,3 @@
-#######
-Part 1
-#######
-
 .. include:: ../README.rst
 
 .. toctree::
